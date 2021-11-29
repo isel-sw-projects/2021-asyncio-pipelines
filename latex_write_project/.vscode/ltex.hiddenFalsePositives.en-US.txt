@@ -1,0 +1,1 @@
+{"rule":"ENGLISH_WORD_REPEAT_BEGINNING_RULE","sentence":"^\\QThis style file is a major rewrite from the most of Universities, which was in turn adapted from a style file from the FCT-UNL (not official version).\\E$"}
