@@ -16,9 +16,9 @@ Firstly, on section \ref{sec:related_work}, will be made an overview on previous
 \section{Related Work} % (fold)
 \label{sec:related_work}
 
-Initially, when computers had a single processing unit, the networks only allowed the exchange of few bytes per second and the data servers didn't had the responsiveness requirements that are mandatory today; software computational systems were simpler, in the sense that operations were mostly made in a single execution thread. 
-The servers design, were made without many concerns about availability under demand pressure or computer resource optimization. 
-Consequently, operations that required intensive IO interactions or data request from an external sources, were mostly blocking, non-flexible in terms of responsiveness and interoperability. 
+% Initially, when computers had a single processing unit, the networks only allowed the exchange of few bytes per second and the data servers didn't had the responsiveness requirements that are mandatory today; software computational systems were simpler, in the sense that operations were mostly made in a single execution thread. 
+% The servers design, were made without many concerns about availability under demand pressure or computer resource optimization. 
+% Consequently, operations that required intensive IO interactions or data request from an external sources, were mostly blocking, non-flexible in terms of responsiveness and interoperability. 
 
 From the end of 80´s to the beginning of the 2000´s, with the acceleration of Moores´s Law in hardware and network bandwidth development, the creation of the web as we know today through the wide spread of use of the HTTP protocol and the support from new operative systems with multithreading support, the nescessity of high responsivness servers started to grow. This increase in demand of new ways to handle data through paralelism, caused the nescessity of design new programming models compatible with concurrent work. 
 
@@ -81,28 +81,51 @@ This model \texttt{Proactor Pattern} design creates the ground for the building 
 \section{Asynchronous sequencing key concepts and design alternatives} % (fold)
 \label{sec:async_concepts}
 
-The template file for writing dissertations in  \texttt{LaTeX} is organized into a main directory, a set of files and sub-directories:
-\begin{enumerate}
-	\item[ThesisISEL] This is the main directory and includes:
-	\begin{enumerate}
-		\item \textbf{Logo} Directory with Faculty logos;
-		\item \textbf{sty} Directory will all sty files that help in formatting document;
-		\item \textbf{Chapters} Directory where to put user files (text and figures);
-		\begin{enumerate}
-		\item \textbf{scripts} Directory with useful bash scripts, e.g., for cleaning all temporary files;
-		\item \textbf{img} Directory with all images of your thesis;
-		\end{enumerate}
-		\item \textbf{alpha-pt.bst} A file with bibliography names in portuguese, e.g., 'Relatório Técnico' e 'Tese de Mestrado' instead of 'Technical Report' and 'Master Thesis'. This file is used automatically if Portuguese is selected as the main language (see below);
-		\item \textbf{defaults.tex} A file with the main default values for the package (institution name, faculty's logo, degree name and similars);
-		\item \textbf{personaldataofthesis.tex} A file with the main default values for the package (identification of report as well as the author and juries);
-		\item \textbf{template.tex} The main file. You should run  \texttt{LaTeX} in this one. Please refrain from changing the file content outside of the well defined area;
-		\item \textbf{bibliography.bib} The bib file. An easy way to find to import citation into \texttt{bibtex} is select option \texttt{Show links to import citation into
-Bib\-Tex} in \href{http://scholar.google.pt/scholar_settings?hl=en&as_sdt=0,5}{\texttt{Scholar google settings}}.
-		\item \textbf{thesisisel.cls} The  \texttt{LaTeX} class file for the thesis{} style. Currently, some of the defaults are stored here instead of \verb!defaults.tex!. This file should not be changed, unless you're ready to play with fire! :)
-	\end{enumerate}
-\end{enumerate}
+With the development of several approaches and implementations related to asynchronous data sequencing in several programming plataforms; a dictionary
+of properties, concepts and design alternatives started to grow by itself. In the following, are discussed several of the concepts related with asynchronous data sequencing, namely:
 
-Again, we would like to recall that all the user \texttt{LaTeX} files should be stored in the \verb!ThesisISEL! directory, and all the images in \verb!ThesisISEL/Chapters/img! directory.\todo[inline]{Yet another note!}
+
+\begin{itemize}
+	\item Synchronous vs Asynchronous - Before explaining more terms related with asynchronous data sequencing, its important to clarify what is an asynchronous call in programming. An asynchronous call, is a call to a function or routine with imediatte return, where the result of that processing is may be done outside of the main programm time sequence.  
+	%For examples, a call to the function \texttt{ x(input, callback)}, return immediately, however, the processing is done outside of the time scope of the caller. 
+	%Add Sync vs Async 
+	
+	\item Callbacks - In terms of asynchronous.\\
+	\item Tasks - . \\
+	\item Cancelables - . \\
+	\item Error Handling - \\
+	\item Intrisic Words - \\
+	\item Push vs Pull - \\
+	\item Streams -  \\
+	\item Hot vs Cold -\\
+	\item Reactive Streams - \\
+	\item Async Enumerables - \\ 
+
+    
+\end{itemize}
+
+% The template file for writing dissertations in  \texttt{LaTeX} is organized into a main directory, a set of files and sub-directories:
+% \begin{enumerate}
+% 	\item[ThesisISEL] This is the main directory and includes:
+% 	\begin{enumerate}
+% 		\item \textbf{Logo} Directory with Faculty logos;
+% 		\item \textbf{sty} Directory will all sty files that help in formatting document;
+% 		\item \textbf{Chapters} Directory where to put user files (text and figures);
+% 		\begin{enumerate}
+% 		\item \textbf{scripts} Directory with useful bash scripts, e.g., for cleaning all temporary files;
+% 		\item \textbf{img} Directory with all images of your thesis;
+% 		\end{enumerate}
+% 		\item \textbf{alpha-pt.bst} A file with bibliography names in portuguese, e.g., 'Relatório Técnico' e 'Tese de Mestrado' instead of 'Technical Report' and 'Master Thesis'. This file is used automatically if Portuguese is selected as the main language (see below);
+% 		\item \textbf{defaults.tex} A file with the main default values for the package (institution name, faculty's logo, degree name and similars);
+% 		\item \textbf{personaldataofthesis.tex} A file with the main default values for the package (identification of report as well as the author and juries);
+% 		\item \textbf{template.tex} The main file. You should run  \texttt{LaTeX} in this one. Please refrain from changing the file content outside of the well defined area;
+% 		\item \textbf{bibliography.bib} The bib file. An easy way to find to import citation into \texttt{bibtex} is select option \texttt{Show links to import citation into
+% Bib\-Tex} in \href{http://scholar.google.pt/scholar_settings?hl=en&as_sdt=0,5}{\texttt{Scholar google settings}}.
+% 		\item \textbf{thesisisel.cls} The  \texttt{LaTeX} class file for the thesis{} style. Currently, some of the defaults are stored here instead of \verb!defaults.tex!. This file should not be changed, unless you're ready to play with fire! :)
+% 	\end{enumerate}
+% \end{enumerate}
+
+% Again, we would like to recall that all the user \texttt{LaTeX} files should be stored in the \verb!ThesisISEL! directory, and all the images in \verb!ThesisISEL/Chapters/img! directory.\todo[inline]{Yet another note!}
 % section folder_structure (end)
 
 % ===================
