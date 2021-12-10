@@ -20,58 +20,75 @@ Firstly, on section \ref{sec:related_work}, will be made an overview on previous
 % The servers design, were made without many concerns about availability under demand pressure or computer resource optimization. 
 % Consequently, operations that required intensive IO interactions or data request from an external sources, were mostly blocking, non-flexible in terms of responsiveness and interoperability. 
 
-From the end of 80´s to the beginning of the 2000´s, with the acceleration of Moores´s Law in hardware and network bandwidth development, the creation of the web as we know today through the wide spread of use of the HTTP protocol and the support from new operative systems with multithreading support, the nescessity of high responsivness servers started to grow. This increase in demand of new ways to handle data through paralelism, caused the nescessity of design new programming models compatible with concurrent work. 
+From the end of 80´s to the beginning of the 2000´s, with the acceleration of Moores´s Law in hardware and network bandwidth development, the creation of the web as we know today through the wide spread of use of the HTTP protocol and the support from new operative systems to multithreading support, the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism, caused the necessity of design new programming models compatible with concurrent work. 
 
-One of the earlier advances made in this subject is the introduction to the \texttt{Proctor Pattern} in a paper made in 1997 by Tim Harrison, Irfan Pyarali, Douglas C. Schmidt and Thomas D.Jordan. 
-In the paper, are identified four properties that high-performance web server must have: 
+Taking the wave initiated by the Gang of Four in \cite{gof}, where 23 patterns were compiled, a group of researchers published the \textit{Proactor Pattern} in the paper \cite{proactor}, where is proposed a pattern to deal with asynchronous IO. 
+In the document, are identified four properties that high-performance web server must have: 
 \begin{itemize}
 	\item Concurrency - The server must process multiple client requests simultaneously.\\
 	\item Efficiency - The software design must be built aiming the use of least hardware resources as possible. \\
 	\item Simplicity - The code of the solution must be easy to understand, modular and avoid own built design patterns as possible. \\
-    \item Adaptability - The system must be totally decoupled from client implementations, allowing it to be easily used by any client independently of the underlying technologic realities. To achieve this, may be used standards e.g. REST or SOAP.\\
+    \item Adaptability - The system must be totally decoupled from client implementations, allowing it to be easily used by any client independently of the underlying technologic realities. To achieve this, may be used standards e.g. \cite{REST} or SOAP.\\
 \end{itemize}
 
-The authors propose the \texttt{Proactor Pattern}, because in their opinion, conventional concurrency models fail to fully achieve the enumerated properties. In the paper, before presenting the \texttt{Proactor Pattern}, are identified two major concurrency models, namely: multithreading and reactive event dispatching. 
+The authors propose the \textit{Proactor Pattern}, because in their opinion, conventional concurrency models fail to fully achieve the enumerated properties. In the paper, before presenting the \textit{Proactor Pattern}, are identified two major concurrency models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
 
-The paper refers that one of the most direct implementations of the multithreading approach, is the handling of multiple requests by creating a new thread every time. Each request will them be fully processed and the recently  created thread is them be disposed after the work is finished. 
-This solution has several serious issues; firstly, creating a new thread per request is highly costly in term of computional resources,
-because are involved context switches between user and kernel modes; secondly, must be taken in account synchronization to maintain data integrity. 
+The paper refers that one of the most direct implementations of the multithreading approach, is the handling of multiple requests by creating a new thread every request. Each request will then be fully processed and the recently  created thread is then be disposed after the work is finished. 
+
+This solution has several serious issues. Firstly, creating a new thread per request is highly costly in terms of computational resources,
+because are involved context switches between user and kernel modes; secondly, must be taken in account synchronization to maintain data integrity.
+Then, the authors warn about the fact that the IO retrieved data is mainly memory-mappped, wich rises the question: What happens when the data obtained through IO becomes greater than the system memory can hold? The system stalls until more memory becomes available!?
 On last, if the server receives a high demand of requests, the server easily blocks in the process of creating and disposing threads. 
+
 To avoid this issue, the authors, recommended the use of dynamic threadpools to process requests, where each request will be linked to a pre-existing thread, avoiding all the overhead of creating and disposing a thread per request;
-however, by the authors, synchronization complexity maintains.
+however, issues related with memory-mapping and overhead due to the switching of data between different threads maintains. 
 
-Another traditional concurrency model identified by the authors of the paper, is \texttt{Reactive Synchronous Event Dispatching}. 
-In this model, a \texttt{Reactor}, with a single thread in a loop, is constantly listening requests from clients and sending work requests to an entity named \texttt{Handler}. 
-The \texttt{Handler} will then process the IO work Synchronously and register a connection in the \texttt{Reactor}. When the connection becomes available for writing, the \texttt{Reactor} notifies the \texttt{Handler} to asynchronously send the data that is being obtained through IO operations to the client.\\
-The authors identify several drawbacks with this approach: the code for this approach is complex, since is following a single thread approach to process requests. If a request processing blocks for any reason, can exist an impact in the processing of another requests and impact the readiness of the whole system. 
-Another issue with this approach, is from the fact that the \texttt{Handler} makes a read from a data source e.g a file in a file system, and brings that data to memory. The question that arises from this is: What happens when the data obtained through IO becomes greater than the memory can hold and a sending to the client is slower that a reading made by OS IO mechanisms!?
+Another traditional concurrency model identified by the authors of the paper, is the \textit{Reactive Synchronous Event Dispatching} or more commonly known as \texttt{Reactor Pattern}. In this model, a \textit{Dispatcher}, with a single thread in a loop, is constantly listening requests from clients and sending work requests to an entity named \textit{Handler}. 
+The \textit{Handler}, will then process the IO work Synchronously and request a connection to the client in the \textit{Dispatcher}. When the requested connection is ready to be used, the \textit{Dispatcher} notifies the \textit{Handler}. After the notification, the \textit{Handler} asynchronously sends the data, that is being or has been obtained through IO, to the client.\\
+Although the authors identifying that this approach is positive, because decouples the application logic from the dispatching mechanisms besided with the low overhead due the use of a single thread, the authors identify several drawbacks with this approach. 
+Firstly, since IO operation are synchronous, the code for this approach is complex because must be set in place mechanisms to avoid IO blocking through hand off mechanisms. 
+Then, if a request processing blocks, the processing of another requests may be impacted. 
 
-To mitigate these issues, is suggested the \texttt{Proactor Pattern}. This pattern is very similar to the \texttt{Reactive Synchronous Event Dispatching}, however, after the requests are accepted, the IO work is dispatched asynchronously to the underlying OS IO subsystem. 
-To retrieve the result, is previously registered a callback in a module named \texttt{Completion Handler}. The callback will be called when the IO operations end, to asynchronously send the data to the client. 
-This model \texttt{Proactor Pattern} design creates the ground for the building of modern models, e.g. \texttt{Tasks}, \texttt{CompletableFutures} and \texttt{Javascript callback model}. //todo This motivated the writing of the  papers of : .... 
+To keep the positive points but mitigating the identified issues of previous approaches, is suggested the \textit{Proactor Pattern}. 
+This pattern is very similar to the \textit{Reactive Synchronous Event Dispatching}, however, after the requests processed by a single threaded \textit{Completion dispatcher}, 
+the IO work is then dispatched asynchronously to the underlying OS IO subsystems, where multiple requests can be processed simultaneously. 
+For the result to be retrieved, is previously registered a callback in the \textit{Completion Dispatcher} and the OS has the responsibility to queue the finished result in a well known place. 
+
+Finally, the \textit{Completion Dispatcher} has the responsibility to dequeue the result placed by the OS and call the correct previously registered callback. 
+With this, this model creates a platform that provides: decoupling between application and processing mechanisms,
+offers concurrent work without the issues inherent with the use of threading mechanisms and since IO is managed by the OS subsystems, is avoided code complexity in handling possible blocking and scheduling issues.  
+
+The \textit{Proactor Pattern}, creates the ground for several models used by modern platforms that use a single/few threads to process client requests and parallel mechanisms to do the heavy work in the background; namely, for example: \textit{Javascript NODE.JS callback model}, \textit{Spring Webflux}, \textit{vertx} and .
+
+From what was explained until now, is evident the tendency followed by software architects in terms of asynchronous processing from non-reactive to event driven approaches. Initially the systems were non-reactive, where each request had to be processed in a 
+specific thread and that thread blocked until something got ready to go further. 
+Then, with the asynchronous systems based on events with the introduction of callback systems inspired in patterns like the \textit{Reactor} or \textit{Proactor}; the software design started to become more event driven, allowing the servers to be more efficient in responsiveness, flexibility and resources optimization. 
+
+However, are some limitations in these asynchronous models. For example, if the data to be processed is bigger than the memory available or if the data to be calculated is from a source that produces data at a constant rate that must be processed in real time, these models work badly.  
+The traditional models fail to comply these objectives because are mostly eager by design or not comply with the notion of a continuous source of information that requires to be processed in real time.
+Taken this in account, projects like project Reactor, Asynchronous Enumerable provided by Microsoft or papers like \cite{LAZYVSEAGER}, try to deal with these issues, by providing API's that merge the concepts of Fluent API´s, functional programming and code syntax that tries to resemble synchronous code, being the complexity inherent with asynchronous models implementations hidden from the programmer. 
+
+%\begin{figure}[ht]
+%	\centering
+%	\includegraphics[width=0.65\textwidth]{alternative_1}
+%	  \caption{Multithreading solution example}
+ % \label{fig:bibtex}
+%\end{figure}
 
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.65\textwidth]{alternative_1}
-	  \caption{Multithreading solution example}
-  \label{fig:bibtex}
-\end{figure}
+%\begin{figure}[ht]
+%	\centering
+	%\includegraphics[width=0.65\textwidth]{alternative_2}
+%	  \caption{Dispatcher example}
+ % \label{fig:bibtex}
+%\end{figure}
 
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.65\textwidth]{alternative_2}
-	  \caption{Dispatcher example}
-  \label{fig:bibtex}
-\end{figure}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.65\textwidth]{alternative_3}
-	  \caption{Proactor example}
-  \label{fig:bibtex}
-\end{figure}
+%\begin{figure}[ht]
+%	\centering
+%	\includegraphics[width=0.65\textwidth]{alternative_3}
+%	  \caption{Proactor example}
+%  \label{fig:bibtex}
+%\end{figure} %
 
 % section introduction (end)
 
@@ -90,8 +107,8 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	%For examples, a call to the function \texttt{ x(input, callback)}, return immediately, however, the processing is done outside of the time scope of the caller. 
 	%Add Sync vs Async 
 	
-	\item Callbacks - In terms of asynchronous.\\
-	\item Tasks - . \\
+	\item Callbacks - Functions or routines, that are called by asynchronous platforms after an asynchronous operation is finished.\\
+	\item Tasks - Objects that are usually associated with success and error callbacks, that represent an asynchronous operation. Usually, tasks have a completion status associated and can be initiated synchronously or asynchronously. e.g. \texttt{CompletableFutures<T>} or \texttt{Task<T>} \\
 	\item Cancelables - . \\
 	\item Error Handling - \\
 	\item Intrisic Words - \\
