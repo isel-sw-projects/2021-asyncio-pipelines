@@ -1,0 +1,2 @@
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QBefore explaining more terms related with asynchronous data flux, it's important to clarify what is synchrony and asynchrony in programming.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QSynchrony vs Asynchrony.\\E$"}

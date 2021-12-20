@@ -4,16 +4,16 @@
 %  
 %  Created by Matilde Pós-de-Mina Pato on 2012/10/09.
 %
-\chapter{Background and State of the Art}
+\chapter{State of the Art}
 \label{cha:users_manual}
 
-Firstly, on section \ref{sec:related_work}, will be made an overview on previously developted work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on asynchronous data sequencing in different programming realities, e.g. on Kotlin, JAVA and C\#. 
+Firstly, on section \ref{sec:related_work}, will be made an overview on previously developted work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on asynchronous data flux in different programming realities, e.g. on Kotlin, JAVA and C\#. 
 
 
 % ================
 % = Related work =
 % ================
-\section{Related Work} % (fold)
+\section{Background} % (fold)
 \label{sec:related_work}
 
 % Initially, when computers had a single processing unit, the networks only allowed the exchange of few bytes per second and the data servers didn't had the responsiveness requirements that are mandatory today; software computational systems were simpler, in the sense that operations were mostly made in a single execution thread. 
@@ -22,7 +22,7 @@ Firstly, on section \ref{sec:related_work}, will be made an overview on previous
 
 From the end of 80´s to the beginning of the 2000´s, with the acceleration of Moores´s Law in hardware and network bandwidth development, the creation of the web as we know today through the wide spread of use of the HTTP protocol and the support from new operative systems to multithreading support, the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism, caused the necessity of design new programming models compatible with concurrent work. 
 
-Taking the wave initiated by the Gang of Four in \cite{gof}, where 23 patterns were compiled, a group of researchers published the \textit{Proactor Pattern} in the paper \cite{proactor}, where is proposed a pattern to deal with asynchronous IO. 
+Taking the wave initiated by the Gang of Four in \cite{gof}, where 23 patterns were compiled to deal with object-oriented problems, a group of researchers published the \textit{Proactor Pattern} in the paper \cite{proactor} to deal with asynchronous IO. 
 In the document, are identified four properties that high-performance web server must have: 
 \begin{itemize}
 	\item Concurrency - The server must process multiple client requests simultaneously.\\
@@ -58,7 +58,7 @@ Finally, the \textit{Completion Dispatcher} has the responsibility to dequeue th
 With this, this model creates a platform that provides: decoupling between application and processing mechanisms,
 offers concurrent work without the issues inherent with the use of threading mechanisms and since IO is managed by the OS subsystems, is avoided code complexity in handling possible blocking and scheduling issues.  
 
-The \textit{Proactor Pattern}, creates the ground for several models used by modern platforms that use a single/few threads to process client requests and parallel mechanisms to do the heavy work in the background; namely, for example: \textit{Javascript NODE.JS callback model}, \textit{Spring Webflux}, \textit{vertx} and .
+The \textit{Proactor Pattern}, creates the ground for several models used by modern platforms that use a single/few threads to process client requests and parallel mechanisms to do the heavy work in the background; namely, for example: \textit{Javascript NODE.JS}, \textit{Spring Webflux}, \textit{vertx} and others.
 
 From what was explained until now, is evident the tendency followed by software architects in terms of asynchronous processing from non-reactive to event driven approaches. Initially the systems were non-reactive, where each request had to be processed in a 
 specific thread and that thread blocked until something got ready to go further. 
@@ -95,31 +95,123 @@ Taken this in account, projects like project Reactor, Asynchronous Enumerable pr
 % ====================
 % = Folder Structure =
 % ====================
-\section{Asynchronous sequencing key concepts and design alternatives} % (fold)
+\section{Asynchronous flux key concepts and design alternatives} % (fold)
 \label{sec:async_concepts}
 
-With the development of several approaches and implementations related to asynchronous data sequencing in several programming plataforms; a dictionary
-of properties, concepts and design alternatives started to grow by itself. In the following, are discussed several of the concepts related with asynchronous data sequencing, namely:
+With the development of several approaches and implementations related to asynchronous data flux in several programming plataforms; a dictionary
+of properties, concepts and design alternatives started to grow by itself. In the following, are discussed several of the concepts related with asynchronous data flux, namely:
 
 
-\begin{itemize}
-	\item Synchronous vs Asynchronous - Before explaining more terms related with asynchronous data sequencing, its important to clarify what is an asynchronous call in programming. An asynchronous call, is a call to a function or routine with imediatte return, where the result of that processing is may be done outside of the main programm time sequence.  
-	%For examples, a call to the function \texttt{ x(input, callback)}, return immediately, however, the processing is done outside of the time scope of the caller. 
-	%Add Sync vs Async 
+\subsection{Synchrony versus Asynchrony}
+
+	Before explaining more terms related with asynchronous data flux, it's important to clarify what is synchrony and asynchrony in programming. 
 	
-	\item Callbacks - Functions or routines, that are called by asynchronous platforms after an asynchronous operation is finished.\\
-	\item Tasks - Objects that are usually associated with success and error callbacks, that represent an asynchronous operation. Usually, tasks have a completion status associated and can be initiated synchronously or asynchronously. e.g. \texttt{CompletableFutures<T>} or \texttt{Task<T>} \\
-	\item Cancelables - . \\
-	\item Error Handling - \\
-	\item Intrisic Words - \\
-	\item Push vs Pull - \\
-	\item Streams -  \\
-	\item Hot vs Cold -\\
-	\item Reactive Streams - \\
-	\item Async Enumerables - \\ 
+	Asynchrony in programming, is a call to a function or routine that returns immediately, not blocking the caller until the operation is finished. The operation processing, will be completely independent from the caller execution thread and can even be done in another machine and technology. This way, the caller is freed to do more work, even to start \texttt{N} more operations in parallel. 
+	
+	Meanwhile, a call to a synchronous function or routine, blocks the caller until the operation finishes. In this case, the caller has to wait for the completion of the synchronous call before going forward, which limits the program efficiency if parallelism is applicable.
+	Usually, in this case, the execution \texttt{Thread} of the caller is 
+
+	To better visualize what was explained, we have the following example: 
+
+
+	\begin{figure}[htbp]
+		\centering
+		\begin{subfigure}[h]{0.4\textwidth}
+			\centering
+			\lstfromfile{java}{1-8}{Asynchronous call example}{async}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{async.java}
+			\caption{}
+			\label{fig:ra-vectorial}
+		 \end{subfigure}	
+	\qquad
+		 \begin{subfigure}[h]{0.4\textwidth}
+			\centering
+			\lstfromfile{java}{1-8}{Synchronous call example}{Sync}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{Sync.java}
+			\caption{}
+			\label{fig:ra-raster}
+		\end{subfigure}		
+	  \caption{Example of Synchronous and Asynchronous calls in JAVA}
+	  \label{fig:figura-completa}
+	\end{figure}
+
+	As we can see, in the synchronous call example, the operation return only happens after the whole subsequent operation is finished, consequently, the print of the message made in the synchronous routine happens right before the second statement call. 
+
+	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work, for example, when a worker thread from a threadpool is ready to handle that work.
+	Because of that, the print made in the asynchronous operation will happen "out of order", being done just after the print of the second statement.
+
+
+
+
+	\subsection{Push vs Pull} 
+	
+	Another concept important to understand how asynchronous data flux is handled in programming, is the \textit{Pull} and \textit{Push} processing patterns.
+	In \textit{Pull} pattern, usually, exists a source of data and the program iterates over that source to operate over each item. 
+	
+	On the other hand, in the \textit{Push} pattern, the items of the data source are "Pushed" to a routine that will operate over that item.
+	To help to assimilate what was just explained, we have the following example:
+
+	\begin{figure2}
+		\centering
+		\begin{subfigure}[h]{0.4\textwidth}
+			\centering
+			\lstfromfile{java}{1-13}{Pull pattern example}{pull}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{pull.java}
+			\caption{}
+		 \end{subfigure}	
+	\qquad\qquad
+		 \begin{subfigure}[h]{0.4\textwidth}
+			\centering
+			\lstfromfile{java}{1-13}{Push pattern example}{push}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{push.java}
+			\caption{}
+		\end{subfigure}		
+	  \caption{Example of Pull and Push data handling patterns}
+	  \label{fig:exmplo2}
+	\end{figure2}
+	
+	As we can see, in the pull pattern, the items are "pulled" from a data source through an iteration mechanism. 
+	
+	In contrast with that, in the \textit{Push} pattern, items are pushed to a consumer through a supplier.
+
+
+
+
+
+	\subsection{Hot versus Cold}
+	
+	Another property that must be took in account when handling this subject is nature of a data flux. There are two main adjectives to name a data flux, Hot or Cold.  \\
+
+	A cold data flux, is a sequence of information that is received by a consumer with the control of that consumer. 
+	For example, when program uses a stream to lazily retrieve a sequence of words from a buffer, the consumer has total control on when and how the next item will be proccessed.
+
+	On the other hand, in a \texttt{Hot} data flux, the consumer has no control on how many items will receive in the given moment. 
+	In a Hot data flux, the consumer can  receive data from the moment the stream is open while in a Cold stream, the consumer will receive just when data is requested from the stream.
+
+	\begin{figure3}
+		\centering
+		\begin{subfigure}[h]{0.4\textwidth}
+			\centering
+			\lstfromfile{java}{1-3}{Cold Example}{cold}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{ColdFlux.java}
+			\caption{}
+		 \end{subfigure}	
+	\qquad\qquad
+		 \begin{subfigure}[h]{0.4\textwidth}
+			\centering
+			\lstfromfile{java}{1-6}{Hot Example}{hot}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{HotFlux.java}
+			\caption{}
+		\end{subfigure}		
+	  \caption{Example of Hot and Cold data streams}
+	  \label{fig:exmplo3}
+	\end{figure3}
+
+	As we can see, in the \texttt{Hot} data flux example, the items are emitted from the moment the emitter is created. 
+	The example emits a number per second, where the number is 1 or the "repetition number" + 1. Since the stream is continuous, when the consumer starts to listen the pipepline 10 items were already lost.
+	However, in the \texttt{Cold} example, the consumer only receives the items when he manually consumes the pipeline.
+
+	%\subsection{Cancelables} \\
+	%\subsection{Error Handling}  \\
+	%\subsection{Intrisic Keywords} \\
+    %\subsection{Reactive Streams} \\
+	%\subsection{Async Enumerables} \\ 
 
     
-\end{itemize}
 
 % The template file for writing dissertations in  \texttt{LaTeX} is organized into a main directory, a set of files and sub-directories:
 % \begin{enumerate}
