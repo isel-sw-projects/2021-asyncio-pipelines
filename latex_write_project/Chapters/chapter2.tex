@@ -182,7 +182,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	For example, when program uses a stream to lazily retrieve a sequence of words from a buffer, the consumer has total control on when and how the next item will be proccessed.
 
 	On the other hand, in a \texttt{Hot} data flux, the consumer has no control on how many items will receive in the given moment. 
-	In a Hot data flux, the consumer can  receive data from the moment the stream is open while in a Cold stream, the consumer will receive just when data is requested from the stream.
+	In a Hot data flux, the consumer can receive data from the moment the stream is open while in a Cold stream, the consumer will receive just when data is requested from the stream.
 
 	\begin{figure3}
 		\centering
@@ -192,7 +192,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 			\caption{}
 		 \end{subfigure}	
 	\qquad\qquad
-		 \begin{subfigure}[h]{0.4\textwidth}
+		 \begin{subfigure}[h]{0.6\textwidth}
 			\centering
 			\lstfromfile{java}{1-6}{Hot Example}{hot}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{HotFlux.java}
 			\caption{}
@@ -202,7 +202,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	\end{figure3}
 
 	As we can see, in the \texttt{Hot} data flux example, the items are emitted from the moment the emitter is created. 
-	The example emits a number per second, where the number is 1 or the "repetition number" + 1. Since the stream is continuous, when the consumer starts to listen the pipepline 10 items were already lost.
+	In the example, the emitter emits a number per hundred milliseconds, where the number is 1 or the "repetition number" + 1. Since the stream is continuous, when the consumer starts to listen the pipepline 1 seconds after the emittion started, 10 items were already lost when a observer subscribes to that data source.
 	However, in the \texttt{Cold} example, the consumer only receives the items when he manually consumes the pipeline.
 
 	%\subsection{Cancelables} \\
