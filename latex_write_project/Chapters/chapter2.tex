@@ -104,16 +104,16 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 \subsection{Synchronous versus Asynchronous}
 
-	Before explaining more terms related with asynchronous data flow, it's important to clarify what is synchrony and asynchronous in programming. 
+	Before explaining more terms related with asynchronous data flow, it's important to clarify what is synchronous and asynchronous in programming. 
 	
 	Asynchronous in programming, is a call to a function or routine that returns immediately, not blocking the caller until the operation is finished. The operation processing, will be completely independent from the caller execution process and can even be done in another machine. This way, the caller is freed to do more work, even to start \texttt{N} more operations in parallel. 
 	
 	Meanwhile, a call to a synchronous function or routine, blocks the caller until the operation finishes. In this case, the caller has to wait for the completion of the synchronous operation before going forward, which limits the program efficiency if parallelism is applicable.
 
-	To better visualize what was explained, we have the following example: 
+	To better visualize what was explained, we have the following examples: 
 
 
-	\begin{figure1}[htbp]
+	\begin{figure1}
 		\centering
 		\begin{subfigure}[h]{1.2\textwidth}
 			\centering
@@ -132,9 +132,9 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	  \label{fig:figura-completa}
 	\end{figure1}
 
-	As we can see, in the synchronous call example, the operation return only happens after the whole subsequent remote operation is finished, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed or bandwidth issues. 
+	As we can see, in the synchronous call example, the operation block on the request and the return only happens after the whole subsequent remote operation is finished and the response is received, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed, bandwidth condition, etc... 
 
-	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work, for example, when a worker the OS is ready to process the received messages from the remote HTTP server that handled the request.
+	Meanwhile, in the asynchronous operation call, the return happens immediately after the request call. In this case, the caller is not dependant from the operation to go forward
 
 
 
@@ -176,7 +176,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 	\subsection{Reactive Streams} 
 
-	\textit{Reactive Streams} is term used to describe several programming approaches, designed to asynchronously process data in real time obtained from data sources that continuously produce. 
+	\textit{Reactive Streams} is term used to describe several programming design patterns, that aim to enable asynchronous data processing in real time obtained from sources that continuously produce more data. 
 
 
 
