@@ -7,7 +7,7 @@
 \chapter{State of the Art}
 \label{cha:users_manual}
 
-Firstly, on section \ref{sec:related_work}, will be made an overview on previously developted work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on asynchronous data flux in different programming realities, e.g. on Kotlin, JAVA and C\#. 
+Firstly, on section \ref{sec:related_work}, will be made an overview on previously developted work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on asynchronous data flow in different programming realities, e.g. on Kotlin, JAVA and C\#. 
 
 
 % ================
@@ -95,55 +95,55 @@ Taken this in account, projects like project Reactor, Asynchronous Enumerable pr
 % ====================
 % = Folder Structure =
 % ====================
-\section{Asynchronous flux key concepts and design alternatives} % (fold)
+\section{Asynchronous flow key concepts and design alternatives} % (fold)
 \label{sec:async_concepts}
 
-With the development of several approaches and implementations related to asynchronous data flux in several programming plataforms; a dictionary
-of properties, concepts and design alternatives started to grow by itself. In the following, are discussed several of the concepts related with asynchronous data flux, namely:
+With the development of several approaches and implementations related to asynchronous data flow in several programming plataforms; a dictionary
+of properties, concepts and design alternatives started to grow by itself. In the following, are discussed several of the concepts related with asynchronous data flow, namely:
 
 
-\subsection{Synchrony versus Asynchrony}
+\subsection{Synchronous versus Asynchronous}
 
-	Before explaining more terms related with asynchronous data flux, it's important to clarify what is synchrony and asynchrony in programming. 
+	Before explaining more terms related with asynchronous data flow, it's important to clarify what is synchrony and asynchronous in programming. 
 	
-	Asynchrony in programming, is a call to a function or routine that returns immediately, not blocking the caller until the operation is finished. The operation processing, will be completely independent from the caller execution thread and can even be done in another machine and technology. This way, the caller is freed to do more work, even to start \texttt{N} more operations in parallel. 
+	Asynchronous in programming, is a call to a function or routine that returns immediately, not blocking the caller until the operation is finished. The operation processing, will be completely independent from the caller execution process and can even be done in another machine. This way, the caller is freed to do more work, even to start \texttt{N} more operations in parallel. 
 	
-	Meanwhile, a call to a synchronous function or routine, blocks the caller until the operation finishes. In this case, the caller has to wait for the completion of the synchronous call before going forward, which limits the program efficiency if parallelism is applicable.
-	Usually, in this case, the execution \texttt{Thread} of the caller is 
+	Meanwhile, a call to a synchronous function or routine, blocks the caller until the operation finishes. In this case, the caller has to wait for the completion of the synchronous operation before going forward, which limits the program efficiency if parallelism is applicable.
 
 	To better visualize what was explained, we have the following example: 
 
 
-	\begin{figure}[htbp]
+	\begin{figure1}[htbp]
 		\centering
-		\begin{subfigure}[h]{0.4\textwidth}
+		\begin{subfigure}[h]{1.2\textwidth}
 			\centering
-			\lstfromfile{java}{1-8}{Asynchronous call example}{async}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{async.java}
+			\lstfromfile{java}{1-14}{Asynchronous call example}{async}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{async.java}
 			\caption{}
 			\label{fig:ra-vectorial}
 		 \end{subfigure}	
 	\qquad
-		 \begin{subfigure}[h]{0.4\textwidth}
+		 \begin{subfigure}[h]{1.2\textwidth}
 			\centering
-			\lstfromfile{java}{1-8}{Synchronous call example}{Sync}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{Sync.java}
+			\lstfromfile{java}{1-15}{Synchronous call example}{Sync}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{Sync.java}
 			\caption{}
 			\label{fig:ra-raster}
 		\end{subfigure}		
 	  \caption{Example of Synchronous and Asynchronous calls in JAVA}
 	  \label{fig:figura-completa}
-	\end{figure}
+	\end{figure1}
 
-	As we can see, in the synchronous call example, the operation return only happens after the whole subsequent operation is finished, consequently, the print of the message made in the synchronous routine happens right before the second statement call. 
+	As we can see, in the synchronous call example, the operation return only happens after the whole subsequent remote operation is finished, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed or bandwidth issues. 
 
-	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work, for example, when a worker thread from a threadpool is ready to handle that work.
-	Because of that, the print made in the asynchronous operation will happen "out of order", being done just after the print of the second statement.
+	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work, for example, when a worker the OS is ready to process the received messages from the remote HTTP server that handled the request.
+
+
 
 
 
 
 	\subsection{Push vs Pull} 
 	
-	Another concept important to understand how asynchronous data flux is handled in programming, is the \textit{Pull} and \textit{Push} processing patterns.
+	Another concept important to understand how asynchronous data flow is handled in programming, is the \textit{Pull} and \textit{Push} processing patterns.
 	In \textit{Pull} pattern, usually, exists a source of data and the program iterates over that source to operate over each item. 
 	
 	On the other hand, in the \textit{Push} pattern, the items of the data source are "Pushed" to a routine that will operate over that item.
@@ -151,15 +151,15 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 	\begin{figure2}
 		\centering
-		\begin{subfigure}[h]{0.4\textwidth}
+		\begin{subfigure}[h]{1.2\textwidth}
 			\centering
-			\lstfromfile{java}{1-13}{Pull pattern example}{pull}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{pull.java}
+			\lstfromfile{java}{1-17}{Pull pattern example}{pull}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{pull.java}
 			\caption{}
 		 \end{subfigure}	
 	\qquad\qquad
-		 \begin{subfigure}[h]{0.4\textwidth}
+		 \begin{subfigure}[h]{1.2\textwidth}
 			\centering
-			\lstfromfile{java}{1-13}{Push pattern example}{push}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{push.java}
+			\lstfromfile{java}{1-17}{Push pattern example}{push}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{push.java}
 			\caption{}
 		\end{subfigure}		
 	  \caption{Example of Pull and Push data handling patterns}
@@ -174,25 +174,32 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 
 
+	\subsection{Reactive Streams} 
+
+	\textit{Reactive Streams} is term used to describe several programming approaches, designed to asynchronously process data in real time obtained from data sources that continuously produce. 
+
+
+
 	\subsection{Hot versus Cold}
 	
-	Another property that must be took in account when handling this subject is nature of a data flux. There are two main adjectives to name a data flux, Hot or Cold.  \\
+	Another property that must be took in account when handling with \textit{Reactive Streams} or asynchronous data processing in general, is the nature of the data flow. There are two main adjectives to name a data flow, \texttt{Hot} or \texttt{Cold}.  \\
 
-	A cold data flux, is a sequence of information that is received by a consumer with the control of that consumer. 
-	For example, when program uses a stream to lazily retrieve a sequence of words from a buffer, the consumer has total control on when and how the next item will be proccessed.
+	A \texttt{Cold} data flow, is a flow of information that is produced just when the stream pipeline in subscribed by an observer. In this case, the producer only starts sending/producing data when someone is interested in the data from that source. 
+	For example, when program uses a IO mechanism to lazily retrieve a sequence of words from a database, the IO mechanism will only start sending information just when a consumer subscribes that data flow. Usually, the data is sent to the consumer in unicast.
 
-	On the other hand, in a \texttt{Hot} data flux, the consumer has no control on how many items will receive in the given moment. 
-	In a Hot data flux, the consumer can receive data from the moment the stream is open while in a Cold stream, the consumer will receive just when data is requested from the stream.
+	On the other hand, in a \texttt{Hot} data flow, the data is produced independently of existing any observer to that information. This mechanism usually work in broadcast and the data is continuously produced and sent to possible observers.
+	In this case, when a observer subscribes to a publisher, exists the possibility of data items being already lost to that publisher while in the \texttt{Cold} flow, the consumer usually receives all items that were produced by the source.
+	In the following examples, a number is produced each 100 miliseconds:
 
 	\begin{figure3}
 		\centering
-		\begin{subfigure}[h]{0.4\textwidth}
+		\begin{subfigure}[h]{1.2\textwidth}
 			\centering
 			\lstfromfile{java}{1-3}{Cold Example}{cold}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{ColdFlux.java}
 			\caption{}
 		 \end{subfigure}	
 	\qquad\qquad
-		 \begin{subfigure}[h]{0.6\textwidth}
+		 \begin{subfigure}[h]{1.2\textwidth}
 			\centering
 			\lstfromfile{java}{1-6}{Hot Example}{hot}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{HotFlux.java}
 			\caption{}
@@ -201,15 +208,15 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	  \label{fig:exmplo3}
 	\end{figure3}
 
-	As we can see, in the \texttt{Hot} data flux example, the items are emitted from the moment the emitter is created. 
-	In the example, the emitter emits a number per hundred milliseconds, where the number is 1 or the "repetition number" + 1. Since the stream is continuous, when the consumer starts to listen the pipepline 1 seconds after the emittion started, 10 items were already lost when a observer subscribes to that data source.
-	However, in the \texttt{Cold} example, the consumer only receives the items when he manually consumes the pipeline.
+	
+	As we can see, in the \texttt{Hot} data flow example, the items are emitted from the moment the producer is created, independently of existing any subscriber or observer attached to that publisher. Notice that when a consumer is subscribed to the publisher, 1 seconds after the emition started, the numbers from 0 to 10 were not printed.
+	
+	In the \texttt{Cold} example, the producer only emits data when a subscription is done. Being all the produced numbers printed because the emition started just when a subscription was made. 
 
-	%\subsection{Cancelables} \\
-	%\subsection{Error Handling}  \\
-	%\subsection{Intrisic Keywords} \\
-    %\subsection{Reactive Streams} \\
-	%\subsection{Async Enumerables} \\ 
+	\subsection{Cancelables} todo\\
+	\subsection{Error Handling}  todo\\
+	\subsection{Intrisic Keywords} todo\\
+    \subsection{Async Enumerables} todo\\ 
 
     
 
@@ -243,127 +250,14 @@ of properties, concepts and design alternatives started to grow by itself. In th
 \section{State of the Art} % (fold)
 \label{sec:state_of_the_art}
 
-The thesis{} style includes the following options, that must be included in the options list in the \verb!\documentclass[options]{thesisisel}! line at the top of the \texttt{template.tex} file.
+In this section, will be presented and explained the different frameworks that are commonly used in asynchronous data processing in several programming languages.
 
-The list below aggregates related options in a single item. For each list, the default value is prefixed with a *.
+First of all, in the section 2.3.1, will be presented the \texttt{reactivex.io} project and how the \texttt{Observer Pattern} is used in this project to implement reactive streams with and without \textit{back-pressure} in several languages.
+Secondly, in the section 2.3.2, will be presented the \textit{Microsoft´s .NET} \texttt{Async Enumerables} and how this approach diverges from approaches made in \textit{reactivex.io}, \textit{Javascript}, and in Kotlin with \textit{Kotlin Flow}
+In the sections 2.3.3 and 2.3.4, will be respectively presented the Kotlin Flow  and the Javascript strategies for asynchronous data processing.
 
-\subsection{Language Related Options} % (fold)
-\label{sub:language_related_options}
-
-You must choose the main language for the document. The available options are:
-
-\begin{enumerate}
-	\item \textbf{*pt} --- The text is written in Portuguese (with a small abstract in English).
-	\item \textbf{en} --- The text is written in English (with a small abstract in Portuguese).
-\end{enumerate}
-
-The language option affects:
-\begin{itemize}
-	\item \textbf{The order of the summaries.} At first the abstract in the main language and then in the foreign language. This means that if your main language for the document in english, you will see first the abstract (in english) and then the 'resumo' (in portuguese). If you switch the main language for the document, it will also automatically switch the order of the summaries.
-	\item \textbf{The names for document sectioning.} E.g., 'Chapter' vs.\ 'Capítulo', 'Table of Contents' vs.\ 'Índice', 'Figure' vs.\ 'Figura', etc.
-	\item \textbf{The type of documents in the bibliography.} E.g., 'Technical Report' vs.\ 'Relatório Técnico', 'MSc Thesis' vs.\ 'Tese de Mestrado', etc.
-\end{itemize} 
-
-No mater which language you chose, you will always have the appropriate hyphenation rules according to the language at that point. You always get portuguese hyphenation rules in the 'Resumo', english hyphenation rules in the 'Abstract', and then the main language hyphenation rules for the rest of the document. If you need to force hyphenation write inside of \verb!\hyphenation{}! the hyphenated word, e.g. \\
-\verb!\hyphenation{op-ti-cal net-works}!.
-% section package_options (end)
-
-\subsection{Class of Text} % (fold)
-\label{sub:class_of_text}
-
-You must choose the class of text for the document. The available options are:
-
-\begin{enumerate}
-	\item \textbf{bsc} --- BSc graduation report.
-	\item \textbf{prepmsc} --- Preparation of MSc dissertation. This is a preliminary report graduate students at ISEL/IPL must prepare to conclude the first semester of the two-semesters MSc work. The files specified by 
-	\begin{inparaenum}
-	\item \verb!\dedicatoryfile! and 
-	\item \verb!\acknowledgmentsfile! 
-	\end{inparaenum}
-	are ignored, even if present, for this class of document.
-	\item \textbf{msc} --- MSc dissertation.
-\end{enumerate}
-%% subsection class_of_text (end)
-%
-%% ============
-%% = Printing =
-%% ============
-\subsection{Printing} % (fold)
-\label{sub:printing}
-
-You must choose how your document will be printed. The available options are:
-
-\begin{enumerate}
-\item \textbf{oneside} --- Single side page printing, and
-\item \textbf{*twoside} --- Double sided page printing.
-\end{enumerate}
-
-The article 50th, of Decree-Law No. 115/2013, requires the deposit of a digital copy of doctoral thesis and master's dissertations in a repository that is part of the RCAAP  repository\footnote{Repositórios Científicos de Acesso Aberto de Portugal}, \url{https://www.rcaap.pt}.  This deposit aims to preserve scientific work, as well as providing Open Access to scientific production is not restricted object or embargo.
-
-For the reason explained above, we include the option to format your thesis in a way that presents well on screen and/or on paper.   But always remember that your work will be stored in the RCAAP portal in electronic format.
-% subsection printing (end)
-
-The available options are:
-
-\begin{enumerate}
-\item \textbf{onpaper} --- Format your thesis in a way that presents on paper or,
-\item \textbf{*onscreen} --- on screen.
-\end{enumerate}
-
-% =============
-% = Font Size =
-% =============
-\subsection{Font Size} % (fold)
-\label{ssec:font_size}
-
-You must select the encoding for your text. The available options are:
-\begin{enumerate}
-	\item \textbf{11pt} --- Eleven (11) points font size.
-	\item \textbf{*12pt} --- Twelve (12) points font size. You should really stick to 12pt\ldots
-\end{enumerate}
-% subsection font_size (end)
-
-% =================
-% = Text encoding =
-% =================
-\subsection{Text Encoding} % (fold)
-\label{ssec:text_encoding}
-
-You must choose the font size for your document. The available options are:
-\begin{enumerate}
-	\item \textbf{latin1} --- Use Latin-1 (\href{http://en.wikipedia.org/wiki/ISO/IEC_8859-1}{ISO 8859-1}) encoding.  Most probably you should use this option if you use Windows;
-	\item \textbf{utf8} --- Use \href{http://en.wikipedia.org/wiki/UTF-8}{UTF8} encoding.    Most probably you should use this option if you are not using Windows.
-\end{enumerate}
-% subsection font_size (end)
-
-% ============
-% = Examples =
-% ============
-\subsection{Examples} % (fold)
-\label{ssec:examples}
-
-Let's have a look at a couple of examples:
-
-\begin{itemize}
-	\item BSc graduation report, in portuguese, with 11pt size and to be printed one sided (I wonder why one would do this!)\\
-	\verb!\documentclass[bsc,pt,11pt,oneside,latin1]{thesisisel}!
-	\item Preparation of MSc thesis, in portuguese, with 12pt size and to be printed one sided (I wonder why one would do this!). Note that, \verb!pt! is declared by default, so it can be omitted: \\
-	\verb!\documentclass[prepmsc,12pt,oneside,latin1]{thesisisel}!
-	\item MSc dissertation, in english, with 12pt size and to be printed double sided on screen. Note that, \verb!twoside! and \verb!12pt! are declared by default, so it can be omitted: \\
-	\verb!\documentclass[msc,en,utf8,onscreen]{thesisisel}!
-\end{itemize}
+Finally, in the section 2.3.5, will be made an overview and taken conclusions about the different technologies presented, and how each approach can be used for different problems and objectives. Then, will be made a theoretical prediction on how each technology behaves in several know circumstances. 
 
 
-The present document is defined according to the following settings:
-\begin{Verbatim}[breaklines=true, breakanywhere=true]
-\documentclass[msc,pt,twoside,12pt,a4paper,utf8,onscreen,hyperref=true,listof=totoc] {thesisisel}
-\end{Verbatim}
-
-% subsection examples (end)
-	
-\section{How to Write Using \texttt{LaTeX}} % (fold)
-\label{sec:how_to_write_using_latex}
-
-Please have a look at Chapter~\ref{cha:a_short_latex_tutorial_with_examples}, where you may find many examples of \href{http://tobi.oetiker.ch/lshort/lshort.pdf}{\texttt{LaTeX}} constructs, such as sectioning, inserting figures and tables, writing equations, theorems and algorithms, exhibit code listings, etc.
 
 %% section how_to_write_using_latex (end)

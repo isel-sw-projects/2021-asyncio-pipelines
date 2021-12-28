@@ -1,8 +1,9 @@
-Stream<Integer> stream = Stream.of(1,2,3,4,5);
+Integer []  arr = new Integer[]{1,2,3,4,5,6};
 
-stream.forEach(curr -> System.out.println(curr));
+Flowable<Integer> flow = Flowable
+    .fromArray(arr);
 
-
+flow.forEach(System.out::println);
 
 //Output:
 //1

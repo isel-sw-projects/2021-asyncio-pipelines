@@ -1,4 +1,4 @@
-ConnectableFlowable<Long> flux = Flowable
+ConnectableFlowable<Long> hot = Flowable
                 .intervalRange(0, 100, 0, 100, TimeUnit.MILLISECONDS)
                 .publish();
 flux.connect(); // Start emition
