@@ -11,4 +11,4 @@ var futureResponse = client
         .sendAsync(request, new JsonBodyHandler<>(DTO.class)) 
         .thenAccept(res -> System.out.println(res.body().get().title)); //consumer callback for when the operation finishes
 
-futureResponse.get(); //blocks until the request is finished
+futureResponse.get(); //blocks until the response is received

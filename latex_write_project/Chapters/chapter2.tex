@@ -134,11 +134,9 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	\end{figure}
 	\clearpage
 
-	As we can see, in the synchronous call example, the operation return only happens after the whole subsequent remote operation is finished, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed or bandwidth issues. 
+	As we can see, in the synchronous call example, the operation block on the request and the return only happens after the whole subsequent remote operation is finished and the response is received, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed, bandwidth condition, etc... 
 
 	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work, for example, when the OS is ready to process the received responses from a remote server that handled the operation.
-
-
 
 
 	\subsection{Push vs Pull} 
@@ -174,9 +172,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 
 	\subsection{Reactive Streams} 
-
-	\textit{Reactive Streams} is term used to describe several programming approaches, designed to asynchronously process data in real time obtained from data sources that continuously produce more data. 
-
+	\textit{Reactive Streams} is term used to describe several programming design patterns, that aim to enable asynchronous data processing in real time obtained from sources that continuously produce more data. 
 
 
 	\subsection{Hot versus Cold}
@@ -213,7 +209,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	In the \texttt{Cold} example, the producer only emits data when a subscription is done, and because of that, all the produced numbers were printed, in contrast with what happen in \texttt{Hot} stream, where data loss are almost certain. 
 
 	\subsection{Cancelables} 
-	 Has already stated above, Asynchronous operations run outside the main program sequence of operations. 
+	 As already stated above, Asynchronous operations run outside the main program sequence of operations. 
 	 Many times, exists the need for the main program to shutdown an undergoing asynchronous operation that is running in parallel with the main program.
 	 From that need, many times, exists the need to configure a behavior for when the operation is cancelled or finishes, for, e.g. to dispose resources, write logging in a file, etc...
 
