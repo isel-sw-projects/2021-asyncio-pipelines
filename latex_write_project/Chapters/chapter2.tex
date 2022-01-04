@@ -105,13 +105,13 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 \subsection{Synchronous versus Asynchronous}
 
-	Before explaining more terms related with asynchronous data flow, it's important to clarify what is synchrony and asynchronous in programming. 
+	Before explaining more terms related with asynchronous data flow, it's important to clarify what is synchronous and asynchronous in programming. 
 	
 	Asynchronous in programming, is a call to a function or routine that returns immediately, not blocking the caller until the operation is finished. The operation processing, will be completely independent from the caller execution process and can even be done in another machine. This way, the caller is freed to do more work, even to start \texttt{N} more operations in parallel. 
 	
 	Meanwhile, a call to a synchronous function or routine, blocks the caller until the operation finishes. In this case, the caller has to wait for the completion of the synchronous operation before going forward, which limits the program efficiency if parallelism is applicable.
 
-	To better visualize what was explained, we have the following example: 
+	To better visualize what was explained, we have the following examples: 
 
 
 	\begin{figure}[H]
