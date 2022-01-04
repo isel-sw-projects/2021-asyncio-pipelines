@@ -66,8 +66,9 @@ Then, with the asynchronous systems based on events with the introduction of cal
 
 However, are some limitations in these asynchronous models. For example, if the data to be processed is bigger than the memory available or if the data to be calculated is from a source that produces data at a constant rate that must be processed in real time, these models work badly.  
 The traditional models fail to comply these objectives because are mostly eager by design or not comply with the notion of a continuous source of information that requires to be processed in real time.
-Taken this in account, projects like project Reactor, Asynchronous Enumerable provided by Microsoft or papers like \cite{LAZYVSEAGER}, try to deal with these issues, by providing API's that merge the concepts of Fluent API´s, functional programming and code syntax that tries to resemble synchronous code, being the complexity inherent with asynchronous models implementations hidden from the programmer. 
+Taken this in account, projects like project Reactor, Asynchronous Enumerable provided by Microsoft or papers like \cite{LAZYVSEAGER}, try to deal with these issues, by providing API's that merge the concepts of Fluent API's, functional programming and code syntax that tries to resemble synchronous code, being the complexity inherent with asynchronous models implementations hidden from the programmer. 
 
+\clearpage
 %\begin{figure}[ht]
 %	\centering
 %	\includegraphics[width=0.65\textwidth]{alternative_1}
@@ -79,7 +80,7 @@ Taken this in account, projects like project Reactor, Asynchronous Enumerable pr
 %\begin{figure}[ht]
 %	\centering
 	%\includegraphics[width=0.65\textwidth]{alternative_2}
-%	  \caption{Dispatcher example}
+%	  \caption{Dispatcher example}proactor
  % \label{fig:bibtex}
 %\end{figure}
 
@@ -113,7 +114,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	To better visualize what was explained, we have the following example: 
 
 
-	\begin{figure1}[htbp]
+	\begin{figure}[H]
 		\centering
 		\begin{subfigure}[h]{1.2\textwidth}
 			\centering
@@ -130,18 +131,18 @@ of properties, concepts and design alternatives started to grow by itself. In th
 		\end{subfigure}		
 	  \caption{Example of Synchronous and Asynchronous calls in JAVA}
 	  \label{fig:figura-completa}
-	\end{figure1}
+	\end{figure}
+	\clearpage
 
 	As we can see, in the synchronous call example, the operation return only happens after the whole subsequent remote operation is finished, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed or bandwidth issues. 
 
-	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work, for example, when a worker the OS is ready to process the received messages from the remote HTTP server that handled the request.
-
-
+	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work, for example, when the OS is ready to process the received responses from a remote server that handled the operation.
 
 
 
 
 	\subsection{Push vs Pull} 
+	\label{sub:pushvpull}
 	
 	Another concept important to understand how asynchronous data flow is handled in programming, is the \textit{Pull} and \textit{Push} processing patterns.
 	In \textit{Pull} pattern, usually, exists a source of data and the program iterates over that source to operate over each item. 
@@ -149,7 +150,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	On the other hand, in the \textit{Push} pattern, the items of the data source are "Pushed" to a routine that will operate over that item.
 	To help to assimilate what was just explained, we have the following example:
 
-	\begin{figure2}
+	\begin{figure}[H]
 		\centering
 		\begin{subfigure}[h]{1.2\textwidth}
 			\centering
@@ -164,19 +165,17 @@ of properties, concepts and design alternatives started to grow by itself. In th
 		\end{subfigure}		
 	  \caption{Example of Pull and Push data handling patterns}
 	  \label{fig:exmplo2}
-	\end{figure2}
-	
+	\end{figure}
+	\clearpage
+
 	As we can see, in the pull pattern, the items are "pulled" from a data source through an iteration mechanism. 
 	
 	In contrast with that, in the \textit{Push} pattern, items are pushed to a consumer through a supplier.
 
 
-
-
-
 	\subsection{Reactive Streams} 
 
-	\textit{Reactive Streams} is term used to describe several programming approaches, designed to asynchronously process data in real time obtained from data sources that continuously produce. 
+	\textit{Reactive Streams} is term used to describe several programming approaches, designed to asynchronously process data in real time obtained from data sources that continuously produce more data. 
 
 
 
@@ -188,10 +187,10 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	For example, when program uses a IO mechanism to lazily retrieve a sequence of words from a database, the IO mechanism will only start sending information just when a consumer subscribes that data flow. Usually, the data is sent to the consumer in unicast.
 
 	On the other hand, in a \texttt{Hot} data flow, the data is produced independently of existing any observer to that information. This mechanism usually work in broadcast and the data is continuously produced and sent to possible observers.
-	In this case, when a observer subscribes to a publisher, exists the possibility of data items being already lost to that publisher while in the \texttt{Cold} flow, the consumer usually receives all items that were produced by the source.
-	In the following examples, a number is produced each 100 miliseconds:
+	In this case, when an observer subscribes to a publisher, exists the possibility of data items being already lost to that publisher while in the \texttt{Cold} flow, the consumer usually receives all items that were produced by the source.
+	In the following examples, a number is produced each 100 milliseconds:
 
-	\begin{figure3}
+	\begin{figure}[H]
 		\centering
 		\begin{subfigure}[h]{1.2\textwidth}
 			\centering
@@ -206,17 +205,43 @@ of properties, concepts and design alternatives started to grow by itself. In th
 		\end{subfigure}		
 	  \caption{Example of Hot and Cold data streams}
 	  \label{fig:exmplo3}
-	\end{figure3}
+	\end{figure}
 
 	
-	As we can see, in the \texttt{Hot} data flow example, the items are emitted from the moment the producer is created, independently of existing any subscriber or observer attached to that publisher. Notice that when a consumer is subscribed to the publisher, 1 seconds after the emition started, the numbers from 0 to 10 were not printed.
+	As we can see, in the \texttt{Hot} data flow example, the items are emitted from the moment the producer is created, independently of existing any subscriber or observer attached to that publisher. Notice that when a consumer is subscribed to the publisher, 1 seconds after the emittion started, the numbers from 0 to 10 were not printed.
 	
-	In the \texttt{Cold} example, the producer only emits data when a subscription is done. Being all the produced numbers printed because the emition started just when a subscription was made. 
+	In the \texttt{Cold} example, the producer only emits data when a subscription is done, and because of that, all the produced numbers were printed, in contrast with what happen in \texttt{Hot} stream, where data loss are almost certain. 
 
-	\subsection{Cancelables} todo\\
+	\subsection{Cancelables} 
+	 Has already stated above, Asynchronous operations run outside the main program sequence of operations. 
+	 Many times, exists the need for the main program to shutdown an undergoing asynchronous operation that is running in parallel with the main program.
+	 From that need, many times, exists the need to configure a behavior for when the operation is cancelled or finishes, for, e.g. to dispose resources, write logging in a file, etc...
+
+	 To better understand what a cancelable is, we will pick the example of RxJava and its representation of an asynchronous stream of events, the \texttt{Observable}. 
+	 In RXJava, a \texttt{Cancelable}, is a functional interface with the method \texttt{cancel()}. Then, the \texttt{Cancelable} can be associated to a \texttt{Observable} through the call to the method \texttt{Observable.setCancelable()}. 
+	 When the \texttt{Observable} closes for any reason, the method \texttt{Cancelable.cancel()} will be called. This way, its defined a behavior for when an asynchronous data source ends, and proper measures can be set. 
+	 
+	 If this mechanism did not exist, would exist the risk of asynchronous operation not being properly closed, which could have serious consequences for the system running.
+
+	 
+
 	\subsection{Error Handling}  todo\\
-	\subsection{Intrisic Keywords} todo\\
-    \subsection{Async Enumerables} todo\\ 
+
+	\subsection{Async Enumerables} todo\\ 
+
+	\subsection{Intrisic Keywords} 
+	
+	Asynchronous code is tendentiously harder to understand because, in opposition with what happens in synchronous code, the sequence of programming statements may not happen chronologically ordered. 
+	Because of that, many times it's difficult to debug and sustain asynchronous code. 
+
+	For that reason, many languages started to add syntax techniques that allow the programmer to build asynchronous code that resembles the synchronous syntax.
+	Under the hoods, the virtual machines that sustain this syntax mechanisms, handle the code bounded with that 'intrisic words'and builds asynchronous routines that the programmer will not be aware of;
+	being this a way to abstract the programmer from the complexity of handling and sustaining complex asynchronous code. 
+
+	One example of this 'intrinsic words' mechanisms, is the \texttt{for await...of} mechanism provided by \textit{Javascript}. //todo exampl example
+
+    
+	\subsection{Backpressure} todo\\ 
 
     
 
@@ -250,13 +275,58 @@ of properties, concepts and design alternatives started to grow by itself. In th
 \section{State of the Art} % (fold)
 \label{sec:state_of_the_art}
 
-In this section, will be presented and explained the different frameworks that are commonly used in asynchronous data processing in several programming languages.
+In this section, will be presented and explained the different frameworks that are the \textit{State of the Art} in asynchronous data processing in several programming languages.
 
-First of all, in the section 2.3.1, will be presented the \texttt{reactivex.io} project and how the \texttt{Observer Pattern} is used in this project to implement reactive streams with and without \textit{back-pressure} in several languages.
-Secondly, in the section 2.3.2, will be presented the \textit{Microsoft´s .NET} \texttt{Async Enumerables} and how this approach diverges from approaches made in \textit{reactivex.io}, \textit{Javascript}, and in Kotlin with \textit{Kotlin Flow}
-In the sections 2.3.3 and 2.3.4, will be respectively presented the Kotlin Flow  and the Javascript strategies for asynchronous data processing.
+First of all, in the section 2.3.1, will be presented the multi-language \texttt{reactivex.io} project, and how the \texttt{Observer Pattern} is used in this project to implement real time asynchronous processing with and without \textit{back-pressure}.
+
+Secondly, in the section 2.3.2, will be presented the \textit{.NET} \textit{Async Enumerables} and how this approach diverges from approaches made in \textit{reactivex.io}, \textit{Javascript}, and in Kotlin with \textit{Kotlin Flow}.
+In the sections 2.3.3 and 2.3.4, will be respectively presented the Javascript and the Kotlin Flow strategies for asynchronous data processing.
 
 Finally, in the section 2.3.5, will be made an overview and taken conclusions about the different technologies presented, and how each approach can be used for different problems and objectives. Then, will be made a theoretical prediction on how each technology behaves in several know circumstances. 
+
+
+
+\subsection{ReactiveX.io Project}
+
+After the historical context explained in the chapter 2.1, many groups of developers started to implement several solutions to handle asynchronous data flows. One of the most ambitious results of this proactivity is the \textit{reactiveX} project.
+
+This project gathers several ideas and known design patterns to implement an asynchronous data flow mechanism. 
+The most positive points about this project implementation is that the mechanism is implemented in several programming languages using an open source approach and the solution design is done in a way, that all the complexity inherent with asynchronous programming is hidden from the programmer, making the code very intuitive and iterative an easily understandable for programmer that are not used to handle with asynchronous enviroments. 
+In this dissertation, we will analyze the implementation of reactiveX made for Java, which is named: RXJava
+
+\subsubsection{RxJava architecture}
+To implement an asynchronous flow that can handle \texttt{Hot} and \texttt{Cold} data flows with and without back-pressure, the project adopted the \textit{Observer pattern} allied with the concepts described in the \textit{Publishes/subscriber pattern}.
+The designers justify this choice by saying that this model allows treating streams of asynchronous events with the same simplicity made in the synchronous counterparts e.g. in \texttt{Collection} and \texttt{Iterator}. The designer complement the justification by saying that, using this approach, the code complexity inherent with low-level threading, non-blocking IO, thread-safety etc... are completely abstracted from the programmer.
+
+In the implementation, the data source/publisher of an asynchronous stream of events is represented by the classes \texttt{Observable} and \texttt{Flowable}. In this case, the only difference between \texttt{Observable} and \texttt{Flowable}, is that the class \texttt{Flowable} supports back-pressure through different bufferization strategies.
+
+On the other hand, the observers/subscribers are represented by consumers that are attached to \texttt{Observable} through the method \texttt{Observable.subscribe()}.
+The consumers can be either implementations of the functional interface \texttt{Consumer<T>} or implementations of the interface \texttt{Observer}.
+
+The \texttt{Observer} interface is built with the intent to offer an extra control over the stream processing through error handling, which a \texttt{Consumer<T>} implementation lacks. The \texttt{Observer} can be viewed as representation of the java util interface \texttt{Iterator}, the resemblance can be seen by seeing the interface \texttt{Observer} methods:
+
+\begin{enumerate}
+     \item \texttt{onSubscription()}: Method called right after the subscription is made with an \texttt{Observable} 
+	 \item \texttt{onNext(T item)}: Method called when an item is emmitted by the asynchronous data source.
+	 \item \texttt{onError()}: In contrast with Iterator, the RxJava \texttt{Observer} is equipped to support error handing.
+	 \item \texttt{onComplete()}: Method called when the data source closes or if the subscription finishes.
+\end{enumerate}	
+
+
+\begin{table}
+\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|  }
+\hline
+   & Single Item & Multiple Items \\
+\hline
+Synchronous &  \texttt{T getData()}   &  \texttt{Observable<T> getData()} \\
+\hline
+Asynchronous & \texttt{Future<T> getData()} &  \texttt{Observable<T> getData()} \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
 
 
 
