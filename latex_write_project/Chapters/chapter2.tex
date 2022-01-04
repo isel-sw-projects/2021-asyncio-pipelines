@@ -134,7 +134,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	\end{figure}
 	\clearpage
 
-	As we can see, in the synchronous call example, the operation block on the request and the return only happens after the whole subsequent remote operation is finished and the response is received, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed, bandwidth condition, etc... 
+	As we can see, in the synchronous call example, the operation return only happens after the whole subsequent remote operation is finished, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed or bandwidth issues. 
 
 	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work, for example, when the OS is ready to process the received responses from a remote server that handled the operation.
 
