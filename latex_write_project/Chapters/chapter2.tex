@@ -221,9 +221,27 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 	 
 
-	\subsection{Error Handling}  todo\\
+	 \subsection{Error Handling}  
+	 In synchronous enviroments, usually, when something goes wrong, the way to handle an error in the majority of cases its by throwing an exception and propagate it until the proper code handles it. 
+	 However, in cases when exists an asynchronous operation where a continuous stream data items are being received, this way of dealing with an error, can imply several issues, e.g: computational resources overhead that can impact the processing smotness, log losing or data stream processing blockage. 
+	 
+	 Since blocking an whole operation because of a badly handled error in a single item in unacceptable, the best way to deal with errors in asynchronous stream processing its to isolate the error to allow the operation to continue even if a error ocurrs.
+	 To mitigate these issues, the best way to handle errors in asynchronous processing is to have proper callbacks that are called when an error ocorrs on the stream. This way, the function can handle the error properly, without the nescessity to blocking any data stream processing, if avoidable.
+	 
+	 
 
-	\subsection{Async Enumerables} todo\\ 
+	\subsection{Asynchronous Enumerables}
+	To better understand what a asynchronous enumerable is, firstly, we must define what synchronous Enumerables are. 
+	
+	An synchronous enumerable, is a mechanisms that allow to iterate over data items that usually belong to a data collection. Usualy, an enumerable provides the means to retrieve an iterator that will enable to eagerly iterate over a data collection, or, in some cases, its even possible to have lazy iteration using, for example, the CS \textit{yield mechanism} through the use of the keyword \texttt{yield return}.
+	
+	On asynchronous side, many times, exists situations where exists a stream of data items constantly arriving from a remote source, the commonly named \textit{asynchronous Flows}/\textit{asynchronous streams}. While a asynchronous operation that returns a single item or a whole collection at once can be represented by the concept of \texttt{Future}, 
+	existed the lack of mechanisms allowed the real time iteration from a collection of items that constantly arrive. The asynchronous enumerables are one of the answers to this problem.
+
+	A asynchronous enumerable is the representation of a asynchronous data source that can be iterated in real time while the items are produced. 
+	
+	To better visualize what was explained, we have a synchronous and asynchronous enumerables examples written in \text{CS}.
+	//todo example
 
 	\subsection{Intrisic Keywords} 
 	
