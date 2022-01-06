@@ -172,7 +172,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 
 	\subsection{Reactive Streams} 
-	\textit{Reactive Streams} is term used to describe several programming design patterns, that aim to enable asynchronous data processing in real time obtained from sources that continuously produce more data. 
+	\textit{Reactive Streams} is term used to describe several programming initiatives, that aim to enable to provide standardization to asynchronous data processing with non-blocking back pressure. 
 
 
 	\subsection{Hot versus Cold}
@@ -209,15 +209,15 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	In the \texttt{Cold} example, the producer only emits data when a subscription is done, and because of that, all the produced numbers were printed, in contrast with what happen in \texttt{Hot} stream, where data loss are almost certain. 
 
 	\subsection{Cancelables} 
-	 As already stated above, Asynchronous operations run outside the main program sequence of operations. 
-	 Many times, exists the need for the main program to shutdown an undergoing asynchronous operation that is running in parallel with the main program.
-	 From that need, many times, exists the need to configure a behavior for when the operation is cancelled or finishes, for, e.g. to dispose resources, write logging in a file, etc...
+	As already stated above, Asynchronous operations run outside the main program sequence of operations. 
+	Because of that, many times, exists the need to configure a behavior for when the operation is cancelled or finishes, for, e.g. to dispose resources, write logging in a file, etc...
 
-	 To better understand what a cancelable is, we will pick the example of RxJava and its representation of an asynchronous stream of events, the \texttt{Observable}. 
-	 In RXJava, a \texttt{Cancelable}, is a functional interface with the method \texttt{cancel()}. Then, the \texttt{Cancelable} can be associated to a \texttt{Observable} through the call to the method \texttt{Observable.setCancelable()}. 
-	 When the \texttt{Observable} closes for any reason, the method \texttt{Cancelable.cancel()} will be called. This way, its defined a behavior for when an asynchronous data source ends, and proper measures can be set. 
-	 
-	 If this mechanism did not exist, would exist the risk of asynchronous operation not being properly closed, which could have serious consequences for the system running.
+	To better understand what a cancelable is, we will pick the example of RxJava and its representation of an asynchronous source of events, the \texttt{Observable}. 
+	
+	In RXJava, a \texttt{Cancelable}, is a functional interface with the method \texttt{cancel()}. Then, the \texttt{Cancelable} can be associated to a \texttt{Observable} through the call to the method \texttt{Observable.setCancelable()}. 
+	When the \texttt{Observable} closes for any reason, the method \texttt{Cancelable.cancel()} will be called. This way, its defined a behavior for when an asynchronous data source ends, and proper measures can be set. 
+	
+	If this mechanism did not exist, would exist the risk of asynchronous operation not being properly closed, which could have serious consequences for the system running.
 
 	 
 
@@ -228,35 +228,61 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	 Since blocking an whole operation because of a badly handled error in a single item in unacceptable, the best way to deal with errors in asynchronous stream processing its to isolate the error to allow the operation to continue even if a error ocurrs.
 	 To mitigate these issues, the best way to handle errors in asynchronous processing is to have proper callbacks that are called when an error ocorrs on the stream. This way, the function can handle the error properly, without the nescessity to blocking any data stream processing, if avoidable.
 	 
-	 
+	
 
 	\subsection{Asynchronous Enumerables}
-	To better understand what a asynchronous enumerable is, firstly, we must define what synchronous Enumerables are. 
+	To better understand what a asynchronous enumerable is, firstly, we must define what Enumerables are. 
 	
-	An synchronous enumerable, is a mechanisms that allow to iterate over data items that usually belong to a data collection. Usualy, an enumerable provides the means to retrieve an iterator that will enable to eagerly iterate over a data collection, or, in some cases, its even possible to have lazy iteration using, for example, the CS \textit{yield mechanism} through the use of the keyword \texttt{yield return}.
+	An enumerable, is the logical representation of a collection that can be iterated. 
+	In synchronous programming, this is usually made by creating a Collection class, that implements a method that enables iteration over its items.
 	
-	On asynchronous side, many times, exists situations where exists a stream of data items constantly arriving from a remote source, the commonly named \textit{asynchronous Flows}/\textit{asynchronous streams}. While a asynchronous operation that returns a single item or a whole collection at once can be represented by the concept of \texttt{Future}, 
-	existed the lack of mechanisms allowed the real time iteration from a collection of items that constantly arrive. The asynchronous enumerables are one of the answers to this problem.
+	On the other side, in the asynchronous world, many times exists situations where a stream of data items are constantly arriving from a remote source, the commonly named \textit{asynchronous Flows} or \textit{asynchronous streams}. 
+	
+	The software designers saw, that didnt existed many logical differences between a collection and real time data sources; 
+	the only difference was that a collection could be iterated at once while the data flows are iterated over time when items are received.
 
-	A asynchronous enumerable is the representation of a asynchronous data source that can be iterated in real time while the items are produced. 
+	Taking all this in account, borned the idea of creating the notion of the asynchronous enumerable, where the asynchronous enumerable is the representation of a constant source of readable items.
+	With the use of this concept, were implemented several mechanisms, e.g. AsyncEnumerables in CS, that simplify the iteration over asynchronous data sources. 
+	Making the code similar to synchronous statments, easier to mantain, and, once again, abstracting the programmer from many complex details inherent with asynchronous processing.
 	
-	To better visualize what was explained, we have a synchronous and asynchronous enumerables examples written in \text{CS}.
-	//todo example
 
+	To better visualize what was explained, we have next an asynchronous enumerables example written in \text{CS}, where we can observe an asynchronous iteration over a continous data source in real time without any blockage.
+	\clearpage
+
+	\begin{figure}[H]
+		\centering
+		\begin{subfigure}[h]{1.2\textwidth}
+			\centering
+			\lstfromfile{sharpc}{1-30}{Asynchronous Enumerables example}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await},numbers=left, firstnumber=1}{asyncEnum.cs}
+			\caption{}
+		\end{subfigure}
+	\end{figure}
+	
+	\clearpage
+    
 	\subsection{Intrisic Keywords} 
 	
-	Asynchronous code is tendentiously harder to understand because, in opposition with what happens in synchronous code, the sequence of programming statements may not happen chronologically ordered. 
+	Asynchronous code is tendentiously harder to understand because, in opposition with what happens in synchronous code, the sequence of programming statements may not happen chronologically ordered with the operations started by these . 
 	Because of that, many times it's difficult to debug and sustain asynchronous code. 
 
 	For that reason, many languages started to add syntax techniques that allow the programmer to build asynchronous code that resembles the synchronous syntax.
 	Under the hoods, the virtual machines that sustain this syntax mechanisms, handle the code bounded with that 'intrisic words'and builds asynchronous routines that the programmer will not be aware of;
 	being this a way to abstract the programmer from the complexity of handling and sustaining complex asynchronous code. 
 
-	One example of this 'intrinsic words' mechanisms, is the \texttt{for await...of} mechanism provided by \textit{Javascript}. //todo exampl example
+	One example of this 'intrinsic words' mechanisms, is the \texttt{for await...of} mechanism provided by \textit{Javascript}. //todo exampl example 
 
-    
-	\subsection{Backpressure} todo\\ 
 
+	\subsection{Backpressure} 
+	
+	When asynchronous flows produce  items faster than the consumer can proccess, exists several strategies to mitigate this issue. These strategies are commonly refered as Backpressure.
+
+	Some of these strategies are:
+	\begin{enumerate}
+		\item \textbf{DROP:} Drops items after the buffer gets full
+		\item \textbf{Buffer everything:} Buffers all items that are received without any threshhold.
+		\item \textbf{Error:} An error is thrown when the buffer threshhold is reached
+		\item \item \textbf{Buffer disable:} No backpressure strategy its in place, all excedent items are discarded.
+	\end{enumerate}
     
 
 % The template file for writing dissertations in  \texttt{LaTeX} is organized into a main directory, a set of files and sub-directories:
@@ -289,7 +315,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 \section{State of the Art} % (fold)
 \label{sec:state_of_the_art}
 
-In this section, will be presented and explained the different frameworks that are the \textit{State of the Art} in asynchronous data processing in several programming languages.
+In this section, will be presenting and explaining the different frameworks that are the \textit{State of the Art} in asynchronous data processing in several programming languages.
 
 First of all, in the section 2.3.1, will be presented the multi-language \texttt{reactivex.io} project, and how the \texttt{Observer Pattern} is used in this project to implement real time asynchronous processing with and without \textit{back-pressure}.
 
@@ -317,7 +343,7 @@ In the implementation, the data source/publisher of an asynchronous stream of ev
 On the other hand, the observers/subscribers are represented by consumers that are attached to \texttt{Observable} through the method \texttt{Observable.subscribe()}.
 The consumers can be either implementations of the functional interface \texttt{Consumer<T>} or implementations of the interface \texttt{Observer}.
 
-The \texttt{Observer} interface is built with the intent to offer an extra control over the stream processing through error handling, which a \texttt{Consumer<T>} implementation lacks. The \texttt{Observer} can be viewed as representation of the java util interface \texttt{Iterator}, the resemblance can be seen by seeing the interface \texttt{Observer} methods:
+The \texttt{Observer} interface is built with the intent to offer an extra control over the stream processing through error handling, which a \texttt{Consumer<T>} implementation lacks. The \texttt{Observer} can be viewed as the asynchronous representation of the java util interface \texttt{Iterator}, the resemblance can be seen by seeing the interface \texttt{Observer} methods:
 
 \begin{enumerate}
      \item \texttt{onSubscription()}: Method called right after the subscription is made with an \texttt{Observable} 
@@ -327,7 +353,7 @@ The \texttt{Observer} interface is built with the intent to offer an extra contr
 \end{enumerate}	
 
 
-\begin{table}
+\begin{table} {H}
 \begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|  }
 \hline
    & Single Item & Multiple Items \\
