@@ -194,17 +194,23 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	In the \texttt{Cold} example, the producer only emits data when a subscription is done, and because of that, all the produced numbers were printed, in contrast with what happen in \texttt{Hot} stream, where data loss are almost certain. 
 	\clearpage
 	\subsection{Cancelables} 
-	As already stated above, Asynchronous operations may run outside the main programm proccess. 
-	This implies, that the main programm loses visibility and control on what happens in asynchronous operations. Because of that, exists the need to put in place machanisms of control for when a operation its cancelled or finishes, for, e.g. dispose resources, logging, etc...
+	As already stated above, Asynchronous operations may run outside the main program context. 
+	This implies, that the main program loses visibility and control on what happens in that asynchronous operations.
+	Because of that, exists the need to put in place mechanisms of control that allow the main program to maintain control over an asynchronous operation to, for example, cancel the operation or put in place finishing logic that allow, for example: resource disposing, logging, decisions etc...
 
-	These mechanisms, are many times done through the concept of cancelable, where an cancelable operation has the means to put in place mechanims of control, in case the operation cancels of finishes.
-
-	To better understand this, we will pick the example of RxJava and its representation of an asynchronous source of events, the \texttt{Observable}. 
+	These mechanisms, are many times done through the concept of \textit{cancelables}. 
+	Usually, a cancelable, is an entity that represents an operation that can canceled from an external entity, or, an entity that allows to set logic when an operation finishes by any reason.
+ 
+	In C\#, a cancelable is an interface implemented by objects that represent asynchronous operations and provides the means to cancel asynchronous operations, on the fly. 
+	This is achieved through a mechanism named: \texttt{CancellationToken}, that is used to pass information through different execution threads. 
 	
-	In RXJava, a \texttt{Cancelable}, is a functional interface with the method \texttt{cancel()}. Then, the \texttt{Cancelable} can be associated to a \texttt{Observable} through the call to the method \texttt{Observable.setCancelable(Cancelable)}. 
-	When the \texttt{Observable} closes for any reason, the method \texttt{Cancelable.cancel()} will be called. This way, its defined a behavior for when an asynchronous data source ends, and proper controlled operation end behaviours can be set in place. 
+	On the other hand, we have the example implemented in RxJava. 
+	In RXJava, a \texttt{Cancelable}, is a functional interface with the method \texttt{cancel()}. Then, the \texttt{Cancelable} can be associated to a data source representation, the \texttt{Observable}, by calling the method \texttt{Observable.setCancelable(Cancelable)}. 
+	When the \texttt{Observable} finishes or is canceled for any reason, the method \texttt{Cancelable.cancel()} will be called. 
+	This way,  proper logic is put in place to handle an asynchronous operation cancelation.
 	
-	If this mechanism did not exist, would exist the risk of asynchronous operation not being properly closed, which could have serious consequences for example, in memory managment and/or system optimization.
+	As we saw, these two concepts of cancelable diverge. One, provides the means to cancel an operation on the fly and gives some control over the operation cancelation; the other, provides the means to control an operation cancelation independently of how it was cancelled.
+	
 	\clearpage
 	\subsection{Error Handling}  
 	In synchronous enviroments, usually, when something goes wrong, the way to handle an error in the majority of cases its by throwing an exception and propagate it until the proper code handles it. 
@@ -238,7 +244,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	\begin{figure}[H]
 		\centering
 		\lstfromfile{java}{1-30}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for},numbers=left, firstnumber=1}{asyncEnum.cs}
-		\caption{Asynchronous Enumerables example}
+		\caption{C\# Asynchronous Enumerables example}
 		\label{fig:enumex}
 	\end{figure}
 	
@@ -387,14 +393,25 @@ On the other side, the keywords \texttt{for await...of}, provides support for it
 
 In this example, the function \texttt{streamAsyncIterable} read a stream of bytes and has the responsability to lazily return the items as they become avaialable.
 
-On the other side, the function \texttt{getResponseSize}, the keyword \texttt{await} its followed by an asynchronous HTTP request and the mechanism \texttt{for wait...of} its used to iterate over an asynchronous iterable stream. As we can observe, the code syntax its very similar to a synchronous code. 
+On the other side, the function \texttt{getResponseSize}, the keyword \texttt{await} its followed by an asynchronous HTTP request and the mechanism \texttt{for wait...of} it is used to iterate over an asynchronous iterable stream. As we can observe, the code syntax its very similar to a synchronous code. 
 
-With the implementation of this mechanism, javascript simplifies in a very subtle way, how asynchronous streams are handled, allowing the code to be easily readable and maintainable and abstrating the programming from: e.g. callbacks, tasks or completion tokens.
+With the implementation of this mechanism, javascript simplifies in a very subtle way, how asynchronous streams are handled, allowing the code to be easily readable and maintainable and abstracting the programming from: e.g. callbacks, tasks or completion tokens.
 
 
-\subsection{.NET AsyncEnumerables}
+\subsection{.NET Asynchronous Enumerables}
 \label{csenums}
 
-In c\#  language...
+In C\#, the approach to implement asynchronous enumerables are done through the implementation of the interface \texttt{IAsyncEnumerable}.
+
+As we saw in JavaScript, the asynchronous enumerables are implemented through the elegant use of the intrinsic words like \texttt{for await ... of}, allied with the flexibility provided by the asynchronous yieding of items by the keyword \texttt{yield} and the lack of strong types. 
+However, the use of solution like this that not promote the use of strong types, can have impact in code maintenance and readability; especially if this solution are in backhend environments that must run for years and may be prone to programmers inability of promote a self readable code.
+
+Because of that, the .NET team implemented the \texttt{IAsyncEnumerable} mechanism in the release of the C\# version 8. 
+
+This solution tries to maintain the logic of the synchronous interface \texttt{IEnumerable}, but for asynchronous processing.
+Giving a common ground between synchronous and asynchronous code syntaxes, in one hand, and trying to provide extra support for strongly type stream processing in the other.
+
+Being this solution a sustainable choice to be used in back-end infrastructures that have to use asynchronous streams processing.
+
 
 %% section how_to_write_using_latex (end)
