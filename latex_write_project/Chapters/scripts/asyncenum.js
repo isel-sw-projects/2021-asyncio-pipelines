@@ -20,7 +20,6 @@ async function getResponseSize(url) {
     
     const iterable = streamAsyncIterable(response.body);
     
-    // The for-await-of loop. Async iterates over each portion of the response.
     for await (const chunk of iterable) {
       // Incrementing the total response length.
       responseSize += chunk.length;

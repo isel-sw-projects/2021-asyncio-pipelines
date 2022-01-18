@@ -1,19 +1,23 @@
 static async Task Main(string[] args)
 {
     Console.WriteLine($"{DateTime.Now.ToLongTimeString()}: Start");
-    await foreach (var item in FetchItems())
+    IAsyncEnumerable<int> enumerable = FetchItems(1000);
+    int i = 0;
+    await foreach (var item in enumerable)
     {
+        if (i++ == 10){ break;}
         Console.WriteLine($"{DateTime.Now.ToLongTimeString()}: {item}");
     }
     Console.WriteLine($"{DateTime.Now.ToLongTimeString()}: End");
 }
 
-static async IAsyncEnumerable<int> FetchItems()
+static async IAsyncEnumerable<int> FetchItems(int delay)
 {
-    for (int i = 1; i <= 10; i++)
+    int count = 0;
+    while(true)
     {
-        await Task.Delay(1000);
-        yield return i;
+        await Task.Delay(delay);
+        yield return count++;
     }
 }
 
@@ -26,5 +30,3 @@ static async IAsyncEnumerable<int> FetchItems()
 //.....
 //01:00:05: 9
 //01:00:05: End
-
-

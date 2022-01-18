@@ -157,10 +157,6 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	In contrast with that, in the \textit{Push} pattern, items are pushed to a consumer through a supplier.
 
 
-	\subsection{Reactive Streams} 
-	\textit{Reactive Streams} is term used to describe several programming initiatives, that aim to enable to provide standardization to asynchronous data processing with non-blocking back pressure. 
-
-
 	\subsection{Hot versus Cold}
 	
 	Another property that must be took in account when handling with \textit{Reactive Streams} or asynchronous data processing in general, is the nature of the data flow. 
@@ -213,43 +209,14 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	
 	\clearpage
 	\subsection{Error Handling}  
-	In synchronous enviroments, usually, when something goes wrong, the way to handle an error in the majority of cases its by throwing an exception and propagate it until the proper code handles it. 
+	In synchronous environments, usually, when something goes wrong, the way to handle an error in the majority of cases its by throwing an exception and propagate it until the proper code handles it, usually  in a try/catch block. 
 	However, in cases when exists an asynchronous operation or when a continuous stream of data items are being received, that way of dealing with an error can imply several issues, e.g: exceptions not reaching main program, log losing or asynchronous flow blockage. 
 	
-	Since log losing or blocking an whole operation because of a badly handled error is unacceptable, the best way to deal with errors in asynchronous data flow it is to isolate the error. This way, the flow processing may continue in parallel while the error is properly handled.
+	Since log losing or blocking a whole operation because of a badly handled error is unacceptable, the best way to deal with errors in asynchronous data flow it is to isolate the error. This way, the flow processing may continue in parallel while the error is properly handled.
 	
-	The best way to handle these kind of errors its to have proper callbacks that are called when an error ocorrs on the stream item. This way, a function can handle the error properly, without the nescessity to blocking any data stream processing, if avoidable and the proper logging and any additional measure to handle it can be put in place.
+	The best way to handle this kind of errors, it is to have proper callbacks that are called when an error occurs on the stream item. This way, a function can handle the error properly, without the necessity to blocking any data stream processing, if avoidable and the proper logging and any additional measure to handle it can be put in place.
 	\clearpage
 	
-
-	\subsection{Asynchronous Enumerables}
-	\label{sec:aenums}
-	To better understand what a asynchronous enumerable is, firstly, we must define what Enumerables are. 
-	
-	An enumerable, is the logical representation of a collection that can be iterated. 
-	In synchronous programming, this is usually made by creating a Collection class, that implements a method that enables iteration over its items.
-	
-	On the other side, in the asynchronous world, many times exists situations where a stream of data items are constantly arriving from a remote source, the commonly named \textit{asynchronous Flows} or \textit{asynchronous streams}. 
-	
-	The software designers saw, that didnt existed many logical differences between a collection and real time data sources; 
-	the only difference was that a collection could be iterated at once, while the data flows are iterated over time when items are received.
-
-	Taking all this in account, borned the idea of creating the notion of the asynchronous enumerable, where the asynchronous enumerable is the representation of a constant source of readable items.
-	With the use of this concept, were implemented several mechanisms, e.g. the AsyncEnumerables in C\#, that simplify the iteration over asynchronous data sources. 
-	Making the code similar to synchronous statments, easier to mantain, and, once again, abstracting the programmer from many complex details inherent with asynchronous processing.
-
-	To better visualize what was explained, we have next an asynchronous enumerables example written in \text{C\#}, where we can observe an asynchronous iteration over a continous data source in real time without any blockage:
-	\clearpage
-
-	\begin{figure}[H]
-		\centering
-		\lstfromfile{java}{1-30}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for},numbers=left, firstnumber=1}{asyncEnum.cs}
-		\caption{C\# Asynchronous Enumerables example}
-		\label{fig:enumex}
-	\end{figure}
-	
-	\clearpage
-    
 
 	\subsection{Intrisic Keywords} 
 	
@@ -352,8 +319,8 @@ The \texttt{Observer} interface is built with the intent to offer an extra contr
 	 \item \texttt{onComplete()}: Method called when the data source closes or if the subscription finishes.
 \end{enumerate}	
 
-Since its possible to make a relation between synchronous and its asynchronous objects counterparts in many languages, on next, we will take as example the relation between \texttt{Java} library and how these objects can be directly related to the their asynchronous counterpart in \texttt{RXJava}.
-On the next table, its possible to see how each object type can be mapped 
+Since its possible to make a relation between synchronous and its asynchronous logic counterparts in many languages, on next, we will take as example the relation between \texttt{Java} library and how these objects can be directly related to their asynchronous counterparts in \texttt{RXJava}.
+On the next table, it is possible to see how each object type can be mapped 
 
 \begin{center}
 \begin{tabular}{ |l|c|c| }
@@ -373,14 +340,56 @@ On the next table, its possible to see how each object type can be mapped
 \end{center}
 
 
-\subsection{Javascript asynchronous enumerables}
+
+\subsection{Asynchronous Enumerables}
+	\label{sec:aenums}
+	To better understand what an asynchronous enumerable is, firstly, we must define what Enumerables are. 
+	
+	An enumerable, is the logical representation of a collection that can be iterated. 
+	In synchronous programming, this is usually made by creating a Collection class, that implements a mechanism that enables iteration over its items.
+	
+	On the other side, in the asynchronous world, many times exists situations where a stream of data items are constantly arriving from a remote source, the commonly named \textit{asynchronous Flows} or \textit{asynchronous streams}. 
+	
+	The software designers saw, that did not exist many logical differences between a collection and real time data sources; 
+	the only difference was that a collection items could be retrieved on demand from memory, while the data flows are iterated over time when items become available for consumption.
+
+	Taking all this in account, has born the idea of creating the notion of the asynchronous enumerable, where the asynchronous enumerable is the representation of a constant source of readable items.
+	With the use of this concept, were implemented several mechanisms, e.g. the AsyncEnumerables in C\#, that simplify the iteration over asynchronous data sources. 
+	Making the code similar to synchronous statements, easier to maintain, and, once again, abstracting the programmer from many complex details inherent with asynchronous processing.
+
+	To better visualize what was explained, we have next an asynchronous enumerables example written in \text{C\#}, where we can observe an asynchronous iteration over a continuous data source in real time without any blockage:
+	\clearpage
+
+	\begin{figure}[H]
+		\centering
+		\lstfromfile{java}{1-33}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for},numbers=left, firstnumber=1}{asyncEnum.cs}
+		\caption{C\# Asynchronous Enumerables example}
+		\label{fig:enumex}
+	\end{figure}
+	
+	\clearpage
+
+\subsubsection{.NET Asynchronous Enumerables}
+\label{csenums}
+	As we saw in the example above, in C\#, the approach to implement asynchronous enumerable are done through the implementation of the interface \texttt{IAsyncEnumerable} with the use of the \texttt{yield return} keyword pair to return items as they become available.
+	
+	Under the blanket, the .NET virtual machine handles all the asynchronous code each time the \texttt{async...await} and the \texttt{yield return} are used in the context of a \texttt{IAsyncEnumerable<T>} return.
+
+	This solution maintains the logic and usability of the synchronous interface \texttt{IEnumerable}, but for asynchronous processing in the context of a asynchronous data flow processing. 
+	Providing a common ground between synchronous and asynchronous code syntaxes, in one hand, and making it easier to understand and maintain by programmers not used to asynchronous code in another.
+	
+	This solution is a sustainable choice to be used in back-end infrastructures with an expectable high longevity.
+
+\subsubsection{Javascript asynchronous iterables}
 \label{jsae}
-As already explained in the section \ref{sec:aenums}, javascript has implemented the intrisic keywords \texttt{async...await} and \texttt{for await...of}.
+	Javascript tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.
 
-With the keyword pair \texttt{async...await}, its provided the syntax "sugar" that enables to make asynchronous calls and the code syntax resembling synchronous. 
-The \texttt{async} mark is used in a asynchronous function and enables the use of the keyword \texttt{await}. This keyword is then used before in the asynchronous calls to another asynchronous functions.
+	The keyworkd to provide the mechanism to iterate over asynchronous streams in relativity similar to what we saw in C\#, with the implementation of the intrisic keywords \texttt{async...await} and \texttt{for await...of}.
 
-On the other side, the keywords \texttt{for await...of}, provides support for iteration over asynchronous enumerables, as we can see in the next example:
+	With the keyword pair \texttt{async...await}, its provided the syntax "sugar" that enables to make asynchronous calls and the code syntax resembling synchronous. 
+	The \texttt{async} mark is used in an asynchronous function and enables the use of the keyword \texttt{await}. The \texttt{await} keyword is then used in an asynchronous call to another asynchronous function
+
+	On the other side, the keywords \texttt{for await...of}, provides support for iteration over asynchronous enumerables, as we can see in the next example:
 
 \clearpage
 	\begin{figure}[H]
@@ -391,27 +400,43 @@ On the other side, the keywords \texttt{for await...of}, provides support for it
 	\end{figure}
 \clearpage
 
-In this example, the function \texttt{streamAsyncIterable} read a stream of bytes and has the responsability to lazily return the items as they become avaialable.
+In this example, the function \texttt{streamAsyncIterable} read a stream of bytes and has the responsibility to lazily return the items as they become available.
 
-On the other side, the function \texttt{getResponseSize}, the keyword \texttt{await} its followed by an asynchronous HTTP request and the mechanism \texttt{for wait...of} it is used to iterate over an asynchronous iterable stream. As we can observe, the code syntax its very similar to a synchronous code. 
+On the other side, the function \texttt{getResponseSize}, the keyword \texttt{await} its followed by an asynchronous HTTP request and the mechanism \texttt{for wait...of} it is used to iterate over an asynchronous iterable stream. As we can observe, the code syntax is very similar to a synchronous iteration. 
 
 With the implementation of this mechanism, javascript simplifies in a very subtle way, how asynchronous streams are handled, allowing the code to be easily readable and maintainable and abstracting the programming from: e.g. callbacks, tasks or completion tokens.
 
+This solution is usually used in front-end environments, for example, to load several items from remote sources while a web page loads.
 
-\subsection{.NET Asynchronous Enumerables}
-\label{csenums}
 
-In C\#, the approach to implement asynchronous enumerables are done through the implementation of the interface \texttt{IAsyncEnumerable}.
 
-As we saw in JavaScript, the asynchronous enumerables are implemented through the elegant use of the intrinsic words like \texttt{for await ... of}, allied with the flexibility provided by the asynchronous yieding of items by the keyword \texttt{yield} and the lack of strong types. 
-However, the use of solution like this that not promote the use of strong types, can have impact in code maintenance and readability; especially if this solution are in backhend environments that must run for years and may be prone to programmers inability of promote a self readable code.
+\subsection{Kotlin Flow}
 
-Because of that, the .NET team implemented the \texttt{IAsyncEnumerable} mechanism in the release of the C\# version 8. 
+Kotlin Flow, is a solution that retrieves good ideas from the another technologies already mentioned in this document.
 
-This solution tries to maintain the logic of the synchronous interface \texttt{IEnumerable}, but for asynchronous processing.
-Giving a common ground between synchronous and asynchronous code syntaxes, in one hand, and trying to provide extra support for strongly type stream processing in the other.
+Similarly to RxJava, the Kotlin flow strongly typifies the concept of asynchronous flow in the class \texttt{Flow<T>}. 
+On the other hand, this type provides a group data processing intermediate operators, e.g. \texttt{map()}, \texttt{filter()} etc...  
 
-Being this solution a sustainable choice to be used in back-end infrastructures that have to use asynchronous streams processing.
+From C\#, Kotlin uses the function \texttt{emit} to do the same trick that \texttt{yield return} does in C\#, which is to lazily return an item on the fly, when the item becomes available to be returned.
 
+On next, we have an example of Kotlin Flow usage:
+
+
+\clearpage
+	\begin{figure}[H]
+		\centering
+		\lstfromfile{kotlin}{1-24}{}{kotlinflow}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flow.kt}
+		\caption{Kotlin flow example}
+		\label{fig:kotlinflow}
+	\end{figure}
+\clearpage
+
+As we can see, the fluent API is widely used to operate the \texttt{Flow}. This solution is often used in Android development for retrieving remote data.
 
 %% section how_to_write_using_latex (end)
+
+
+
+\subsection{Tecnhlogies comparation}
+
+As we saw, each technology has a very specific 
