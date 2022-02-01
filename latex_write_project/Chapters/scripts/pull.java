@@ -1,17 +1,16 @@
-Integer []  arr = new Integer[]{1,2,3,4,5,6};
+Flowable<Long> flow = Flowable
+                .interval(1, TimeUnit.SECONDS);
 
- Flowable<Integer> flow = Flowable
-    .fromArray(arr);
+Iterator<Long> iterator = flow.blockingIterable().iterator();
 
-Iterator<Integer> iterator = flow.blockingIterable().iterator();
-
-    while(iterator.hasNext()) {
-        System.out.println(iterator.next());
-    }
-
+while (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}
 //Output:
+//0
 //1
 //2
 //3
-//4
-//5
+//.
+//.
+//9

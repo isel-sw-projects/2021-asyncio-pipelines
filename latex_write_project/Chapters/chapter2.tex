@@ -99,7 +99,7 @@ Taken this in account, projects like project Reactor, Asynchronous Enumerable pr
 \section{Asynchronous flow key concepts and design alternatives} % (fold)
 \label{sec:async_concepts}
 
-With the development of several approaches and implementations related to asynchronous data flow in several programming plataforms; a dictionary
+With the development of several approaches related to asynchronous data flow in several programming plataforms; a dictionary
 of properties, concepts and design alternatives started to grow by itself. In the following, are discussed several of the concepts related with asynchronous data flow, namely:
 
 \subsection{Synchronous versus Asynchronous}
@@ -200,7 +200,6 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	In C\#, a cancelable is an interface implemented by objects that represent asynchronous operations and provides the means to cancel asynchronous operations, on the fly. 
 	This is achieved through a mechanism named: \texttt{CancellationToken}, that is used to pass information through different execution threads. 
 	
-	On the other hand, we have the example implemented in RxJava. 
 	In RXJava, a \texttt{Cancelable}, is a functional interface with the method \texttt{cancel()}. Then, the \texttt{Cancelable} can be associated to a data source representation, the \texttt{Observable}, by calling the method \texttt{Observable.setCancelable(Cancelable)}. 
 	When the \texttt{Observable} finishes or is canceled for any reason, the method \texttt{Cancelable.cancel()} will be called. 
 	This way,  proper logic is put in place to handle an asynchronous operation cancelation.
@@ -235,18 +234,25 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	Another example of 'intrisic words' used in asynchronous processing is the \texttt{for await...of}, used in javascript to proccess asynchronous enumerables. 
 	
 
-	On the sub charpters of \ref{sec:state_of_the_art} these examples will be explained with more depth.
+	On the sub chapters of \ref{sec:state_of_the_art} these examples will be explained with more depth.
 	\clearpage
 
-	\subsection{Backpressure} 
-	When asynchronous flows produce  items faster than the consumer can proccess, exists several strategies to mitigate this issue. These strategies are commonly refered as Backpressure.
+	\subsection{Back-pressure} 
 
-	Some of these strategies are:
+	When the \textit{pull} method is used to retrieve items from a source, the producer retrieves only the items it can process in the given time. 
+	
+	However, when the \textit{push} approach is used as data retrieval method from asynchronous flows, the producers have the initiative to push items to its consumers. 
+	This can originate situations, where the producer emits items faster than the producers can handle, which can create problems like: unwanted loss of data, lack of responsiveness from consumers, etc... 
+	
+	To resolve these issues, were created strategies and design patterns that are commonly referred as \textit{Backpressure}.
+	There are four main approaches which the majority of \textit{Backpressure} strategies are designed from and can be resumed as: 
+	
 	\begin{enumerate}
-		\item \textbf{DROP:} Drops items after the buffer gets full
-		\item \textbf{Buffer everything:} Buffers all items that are received without any threshhold.
-		\item \textbf{Error:} An error is thrown when the buffer threshhold is reached
-		\item \textbf{Buffer disable:} No backpressure strategy its in place, all excedent items are discarded.
+		\item \textbf{DROP:} Producer drops items after a retrieving buffer gets full.
+		\item \textbf{Buffer everything:} A buffer, keeps all unprocessed items that are received. Usually, this strategy is used when all received items are critical for the business development and memory managment has flexibility to handle the increase of storage needs.
+		\item \textbf{Error:} An error is thrown when the buffer threshhold is reached, usally all items received after the threshhold is reached are discarded.
+		\item \textbf{Lastest:} Only the last received item in the given moment is kept.
+		\item \textbf{Missing:} No back-pressure strategy it is in place, all items that ca not be processed on arrival, are discarded.
 	\end{enumerate}
 	\clearpage
 % The template file for writing dissertations in  \texttt{LaTeX} is organized into a main directory, a set of files and sub-directories:
@@ -304,7 +310,7 @@ The designers justify this choice by saying that this model allows treating stre
 
 In the implementation, the data source/publisher of an asynchronous stream of events is represented by the classes \texttt{Observable} and \texttt{Flowable}. In this case, the only difference between \texttt{Observable} and \texttt{Flowable}, is that the class \texttt{Flowable} supports back-pressure through different bufferization strategies.
 
-One of the great advantages of using this framework, is that the \texttt{Observable} and \texttt{Flowable}, although representing asynchronous data source, offer fluent API's that allow data processing like e.g. java \texttt{Stream}.
+One of the great advantages of using this framework, is that the \texttt{Observable} and \texttt{Flowable}, although representing asynchronous data source, offer fluent API's that allows chaining operation fluently, like it is done in e.g, on java \texttt{Stream} implementation.
 In these fluent API's, stream processing operations like: \texttt{filter}, \texttt{flatMap} or \texttt{distinct} are available, allowing to treat these asycnhronous sequence of items like is made with synchronous streams.
 
 On the other hand, the observers/subscribers are represented by consumers that are attached to \texttt{Observable} through the method \texttt{Observable.subscribe()}.
@@ -326,19 +332,18 @@ On the next table, it is possible to see how each object type can be mapped
 \begin{tabular}{ |l|c|c| }
 \hline
 	& Single Item & Multiple Items \\ \hline
-\multirow{}{}{Synchronous}
+\multirow{}{}{Java}
 & & \\ 
 & \texttt{T getData()}  & \texttt{Iterable<T> getData()} \\
 	& & \\
 	\hline
-\multirow{}{}{Asynchronous}
+\multirow{}{}{RxJava}
 & & \\ 
-& \texttt{Future<T> getData()} & \texttt{Observable<T> getData()} \\
+& \texttt{Single<T> getData()} & \texttt{Observable<T> getData()} \\
 	& & \\
 	\hline
 \end{tabular}
 \end{center}
-
 
 
 \subsection{Asynchronous Enumerables}
@@ -357,28 +362,23 @@ On the next table, it is possible to see how each object type can be mapped
 	With the use of this concept, were implemented several mechanisms, e.g. the AsyncEnumerables in C\#, that simplify the iteration over asynchronous data sources. 
 	Making the code similar to synchronous statements, easier to maintain, and, once again, abstracting the programmer from many complex details inherent with asynchronous processing.
 
-	To better visualize what was explained, we have next an asynchronous enumerables example written in \text{C\#}, where we can observe an asynchronous iteration over a continuous data source in real time without any blockage:
-	\clearpage
-
+\subsubsection{.NET Asynchronous Enumerables}
+\label{csenums}
+	\texttt{IEnumerable<T>} in C\#, is a interface that implements a method \texttt{GetEnumerator()} that returns a \texttt{IEnumerator<T>}. 
+	In its turn, \texttt{IEnumerator<T>}, is a interface that allows to iterate over items of a Collection by offering a method \texttt{T getCurrent()}, that allows to retrieve the current item 
+	and a method \texttt{bool MoveNext()}, that allows to iterate to the next item of the sequence and check if the iteration has finished.
+	\texttt{IAsyncEnumerable<T>}, keeps the same logic of \texttt{IEnumerable<T>}, but instead of returning a synchronous \texttt{IEnumerator<T>} with a synchronous \texttt{MoveNext()} method, returns a \texttt{IAsyncEnumerator<T>} where its method \texttt{bool MoveNextAsync()} is asynchronous. 
+	
+	On the other side, the keyword \texttt{yield}, is a syntax sugar introduced in \textbf{C\# 2.0} that allows to avoid the implementation of \texttt{IEnumerable<T>} and \texttt{IEnumerator<T>} interfaces by the programmer,
+	allowing iteration and the lazy return of items. All the work of implementing iteration interfaces is handled by \texttt{.NET} virtual machine in background. 
+	On top of that, the use of \texttt{yield} is compatible with asynchronous iteration involving \texttt{IAsyncEnumerable<T>}, which simplifies interation of asynchronous flows in C\#, as we can see in the next example:
+	
 	\begin{figure}[H]
 		\centering
-		\lstfromfile{java}{1-33}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for},numbers=left, firstnumber=1}{asyncEnum.cs}
+		\lstfromfile{java}{1-33}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for, yield},numbers=left, firstnumber=1}{asyncEnum.cs}
 		\caption{C\# Asynchronous Enumerables example}
 		\label{fig:enumex}
 	\end{figure}
-	
-	\clearpage
-
-\subsubsection{.NET Asynchronous Enumerables}
-\label{csenums}
-	As we saw in the example above, in C\#, the approach to implement asynchronous enumerable are done through the implementation of the interface \texttt{IAsyncEnumerable} with the use of the \texttt{yield return} keyword pair to return items as they become available.
-	
-	Under the blanket, the .NET virtual machine handles all the asynchronous code each time the \texttt{async...await} and the \texttt{yield return} are used in the context of a \texttt{IAsyncEnumerable<T>} return.
-
-	This solution maintains the logic and usability of the synchronous interface \texttt{IEnumerable}, but for asynchronous processing in the context of a asynchronous data flow processing. 
-	Providing a common ground between synchronous and asynchronous code syntaxes, in one hand, and making it easier to understand and maintain by programmers not used to asynchronous code in another.
-	
-	This solution is a sustainable choice to be used in back-end infrastructures with an expectable high longevity.
 
 \subsubsection{Javascript asynchronous iterables}
 \label{jsae}
@@ -391,14 +391,12 @@ On the next table, it is possible to see how each object type can be mapped
 
 	On the other side, the keywords \texttt{for await...of}, provides support for iteration over asynchronous enumerables, as we can see in the next example:
 
-\clearpage
 	\begin{figure}[H]
 		\centering
-		\lstfromfile{javascript}{1-30}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for, of},numbers=left, firstnumber=1}{asyncenum.js}
+		\lstfromfile{java}{1-30}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for, of},numbers=left, firstnumber=1}{asyncenum.js}
 		\caption{Mozilla's Javascript Asynchronous Enumerables example}
 		\label{fig:enumex2}
 	\end{figure}
-\clearpage
 
 In this example, the function \texttt{streamAsyncIterable} read a stream of bytes and has the responsibility to lazily return the items as they become available.
 
@@ -407,8 +405,6 @@ On the other side, the function \texttt{getResponseSize}, the keyword \texttt{aw
 With the implementation of this mechanism, javascript simplifies in a very subtle way, how asynchronous streams are handled, allowing the code to be easily readable and maintainable and abstracting the programming from: e.g. callbacks, tasks or completion tokens.
 
 This solution is usually used in front-end environments, for example, to load several items from remote sources while a web page loads.
-
-
 
 \subsection{Kotlin Flow}
 
@@ -420,7 +416,6 @@ On the other hand, this type provides a group data processing intermediate opera
 From C\#, Kotlin uses the function \texttt{emit} to do the same trick that \texttt{yield return} does in C\#, which is to lazily return an item on the fly, when the item becomes available to be returned.
 
 On next, we have an example of Kotlin Flow usage:
-
 
 \clearpage
 	\begin{figure}[H]
@@ -439,4 +434,16 @@ As we can see, the fluent API is widely used to operate the \texttt{Flow}. This 
 
 \subsection{Tecnhlogies comparation}
 
-As we saw, each technology has a very specific 
+As we saw, each technology have a set of properties that help to caracterize the solution.
+To help the caracherization of each technology documented, we have a relation between the caracteristics saw in the chapter \ref{sec:async_concepts}.
+
+\begin{table}[!htbp]
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+	\hline
+										  & \textbf{Pull} & \textbf{Push} & \multicolumn{1}{l|}{\textbf{Cancelable}} & \multicolumn{1}{l|}{\textbf{Error Handling}} & \multicolumn{1}{l|}{\textbf{BackPressure}} & \multicolumn{1}{l|}{\textbf{Intrisic words}} \\ \hline
+	\textbf{RxJava}                       &               & x             & x                                        & x                                            & x                                          &                                              \\ \hline
+	\textbf{Kolin Flow}                   &               & x             & x                                        & x                                            & x                                          &                                              \\ \hline
+	\textbf{Javascript for await..of}     & x             &               & x                                        & x                                            & Not applicable                             & x                                            \\ \hline
+	\textbf{C\# asynchronous enumerables} & x             &               & x                                        & x                                            & Not applicable                             & x                                            \\ \hline
+	\end{tabular}
+\end{table}
