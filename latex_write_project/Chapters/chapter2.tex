@@ -310,6 +310,8 @@ The designers justify this choice by saying that this model allows treating stre
 
 In the implementation, the data source/publisher of an asynchronous stream of events is represented by the classes \texttt{Observable} and \texttt{Flowable}. In this case, the only difference between \texttt{Observable} and \texttt{Flowable}, is that the class \texttt{Flowable} supports back-pressure through different bufferization strategies.
 
+On a side note, it is important to refer that in RxJava, the same way \texttt{Observable} and \texttt{Flowable} represent a stream of N events, exists a single event is represented by a class named \texttt{Single}.
+
 One of the great advantages of using this framework, is that the \texttt{Observable} and \texttt{Flowable}, although representing asynchronous data source, offer fluent API's that allows chaining operation fluently, like it is done in e.g, on java \texttt{Stream} implementation.
 In these fluent API's, stream processing operations like: \texttt{filter}, \texttt{flatMap} or \texttt{distinct} are available, allowing to treat these asycnhronous sequence of items like is made with synchronous streams.
 
@@ -332,13 +334,11 @@ On the next table, it is possible to see how each object type can be mapped
 \begin{tabular}{ |l|c|c| }
 \hline
 	& Single Item & Multiple Items \\ \hline
-\multirow{}{}{Java}
-& & \\ 
+	Java & & \\ 
 & \texttt{T getData()}  & \texttt{Iterable<T> getData()} \\
 	& & \\
 	\hline
-\multirow{}{}{RxJava}
-& & \\ 
+	RxJava & & \\ 
 & \texttt{Single<T> getData()} & \texttt{Observable<T> getData()} \\
 	& & \\
 	\hline
@@ -420,7 +420,7 @@ On next, we have an example of Kotlin Flow usage:
 \clearpage
 	\begin{figure}[H]
 		\centering
-		\lstfromfile{kotlin}{1-24}{}{kotlinflow}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flow.kt}
+		\lstfromfile{java}{1-24}{}{kotlinflow}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flow.kt}
 		\caption{Kotlin flow example}
 		\label{fig:kotlinflow}
 	\end{figure}
@@ -440,10 +440,12 @@ To help the caracherization of each technology documented, we have a relation be
 \begin{table}[!htbp]
 	\begin{tabular}{|c|c|c|c|c|c|c|}
 	\hline
-										  & \textbf{Pull} & \textbf{Push} & \multicolumn{1}{l|}{\textbf{Cancelable}} & \multicolumn{1}{l|}{\textbf{Error Handling}} & \multicolumn{1}{l|}{\textbf{BackPressure}} & \multicolumn{1}{l|}{\textbf{Intrisic words}} \\ \hline
-	\textbf{RxJava}                       &               & x             & x                                        & x                                            & x                                          &                                              \\ \hline
-	\textbf{Kolin Flow}                   &               & x             & x                                        & x                                            & x                                          &                                              \\ \hline
-	\textbf{Javascript for await..of}     & x             &               & x                                        & x                                            & Not applicable                             & x                                            \\ \hline
-	\textbf{C\# asynchronous enumerables} & x             &               & x                                        & x                                            & Not applicable                             & x                                            \\ \hline
+										  & \textbf{RxJava} & \textbf{Kolin Flow} & \multicolumn{1}{l|}{\textbf{Javascript}} & \multicolumn{1}{l|}{\textbf{C\#}} \\ \hline
+	\textbf{Pull}                         &               &              & x                                        & x   		   								\\ \hline
+	\textbf{Push}                   	  & x             & x             &                                         &    	  								 \\ \hline
+	\textbf{Cancelable}     			  & x             & x             & x                                       & x          								 \\ \hline
+	\textbf{Error Handling} 			  & x             & x             & x                                       & x   		   									\\ \hline
+	\textbf{Backpressure} 			      & x             & Not aplicable    & Not aplicable                        & Not aplicable        									   \\ \hline
+	\textbf{Intrisic words} 			  &               &               & x                                       & x      									     \\ \hline
 	\end{tabular}
 \end{table}
