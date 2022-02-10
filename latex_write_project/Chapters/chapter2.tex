@@ -408,12 +408,45 @@ This solution is usually used in front-end environments, for example, to load se
 
 \subsection{Kotlin Flow}
 
-Kotlin Flow, is a solution that retrieves good ideas from the another technologies already mentioned in this document.
+Kotlin asynchronous flow implementation is a \ref{Reactive Streams} compliant solution and similarly to RxJava, Kotlin strongly typifies a stream of N events, which, in this case, is done through the implementation of the interface \texttt{Flow<T>}.
+The \texttt{Flow<T>} implementation is done through a builder, like we can see in the next example:
 
-Similarly to RxJava, the Kotlin flow strongly typifies the concept of asynchronous flow in the class \texttt{Flow<T>}. 
-On the other hand, this type provides a group data processing intermediate operators, e.g. \texttt{map()}, \texttt{filter()} etc...  
+\clearpage
+	\begin{figure}[H]
+		\centering
+		\lstfromfile{java}{1-6}{}{kotlinflow}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flow.kt}
+		\caption{Flow builder}
+		\label{fig:kotlinflow}
+	\end{figure}
+\clearpage
 
-From C\#, Kotlin uses the function \texttt{emit} to do the same trick that \texttt{yield return} does in C\#, which is to lazily return an item on the fly, when the item becomes available to be returned.
+To start listening a particular data stream is mandatory to the subscriber to call the method \texttt{Flow.collect()} that starts the emission of items of a cold flow.
+On the other side, to represent Hot flows, must be used the used the interface \texttt{SharedFlow<out T> : Flow<T>}. 
+
+The main difference between the kotlin implementation on these two interfaces, is at the result of \texttt{collect()} call. 
+While the \texttt{Flow.collect()}, because of its cold nature, starts the flow everytime its called, resulting in the limited emission of the same set of items; the \texttt{SharedFlow.collect()} emission of events never finishes.
+On the other side, while the \texttt{Flow.collect()} call context is private to the caller, the \texttt{ShareFlow.collect()} is shareable by N subscribers, which makes this solution ideal for broadcast mechanisms.
+
+To start listening the stream of events is callent the betword
+
+\clearpage
+	\begin{figure}[H]
+		\centering
+		\lstfromfile{java}{1-24}{}{kotlinflowcold}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flowcold.kt}
+		\caption{Kotlin flow example}
+		\label{fig:kotlinflowcold}
+	\end{figure}
+\clearpage
+
+
+Likewise RxJava, \texttt{Flow<T>} provides a fluent API of intermediate operators that allow item processing, through the traditional upstream processing push methods, like: filter, map, zip,take etc...   . On the othe se executed recurring to different execution contexts, for exemple, to change the running thread from the main programm to a custom thread scheduler.
+
+
+
+
+Relatively to the use of intrisic words, Kotlin offer the \texttt{suspension} key word that as the same  
+
+uses the function \texttt{emit} to do the same trick that \texttt{yield return} does in C\#, which is to lazily return an item on the fly, when the item becomes available to be returned.
 
 On next, we have an example of Kotlin Flow usage:
 
