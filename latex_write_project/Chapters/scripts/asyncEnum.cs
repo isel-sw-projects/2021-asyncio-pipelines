@@ -1,14 +1,11 @@
 static async Task Main(string[] args)
 {
-    Console.WriteLine($"{DateTime.Now.ToLongTimeString()}: Start");
     IAsyncEnumerable<int> enumerable = FetchItems(1000);
     int i = 0;
     await foreach (var item in enumerable)
     {
         if (i++ == 10){ break;}
-        Console.WriteLine($"{DateTime.Now.ToLongTimeString()}: {item}");
     }
-    Console.WriteLine($"{DateTime.Now.ToLongTimeString()}: End");
 }
 
 static async IAsyncEnumerable<int> FetchItems(int delay)

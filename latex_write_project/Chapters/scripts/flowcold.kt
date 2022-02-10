@@ -15,7 +15,7 @@ fun main() = runBlocking<Unit> {
     flow.collect { value -> println(value) } 
 }
 
-
+Output:
 Calling simple function...
 Calling collect...
 Flow started

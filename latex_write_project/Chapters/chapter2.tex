@@ -139,11 +139,11 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 	\begin{figure}[H]
 		\centering
-		\begin{subfigure}[h]{1.2\textwidth}
+		\begin{subfigure}[h]{.5\textwidth}
 			\centering
 			\lstfromfile{java}{1-17}{Pull pattern example}{pull}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{pull.java}
 		 \end{subfigure}	
-		 \begin{subfigure}[h]{1.2\textwidth}
+		 \begin{subfigure}[h]{.5\textwidth}
 			\centering
 			\lstfromfile{java}{1-17}{Push pattern example}{push}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{push.java}
 		\end{subfigure}		
@@ -171,12 +171,12 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 	\begin{figure}[H]
 		\centering
-		\begin{subfigure}[h]{1.2\textwidth}
+		\begin{subfigure}{.5\textwidth}
 			\centering
 			\lstfromfile{java}{1-3}{Cold Example}{cold}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{ColdFlux.java}
 		 \end{subfigure}	
 	\qquad\qquad
-		 \begin{subfigure}[h]{1.2\textwidth}
+		 \begin{subfigure}{.5\textwidth}
 			\centering
 			\lstfromfile{java}{1-6}{Hot Example}{hot}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{HotFlux.java}
 		\end{subfigure}		
@@ -231,10 +231,15 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	In the example \ref{fig:enumex} we can see an example of these keywords being used. 
 	Where, for example, we can observe in the line 15, a call to a asynchronous operation, and, by hadding the keyworkd \texttt{await}, the next statment although being to an asynchronous operation the statment orde looks like its synchronous. 
 	
-	Another example of 'intrisic words' used in asynchronous processing is the \texttt{for await...of}, used in javascript to proccess asynchronous enumerables. 
+	Additionally, the use of \texttt{async...await} in javacript, for example, simplifies error handling in asynchronous code. Instead of use a promise callback to handle an error, by using \texttt{async...await} the error can handled by just using a simple try/catch block. 
+	
+	Yet, Another example of 'intrisic words' used in asynchronous processing is the \texttt{for await...of}, used in javascript to proccess asynchronous enumerables, that will be described in more detail ahead. 
+	
+	To better visualize the advantage of using intrisic words in asynchronous code, on the next example, we can see a code comparation in javascript, with and without the use of intrisic words in asynchronous code, where it is possible to observe the reduce of code complexity and increment of readability 
+	
 	
 
-	On the sub chapters of \ref{sec:state_of_the_art} these examples will be explained with more depth.
+	
 	\clearpage
 
 	\subsection{Back-pressure} 
@@ -310,7 +315,7 @@ The designers justify this choice by saying that this model allows treating stre
 
 In the implementation, the data source/publisher of an asynchronous stream of events is represented by the classes \texttt{Observable} and \texttt{Flowable}. In this case, the only difference between \texttt{Observable} and \texttt{Flowable}, is that the class \texttt{Flowable} supports back-pressure through different bufferization strategies.
 
-On a side note, it is important to refer that in RxJava, the same way \texttt{Observable} and \texttt{Flowable} represent a stream of N events, exists a single event is represented by a class named \texttt{Single}.
+On a side note, it is important to refer that in RxJava, the same way \texttt{Observable} and \texttt{Flowable} represent a stream of N events, a single event is represented by a class named \texttt{Single}. 
 
 One of the great advantages of using this framework, is that the \texttt{Observable} and \texttt{Flowable}, although representing asynchronous data source, offer fluent API's that allows chaining operation fluently, like it is done in e.g, on java \texttt{Stream} implementation.
 In these fluent API's, stream processing operations like: \texttt{filter}, \texttt{flatMap} or \texttt{distinct} are available, allowing to treat these asycnhronous sequence of items like is made with synchronous streams.
@@ -369,10 +374,15 @@ On the next table, it is possible to see how each object type can be mapped
 	and a method \texttt{bool MoveNext()}, that allows to iterate to the next item of the sequence and check if the iteration has finished.
 	\texttt{IAsyncEnumerable<T>}, keeps the same logic of \texttt{IEnumerable<T>}, but instead of returning a synchronous \texttt{IEnumerator<T>} with a synchronous \texttt{MoveNext()} method, returns a \texttt{IAsyncEnumerator<T>} where its method \texttt{bool MoveNextAsync()} is asynchronous. 
 	
+	To better understand what was explained, we have the following diagram that will help to explain what is the the class structure implemented in C\# that allow the enumeration of 
+
+
 	On the other side, the keyword \texttt{yield}, is a syntax sugar introduced in \textbf{C\# 2.0} that allows to avoid the implementation of \texttt{IEnumerable<T>} and \texttt{IEnumerator<T>} interfaces by the programmer,
 	allowing iteration and the lazy return of items. All the work of implementing iteration interfaces is handled by \texttt{.NET} virtual machine in background. 
 	On top of that, the use of \texttt{yield} is compatible with asynchronous iteration involving \texttt{IAsyncEnumerable<T>}, which simplifies interation of asynchronous flows in C\#, as we can see in the next example:
 	
+	//colocar exemplo 
+
 	\begin{figure}[H]
 		\centering
 		\lstfromfile{java}{1-33}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for, yield},numbers=left, firstnumber=1}{asyncEnum.cs}
@@ -400,66 +410,47 @@ On the next table, it is possible to see how each object type can be mapped
 
 In this example, the function \texttt{streamAsyncIterable} read a stream of bytes and has the responsibility to lazily return the items as they become available.
 
-On the other side, the function \texttt{getResponseSize}, the keyword \texttt{await} its followed by an asynchronous HTTP request and the mechanism \texttt{for wait...of} it is used to iterate over an asynchronous iterable stream. As we can observe, the code syntax is very similar to a synchronous iteration. 
+On the other side, the function \texttt{getResponseSize}, the keyword \texttt{await} its followed by an asynchronous HTTP request and the mechanism \texttt{for wait...of} it is used to iterate over an asynchronous iterable stream. As we can observe, the code syntax is very similar to a synchronous iteration. \\
 
-With the implementation of this mechanism, javascript simplifies in a very subtle way, how asynchronous streams are handled, allowing the code to be easily readable and maintainable and abstracting the programming from: e.g. callbacks, tasks or completion tokens.
+With the implementation of this mechanism, javascript simplifies in a very subtle way, how asynchronous streams are handled, allowing the code to be easily readable and maintainable and abstracting the programming from: e.g. callbacks, tasks or completion tokens.\\
 
 This solution is usually used in front-end environments, for example, to load several items from remote sources while a web page loads.
+\clearpage
 
 \subsection{Kotlin Flow}
 
-Kotlin asynchronous flow implementation is a \ref{Reactive Streams} compliant solution and similarly to RxJava, Kotlin strongly typifies a stream of N events, which, in this case, is done through the implementation of the interface \texttt{Flow<T>}.
-The \texttt{Flow<T>} implementation is done through a builder, like we can see in the next example:
+Kotlin asynchronous flow implementation is a \ref{Reactive Streams} compliant solution, and, similarly to RxJava, Kotlin strongly typifies a stream of N events, which, in this case, is done through the implementation of the interface \texttt{Flow<T>}.\\
+A \texttt{Flow<T>} data source implementation is done through a builder, like we can see in the next example:
 
-\clearpage
-	\begin{figure}[H]
-		\centering
-		\lstfromfile{java}{1-6}{}{kotlinflow}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flow.kt}
-		\caption{Flow builder}
-		\label{fig:kotlinflow}
-	\end{figure}
-\clearpage
+\begin{figure}[H]
+	\centering
+	\lstfromfile{java}{1-6}{}{kotlinflow}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flow.kt}
+	\caption{Flow builder}
+	\label{fig:kotlinflow}
+\end{figure}
 
-To start listening a particular data stream is mandatory to the subscriber to call the method \texttt{Flow.collect()} that starts the emission of items of a cold flow.
-On the other side, to represent Hot flows, must be used the used the interface \texttt{SharedFlow<out T> : Flow<T>}. 
+A consumer, to start listening a particular data flow haves to call the method \texttt{Flow.collect()}. Since \texttt{Flow} provides support only to cold flows, calling \texttt{Flow.collect()}\\ has the particularity of initiating flow the sequence.
+On the other side, Hot flows in Kotlin are represented by the interface \texttt{SharedFlow<out T> : Flow<T>}. 
 
-The main difference between the kotlin implementation on these two interfaces, is at the result of \texttt{collect()} call. 
-While the \texttt{Flow.collect()}, because of its cold nature, starts the flow everytime its called, resulting in the limited emission of the same set of items; the \texttt{SharedFlow.collect()} emission of events never finishes.
-On the other side, while the \texttt{Flow.collect()} call context is private to the caller, the \texttt{ShareFlow.collect()} is shareable by N subscribers, which makes this solution ideal for broadcast mechanisms.
+The main difference between the implementation of these two interfaces, is at the result of \texttt{collect()} call. 
+While the \texttt{Flow.collect()} starts the flow everytime its called, resulting in the limited emission of the same set of items per call; the \texttt{SharedFlow.collect()} emits an unpredicted set of items from external stream of events initiated before the call to \texttt{SharedFlow.collect()}.
+On the other side, while the \texttt{Flow.collect()} call context is private to the caller, the \texttt{ShareFlow.collect()} is shareable by N subscribers, which makes this solution ideal for broadcast mechanisms shared by many users.
+On the next example, we can see several calls to the \texttt{Flow.collect()} that results in retrieving the same set of items, because as explained, the call starts a cold flow everytime its called:
 
-To start listening the stream of events is callent the betword
+\begin{figure}[H]
+	\centering
+	\lstfromfile{java}{1-29}{}{kotlinflowcold}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flowcold.kt}
+	\caption{Kotlin collect multicall example}
+	\label{fig:kotlinflowcold}
+\end{figure}
 
-\clearpage
-	\begin{figure}[H]
-		\centering
-		\lstfromfile{java}{1-24}{}{kotlinflowcold}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flowcold.kt}
-		\caption{Kotlin flow example}
-		\label{fig:kotlinflowcold}
-	\end{figure}
-\clearpage
-
-
-Likewise RxJava, \texttt{Flow<T>} provides a fluent API of intermediate operators that allow item processing, through the traditional upstream processing push methods, like: filter, map, zip,take etc...   . On the othe se executed recurring to different execution contexts, for exemple, to change the running thread from the main programm to a custom thread scheduler.
+Likewise in RxJava, \texttt{Flow<T>} provides a fluent API of intermediate and terminal operators that allow item processing through the traditional push methods like: filter, map, zip,take, etc... 
 
 
 
+With the use of "\textit{intrisic words}" like \texttt{emit}, kotlin can do the same trick that \texttt{yield return} does in C\#, which is to lazily return an item on the fly when the item becomes available to be returned, making the implementation of flowable sources easier to implement.
 
-Relatively to the use of intrisic words, Kotlin offer the \texttt{suspension} key word that as the same  
 
-uses the function \texttt{emit} to do the same trick that \texttt{yield return} does in C\#, which is to lazily return an item on the fly, when the item becomes available to be returned.
-
-On next, we have an example of Kotlin Flow usage:
-
-\clearpage
-	\begin{figure}[H]
-		\centering
-		\lstfromfile{java}{1-24}{}{kotlinflow}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flow.kt}
-		\caption{Kotlin flow example}
-		\label{fig:kotlinflow}
-	\end{figure}
-\clearpage
-
-As we can see, the fluent API is widely used to operate the \texttt{Flow}. This solution is often used in Android development for retrieving remote data.
 
 %% section how_to_write_using_latex (end)
 
