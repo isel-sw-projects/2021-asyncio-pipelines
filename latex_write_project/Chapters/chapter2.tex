@@ -429,7 +429,7 @@ A \texttt{Flow<T>} data source implementation is done through a builder, like we
 	\label{fig:kotlinflow}
 \end{figure}
 
-A consumer, to start listening a particular data flow haves to call the method \texttt{Flow.collect()}. Since \texttt{Flow} provides support only to cold flows, calling \texttt{Flow.collect()}\\ has the particularity of initiating flow the sequence.
+A consumer, to start listening a particular data flow haves to call the method \texttt{Flow.collect()}. Since \texttt{Flow} provides support only to cold flows, calling \texttt{collect()} has the particularity of initiating flow the sequence.
 On the other side, Hot flows in Kotlin are represented by the interface \texttt{SharedFlow<out T> : Flow<T>}. 
 
 The main difference between the implementation of these two interfaces, is at the result of \texttt{collect()} call. 
@@ -444,9 +444,8 @@ On the next example, we can see several calls to the \texttt{Flow.collect()} tha
 	\label{fig:kotlinflowcold}
 \end{figure}
 
-Likewise in RxJava, \texttt{Flow<T>} provides a fluent API of intermediate and terminal operators that allow item processing through the traditional push methods like: filter, map, zip,take, etc... 
-
-
+Likewise in RxJava, \texttt{Flow<T>} provides a fluent API of intermediate operators that allow data transformation, where is received a upstream  flow and the operators return a transformed downstream flow through the traditional push methods like: filter, map(), zip(),take() etc... 
+On last, Kotlin provides terminal operators that enable to format the processed data on the most suitable type, through the use of functions like toList() or toSet().
 
 With the use of "\textit{intrisic words}" like \texttt{emit}, kotlin can do the same trick that \texttt{yield return} does in C\#, which is to lazily return an item on the fly when the item becomes available to be returned, making the implementation of flowable sources easier to implement.
 
@@ -469,7 +468,7 @@ To help the caracherization of each technology documented, we have a relation be
 	\textbf{Push}                   	  & x             & x             &                                         &    	  								 \\ \hline
 	\textbf{Cancelable}     			  & x             & x             & x                                       & x          								 \\ \hline
 	\textbf{Error Handling} 			  & x             & x             & x                                       & x   		   									\\ \hline
-	\textbf{Backpressure} 			      & x             & Not aplicable    & Not aplicable                        & Not aplicable        									   \\ \hline
-	\textbf{Intrisic words} 			  &               &               & x                                       & x      									     \\ \hline
+	\textbf{Backpressure} 			      & x             & x             &                                         &      									   \\ \hline
+	\textbf{Intrisic words} 			  &               & x             & x                                       & x      									     \\ \hline
 	\end{tabular}
 \end{table}
