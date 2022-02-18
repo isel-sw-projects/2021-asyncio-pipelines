@@ -1,5 +1,6 @@
 ﻿using lookwords.fileUtils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace lookwords
 {
     internal class Program
     {
-        static Dictionary<String, int> words_dict = new Dictionary<String, int>();
+        static ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
         static void Main(string[] args)
         {
 
