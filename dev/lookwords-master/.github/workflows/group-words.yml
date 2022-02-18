@@ -1,0 +1,25 @@
+name: group-words
+ 
+on:
+  push:
+    branches:
+      - group-words
+ 
+jobs:
+  benchmark:
+    name: Benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Setup java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Build artifacts
+        run: mvn clean install
+
+      - name: Run Benchmark Group Words
+        run: java -cp target\benchmark.jar;target\classes org.openjdk.jmh.Main -f 1

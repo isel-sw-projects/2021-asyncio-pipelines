@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lookwords", "lookwords\lookwords.csproj", "{DD0381CD-3AFF-4C4C-B1E3-A8B8AB9FA011}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD0381CD-3AFF-4C4C-B1E3-A8B8AB9FA011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD0381CD-3AFF-4C4C-B1E3-A8B8AB9FA011}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD0381CD-3AFF-4C4C-B1E3-A8B8AB9FA011}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD0381CD-3AFF-4C4C-B1E3-A8B8AB9FA011}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7D7E574-3E30-4709-85F4-CB318DB3C6A5}
+	EndGlobalSection
+EndGlobal
