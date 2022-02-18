@@ -17,8 +17,11 @@ namespace lookwords.fileUtils
             foreach (var file in allfiles)
             {
                 using (StreamReader reader = new StreamReader(file))
-                {
-                    yield return await reader.ReadLineAsync();
+
+                    while (!reader.EndOfStream)
+                    {
+                        yield return await reader.ReadLineAsync();
+                    }
                 }
             }
         }
