@@ -12,7 +12,7 @@ namespace lookwords.fileUtils
 
         public static async IAsyncEnumerable<String> Lines(String folderPath)
         {
-            string[] allfiles = Directory.GetFiles(folderPath, ".txt", SearchOption.AllDirectories);
+            string[] allfiles = Directory.GetFiles(folderPath, "*.txt", SearchOption.AllDirectories);
 
             foreach (var file in allfiles)
             {
@@ -26,5 +26,4 @@ namespace lookwords.fileUtils
             }
         }
      
-    }
 }

@@ -1,4 +1,5 @@
 ﻿using lookwords.fileUtils;
+using lookwords.RxNet;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,12 +11,20 @@ namespace lookwords
 {
     internal class Program
     {
-        static ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
+        static private string folderPath = @"F:\escola\MEIC\TESE\dev\lookwords-master\src\main\resources\gutenberg\";
+        static Boolean hasEnded = false;
+
         static void Main(string[] args)
         {
 
+            RunRxTest();
+            
+        }
 
-            Task<Dictionary<String, int>> words = Run();
+
+        private static void RunEnumerableTest()
+        {
+            Task<ConcurrentDictionary<String, int>> words = groupWordsAsyncEnum();
 
             words.Wait();
 
@@ -27,26 +36,60 @@ namespace lookwords
             Console.ReadLine();
         }
 
-        static async Task<Dictionary<String, int>> Run()
+        private static void RunRxTest()
         {
-            string folderPath = "F:\\escola\\MEIC\\TESE\\dev\\lookwords-master\\src\\main\resources\\gutenberg\\";
-            Dictionary<String, int> words_dict = new Dictionary<String, int>();
-            GroupWords gw = new GroupWords();
+            ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
+            FolderWordsObservable observable = new FolderWordsObservable(folderPath, 2, 10);
+            WordObserver obs = new WordObserver(words_dict, hasEnded);
 
-            IAsyncEnumerable<String> words = gw.Words(folderPath, 2, 10);
+            observable.Subscribe(obs);
+
+            foreach (var word in words_dict)
+            {
+                Console.WriteLine("Value: {0}, Count: {1}", word.Key, word.Value);
+            }
+
+            Console.ReadLine();
+        }
+
+
+        static async Task<ConcurrentDictionary<String, int>> groupWordsAsyncEnum()
+        {
+            FileWordsEnumerable gw = new FileWordsEnumerable();
+            ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
+            IAsyncEnumerable<String> words = gw.GetFolderWordsAsyncEnumerable(folderPath, 2, 10);
 
             await foreach (String word in words)
             {
-                if(words_dict.ContainsKey(word))
+                if (words_dict.ContainsKey(word))
                 {
-                    words_dict.Add(word, words_dict[word] + 1);
-                } else
-                {
-                    words_dict.Add(word, 1);
+                    int nextValue;
+                    while (!words_dict.TryRemove(word, out nextValue)) { };
+
+                    while (!words_dict.TryAdd(word, nextValue + 1)) { };
                 }
-                
+                else
+                {
+                    while (!words_dict.TryAdd(word, 1)) { };
+                }
+
             }
             return words_dict;
+        }
+
+        static void groupWordsRxNet()
+        {
+           
+            
+            FolderWordsObservable gw = new FolderWordsObservable(folderPath, 2, 10);
+            Boolean ended = false;
+            ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
+
+            IObserver<string> observer = new WordObserver(words_dict, ended);
+
+            gw.Subscribe(observer);
+
+
         }
     }
 }
