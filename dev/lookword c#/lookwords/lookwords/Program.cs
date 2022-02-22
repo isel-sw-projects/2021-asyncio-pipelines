@@ -39,8 +39,8 @@ namespace lookwords
         private static void RunRxTest()
         {
             ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
-            FolderWordsObservable observable = new FolderWordsObservable(folderPath, 2, 10);
-            WordObserver obs = new WordObserver(words_dict, hasEnded);
+            FolderWordsObservable observable = new FolderWordsObservable(folderPath);
+            WordObserver obs = new WordObserver(words_dict, 2, 12);
 
             observable.Subscribe(obs);
 
@@ -79,13 +79,13 @@ namespace lookwords
 
         static void groupWordsRxNet()
         {
-           
+
+            int minLength = 2, maxLength= 12;
             
-            FolderWordsObservable gw = new FolderWordsObservable(folderPath, 2, 10);
-            Boolean ended = false;
+            FolderWordsObservable gw = new FolderWordsObservable(folderPath);
             ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
 
-            IObserver<string> observer = new WordObserver(words_dict, ended);
+            IObserver<string> observer = new WordObserver(words_dict, minLength, maxLength);
 
             gw.Subscribe(observer);
 

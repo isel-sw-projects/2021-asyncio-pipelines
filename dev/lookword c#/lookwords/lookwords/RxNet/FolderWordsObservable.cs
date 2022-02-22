@@ -11,14 +11,10 @@ namespace lookwords.RxNet
     {
         private List<IObserver<string>> observers = new List<IObserver<string>>();
         string folderPath;
-        private readonly int minLength;
-        private readonly int maxLength;
 
-        public FolderWordsObservable( string folderPath, int minLength, int maxLength)
+        public FolderWordsObservable( string folderPath)
         {
             this.folderPath = folderPath;
-            this.minLength = minLength;
-            this.maxLength = maxLength;
         }
 
         public IDisposable Subscribe(IObserver<string> observer)
@@ -26,54 +22,55 @@ namespace lookwords.RxNet
             if (!observers.Contains(observer))
             {
                 observers.Add(observer);
-            
-                IAsyncEnumerable<string> enume = fileUtils.FileUtils.Lines(folderPath);
-
-                Console.WriteLine("Initiation: ");
-
-
-                string[] allfiles = Directory.GetFiles(folderPath, "*.txt", SearchOption.AllDirectories);
-
-                foreach (var file in allfiles)
-                {
-                    using (StreamReader reader = new StreamReader(file))
-
-                        while (!reader.EndOfStream)
-                        {
-                            _ = reader.ReadLineAsync()
-                                .ContinueWith(line => processLineAndNotifyWordsToObserver(line.Result, observer));
-                        }
-                }
             }
+
+            proccessFiles(observer);
 
             return new Unsubscriber(observers, observer);
         }
 
-        private void processLineAndNotifyWordsToObserver(string line, IObserver<string> observer)
+        private async void proccessFiles( IObserver<string> observer)
         {
-            if (line.Contains("*** END OF ") || String.IsNullOrEmpty(line))
-            {
-                observer.OnCompleted();
-                return;
-            }
-            else
-            {
-                String[] words = line.Split(' ');
+            Console.WriteLine("Initiation: ");
 
-                try
+
+            string[] allfiles = Directory.GetFiles(folderPath, "*.txt", SearchOption.AllDirectories);
+
+            foreach (var file in allfiles)
+            {
+
+                using (StreamReader reader = new StreamReader(file))
                 {
-                    foreach (var word in words.AsEnumerable())
+                    while (!reader.EndOfStream)
                     {
-                        if (word.Length > minLength && word.Length < maxLength)
-                        { 
-                            observer.OnNext(word);
+                        string line = await reader.ReadLineAsync();
+
+                        if (line.Contains("*** END OF ") || String.IsNullOrEmpty(line))
+                        {
+                            continue; 
+                        }
+                        else
+                        {
+                            String[] words = line.Split(' ');
+
+                            try
+                            {
+                                foreach (var word in words)
+                                {
+
+                                    observer.OnNext(word);
+
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                observer.OnError(ex);
+                            }
                         }
                     }
-                } catch (Exception ex)
-                {
-                    observer.OnError(ex);
                 }
             }
+            observer.OnCompleted();
         }
         private class Unsubscriber : IDisposable
         {

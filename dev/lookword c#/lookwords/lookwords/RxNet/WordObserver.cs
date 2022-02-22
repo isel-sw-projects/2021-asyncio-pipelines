@@ -10,18 +10,20 @@ namespace lookwords.RxNet
     public class WordObserver : IObserver<string>
     {
         ConcurrentDictionary<String, int> words_dict;
-        private Boolean isFinished;
 
-        public WordObserver(ConcurrentDictionary<String, int> words_dict, Boolean isFinished)
+        public WordObserver(ConcurrentDictionary<String, int> words_dict, int minLength, int maxLength)
         {
             this.words_dict = words_dict;
-            this.isFinished = isFinished;
+            MinLength = minLength;
+            MaxLength = maxLength;
         }
+
+        public int MinLength { get; }
+        public int MaxLength { get; }
 
         public void OnCompleted()
         {
             Console.WriteLine("Iteration completed");
-            isFinished = true;
         }
 
         public void OnError(Exception error)
@@ -32,18 +34,20 @@ namespace lookwords.RxNet
         public void OnNext(string word)
         {
             Console.WriteLine(word);
-            if (words_dict.ContainsKey(word))
+            if (word.Length > MinLength && word.Length < MaxLength)
             {
-                int nextValue;
-                while (!words_dict.TryRemove(word, out nextValue)) { };
+                if (words_dict.ContainsKey(word))
+                {
+                    int nextValue;
+                    while (!words_dict.TryRemove(word, out nextValue)) { };
 
-                while (!words_dict.TryAdd(word, nextValue + 1)) { };
+                    while (!words_dict.TryAdd(word, nextValue + 1)) { };
+                }
+                else
+                {
+                    while (!words_dict.TryAdd(word, 1)) { };
+                }
             }
-            else
-            {
-                while (!words_dict.TryAdd(word, 1)) { };
-            }
-
         }
     }
 }
