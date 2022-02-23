@@ -23,6 +23,11 @@ namespace lookwords.RxNet
 
         public void OnCompleted()
         {
+            foreach (var word in words_dict)
+            {
+                Console.WriteLine("Value: {0}, Count: {1}", word.Key, word.Value);
+            }
+
             Console.WriteLine("Iteration completed");
         }
 
@@ -31,21 +36,27 @@ namespace lookwords.RxNet
             throw new NotImplementedException();
         }
 
-        public void OnNext(string word)
-        {
-            Console.WriteLine(word);
-            if (word.Length > MinLength && word.Length < MaxLength)
-            {
-                if (words_dict.ContainsKey(word))
-                {
-                    int nextValue;
-                    while (!words_dict.TryRemove(word, out nextValue)) { };
 
-                    while (!words_dict.TryAdd(word, nextValue + 1)) { };
-                }
-                else
+        public void OnNext(string line)
+        {
+            string[] words = line.Split(' ');
+
+            foreach (var word in words)
+            {
+                Console.WriteLine(word);
+                if (word.Length > MinLength && word.Length < MaxLength)
                 {
-                    while (!words_dict.TryAdd(word, 1)) { };
+                    if (words_dict.ContainsKey(word))
+                    {
+                        int nextValue;
+                        while (!words_dict.TryRemove(word, out nextValue)) { };
+
+                        while (!words_dict.TryAdd(word, nextValue + 1)) { };
+                    }
+                    else
+                    {
+                        while (!words_dict.TryAdd(word, 1)) { };
+                    }
                 }
             }
         }

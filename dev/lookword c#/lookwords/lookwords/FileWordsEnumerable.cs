@@ -1,4 +1,5 @@
-﻿using System;
+﻿using lookwords.fileUtils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,10 @@ namespace lookwords
     {
         
         public async IAsyncEnumerable<String> GetFolderWordsAsyncEnumerable(string folder,int minLength, int maxLength) {
-            IAsyncEnumerable<string> enume = fileUtils.FileUtils.Lines(folder);
+            IAsyncEnumerable<string> linesEnumerable = FileAsyncEnumeUtils.GetLinesFromFolderTree(folder);
 
             Console.WriteLine("Initiation: ");
-            await foreach(String line in enume)
+            await foreach(String line in linesEnumerable)
             {
                 if(line.Contains("*** END OF ") || String.IsNullOrEmpty(line))
                 {

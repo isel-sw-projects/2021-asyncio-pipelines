@@ -18,13 +18,13 @@ namespace lookwords
         {
 
             RunRxTest();
-            
+
         }
 
 
         private static void RunEnumerableTest()
         {
-            Task<ConcurrentDictionary<String, int>> words = groupWordsAsyncEnum();
+            Task<ConcurrentDictionary<String, int>> words = countWordsAsyncEnum();
 
             words.Wait();
 
@@ -33,8 +33,8 @@ namespace lookwords
                 Console.WriteLine("Value: {0}, Count: {1}", word.Key, word.Value);
             }
 
-            Console.ReadLine();
         }
+
 
         private static void RunRxTest()
         {
@@ -44,16 +44,11 @@ namespace lookwords
 
             observable.Subscribe(obs);
 
-            foreach (var word in words_dict)
-            {
-                Console.WriteLine("Value: {0}, Count: {1}", word.Key, word.Value);
-            }
-
-            Console.ReadLine();
+            
         }
 
 
-        static async Task<ConcurrentDictionary<String, int>> groupWordsAsyncEnum()
+        private static async Task<ConcurrentDictionary<String, int>> countWordsAsyncEnum()
         {
             FileWordsEnumerable gw = new FileWordsEnumerable();
             ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
@@ -77,19 +72,5 @@ namespace lookwords
             return words_dict;
         }
 
-        static void groupWordsRxNet()
-        {
-
-            int minLength = 2, maxLength= 12;
-            
-            FolderWordsObservable gw = new FolderWordsObservable(folderPath);
-            ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
-
-            IObserver<string> observer = new WordObserver(words_dict, minLength, maxLength);
-
-            gw.Subscribe(observer);
-
-
-        }
     }
 }

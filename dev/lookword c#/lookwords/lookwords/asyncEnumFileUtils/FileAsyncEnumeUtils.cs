@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace lookwords.fileUtils
 {
-    internal class FileUtils
+    internal class FileAsyncEnumeUtils
     {
 
-        public static async IAsyncEnumerable<String> Lines(String folderPath)
+        public static async IAsyncEnumerable<String> GetLinesFromFolderTree(String folderPath)
         {
             string[] allfiles = Directory.GetFiles(folderPath, "*.txt", SearchOption.AllDirectories);
 

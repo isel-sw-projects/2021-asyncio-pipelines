@@ -24,12 +24,12 @@ namespace lookwords.RxNet
                 observers.Add(observer);
             }
 
-            proccessFiles(observer);
+            countWords(observer).Wait();
 
             return new Unsubscriber(observers, observer);
         }
 
-        private async void proccessFiles( IObserver<string> observer)
+        private async Task countWords( IObserver<string> observer)
         {
             Console.WriteLine("Initiation: ");
 
@@ -43,33 +43,26 @@ namespace lookwords.RxNet
                 {
                     while (!reader.EndOfStream)
                     {
-                        string line = await reader.ReadLineAsync();
-
-                        if (line.Contains("*** END OF ") || String.IsNullOrEmpty(line))
+                        try
                         {
-                            continue; 
+                            string line = await reader.ReadLineAsync();
+
+                            if (line.Contains("*** END OF ") || String.IsNullOrEmpty(line))
+                            {
+                                continue;
+                            }
+                                observer.OnNext(line);
+
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            String[] words = line.Split(' ');
-
-                            try
-                            {
-                                foreach (var word in words)
-                                {
-
-                                    observer.OnNext(word);
-
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                observer.OnError(ex);
-                            }
+                            observer.OnError(ex);
                         }
+
                     }
                 }
-            }
+            }    
+            
             observer.OnCompleted();
         }
         private class Unsubscriber : IDisposable
