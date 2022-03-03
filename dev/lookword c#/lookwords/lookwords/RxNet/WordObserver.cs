@@ -41,21 +41,23 @@ namespace lookwords.RxNet
         {
             string[] words = line.Split(' ');
 
-            foreach (var word in words)
+            foreach (string word in words)
             {
-                Console.WriteLine(word);
+            
                 if (word.Length > MinLength && word.Length < MaxLength)
                 {
-                    if (words_dict.ContainsKey(word))
+                    string ret = new string(word.Where(c => !char.IsPunctuation(c)).ToArray());
+                    Console.WriteLine(ret);
+                    if (words_dict.ContainsKey(ret))
                     {
                         int nextValue;
-                        while (!words_dict.TryRemove(word, out nextValue)) { };
+                        while (!words_dict.TryRemove(ret, out nextValue)) { };
 
-                        while (!words_dict.TryAdd(word, nextValue + 1)) { };
+                        while (!words_dict.TryAdd(ret, nextValue + 1)) { };
                     }
                     else
                     {
-                        while (!words_dict.TryAdd(word, 1)) { };
+                        while (!words_dict.TryAdd(ret, 1)) { };
                     }
                 }
             }

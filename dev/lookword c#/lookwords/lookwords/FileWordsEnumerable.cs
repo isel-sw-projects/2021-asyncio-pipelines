@@ -27,7 +27,9 @@ namespace lookwords
                     {
                         if (word.Length > minLength && word.Length < maxLength)
                         {
-                           yield return word;
+                            string ret = new string(word.Where(c => !char.IsPunctuation(c)).ToArray());
+                            Console.WriteLine(ret);
+                            yield return ret;
                         }
                     }
                 }
