@@ -1,5 +1,7 @@
 {
+
   "dependencies": {
+    "@reactivex/rxjs": "^6.6.7",
     "express": "^4.17.3",
     "rxjs": "^7.5.4"
   }

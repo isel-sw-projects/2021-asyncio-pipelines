@@ -39,17 +39,26 @@ async function* getFileWordsGenerator(filename) {
   }
 }
 
-async function main() {
-    const dirname = 'F:/escola/MEIC/TESE/dev'
-
+async function JSasyncGeneratorTest() {
+    const dirname = "C://Users//e351582//OneDrive - EDP//Desktop//TEST"
+    const dict = {}
     const files = await getFilesFromDirectoryGenerator(dirname)
     for await(var filename of files) {
       const words = await getFileWordsGenerator(filename)
 
-      for await(const word of words) {
-      console.log(word)
+    for await(const word of words) {
+         if(word in dict) {
+           dict[word] = dict[word] + 1 
+         } else {
+           dict[word] = 1
+         }
       }
     }
+
+  for( var element in dict) {
+      console.log(element + " repetitions: " + dict[element] ) 
+    };
+     
 }
 
-main()
+JSasyncGeneratorTest()
