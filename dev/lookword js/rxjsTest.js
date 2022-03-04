@@ -1,26 +1,27 @@
-const Observable =  require('rxjs')
- 
-const readline = require('readline')
-const fs = require('fs');
+import { Observable } from 'rxjs'
+import readline from 'readline'
+import * as fs from 'fs'
+const fspromises = fs.promises
 
-const { resolve } = require('path');
-const { readdir } = require('fs').promises;
+import  {resolve}  from 'path'
 
 function getFilesFromDirectoryObservable(dir) {
-  return new Observable( async ( subscriber ) => {
-    const dirents = await readdir(dir, { withFileTypes: true });
-    for await (const dirent of dirents) {
-        const filename = resolve(dir, dirent.name);
-        if (dirent.isDirectory()) {
-            getFilesFromDirectoryObservable(filename)
-            .subscribe( {
-                    next(x) { subscriber.next(x) },
-            })
-        } else if(dirent.name.endsWith(".txt")) {
-            subscriber.next(filename)
-        }
-        subscriber.complete();
-  }})
+    return new Observable( async ( subscriber ) => {
+        const dirents = await fs.promises.readdir(dir, { withFileTypes: true });
+        for await (const dirent of dirents) {
+            const filePath = resolve(dir, dirent.name);
+            if (dirent.isDirectory()) {
+                getFilesFromDirectoryObservable(filePath)
+                .subscribe( {
+                        next(fileP) { 
+                            subscriber.next(fileP) 
+                        },
+                })
+            } else if(dirent.name.endsWith(".txt")) {
+                subscriber.next(filePath)
+            }
+    }
+    })
 }
 
 
@@ -43,36 +44,40 @@ function getFilesFromDirectoryObservable(dir) {
                 subscriber.next(word)
             }
         }
-        subscriber.complete();
     })
 }
 
-async function JSasyncRxJSTest() {
-    const dirname = "C://Users//e351582//OneDrive - EDP//Desktop//TEST"
-    const dict = {}
-    getFilesFromDirectoryObservable(dirname)
-        .subscribe(  {
-            next(files) {
-                for (var filename of files) {
-                    getFileWordsGeneratorObservable(filename)
-                        .subscribe( {
-                            onNext(words)  { 
-                                for (const word in words) {
-                                    if(word in dict) {
-                                        dict[word] = dict[word] + 1 
-                                    } else {
-                                        dict[word] = 1
-                                    }
-                                }
-                                for( var element in dict) {
-                                    console.log(element + " repetitions: " + dict[element] ) 
 
-                                };
-                            } 
-                        })
+ function JSasyncRxJSTest() {
+    const dirname = "C://Users//Matrix//Desktop//ola"
+    const dict = {}
+    return getFilesFromDirectoryObservable(dirname)
+    .subscribe(  {
+        next(filename) {
+            getFileWordsGeneratorObservable(filename)
+                .subscribe( {
+                    next(word)  { 
+                        if(word in dict) {
+                            dict[word] = dict[word] + 1 
+                        } else {
+                            dict[word] = 1
+                        }
                 }
-            }
-        })
+            })
+        }, 
+        complete() {
+            for( var element in dict) {
+                console.log(element + " repetitions: " + dict[element] ) 
+            };
+        }
+    })
 }
 
-JSasyncRxJSTest()
+
+
+const obs = JSasyncRxJSTest()
+
+setTimeout(() => {
+    
+    obs.complete()
+}, 20000);

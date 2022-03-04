@@ -1,18 +1,19 @@
 
-const readline = require('readline')
-const fs = require('fs');
 
-const { resolve } = require('path');
-const { readdir } = require('fs').promises;
+import readline from 'readline'
+import * as fs from 'fs'
+const fspromises = fs.promises
+
+import  {resolve}  from 'path'
 
 async function* getFilesFromDirectoryGenerator(dir) {
-  const dirents = await readdir(dir, { withFileTypes: true });
+  const dirents = await fspromises.readdir(dir, { withFileTypes: true });
   for (const dirent of dirents) {
-    const res = resolve(dir, dirent.name);
+    const filePath = resolve(dir, dirent.name);
     if (dirent.isDirectory()) {
-      yield* getFilesFromDirectoryGenerator(res);
+      yield* getFilesFromDirectoryGenerator(filePath);
     } else if(dirent.name.endsWith(".txt")) {
-      yield res;
+      yield filePath;
     }
   }
 }
@@ -40,7 +41,7 @@ async function* getFileWordsGenerator(filename) {
 }
 
 async function JSasyncGeneratorTest() {
-    const dirname = "C://Users//e351582//OneDrive - EDP//Desktop//TEST"
+    const dirname = "C://Users//Matrix//Desktop//ola"
     const dict = {}
     const files = await getFilesFromDirectoryGenerator(dirname)
     for await(var filename of files) {
@@ -57,7 +58,7 @@ async function JSasyncGeneratorTest() {
 
   for( var element in dict) {
       console.log(element + " repetitions: " + dict[element] ) 
-    };
+  };
      
 }
 

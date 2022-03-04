@@ -1,5 +1,5 @@
 {
-
+  "type": "module",
   "dependencies": {
     "@reactivex/rxjs": "^6.6.7",
     "express": "^4.17.3",
