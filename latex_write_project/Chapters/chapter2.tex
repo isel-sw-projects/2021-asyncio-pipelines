@@ -22,8 +22,7 @@ Firstly, on section \ref{sec:related_work}, will be made an overview on previous
 
 From the end of 80´s to the beginning of the 2000´s, with the acceleration of Moores´s Law in hardware and network bandwidth development, the creation of the web as we know today through the wide spread of use of the HTTP protocol and the support from new operative systems to multithreading support, the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism, caused the necessity of design new programming models compatible with concurrent work. 
 
-Taking the wave initiated by the Gang of Four in \cite{gof}, where 23 patterns were compiled to deal with object-oriented problems, a group of researchers published the \textit{Proactor Pattern} in the paper \cite{proactor} to deal with asynchronous IO. 
-In the document, are identified four properties that high-performance web server must have: 
+Taking the wave initiated by the Gang of Four in \cite{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers indentified characteristics that high available server must have, and how the use of asynchronous IO design patterns can help to achieve these caracheristics that are described bellow:
 \begin{itemize}
 	\item Concurrency - The server must process multiple client requests simultaneously.\\
 	\item Efficiency - The software design must be built aiming the use of least hardware resources as possible. \\
@@ -31,13 +30,13 @@ In the document, are identified four properties that high-performance web server
     \item Adaptability - The system must be totally decoupled from client implementations, allowing it to be easily used by any client independently of the underlying technologic realities. To achieve this, may be used standards e.g. \cite{REST} or SOAP.\\
 \end{itemize}
 
-The authors propose the \textit{Proactor Pattern}, because in their opinion, conventional concurrency models fail to fully achieve the enumerated properties. In the paper, before presenting the \textit{Proactor Pattern}, are identified two major concurrency models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
+The authors propose the \textit{Proactor Pattern}. In their opinion, conventional concurrency models fail to fully achieve the enumerated properties. In the document, before presenting the \textit{Proactor Pattern}, are identified two major existing concurrency models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
 
-The paper refers that one of the most direct implementations of the multithreading approach, is the handling of multiple requests by creating a new thread every request. Each request will then be fully processed and the recently  created thread is then be disposed after the work is finished. 
+On multithreading, the paper refers that one of the most direct solution of this approach, is the handling of multiple requests by creating a new thread every request. Each request will then be fully processed and the recently created thread is then be disposed after the work is done. 
 
 This solution has several serious issues. Firstly, creating a new thread per request is highly costly in terms of computational resources,
 because are involved context switches between user and kernel modes; secondly, must be taken in account synchronization to maintain data integrity.
-Then, the authors warn about the fact that the IO retrieved data is mainly memory-mappped, wich rises the question: What happens when the data obtained through IO becomes greater than the system memory can hold? The system stalls until more memory becomes available!?
+Then, the authors warn about the fact that the IO retrieved data is mainly memory-mappped, wich rises the question: What happens when the data obtained through IO becomes greater than the system memory can hold? The system stalls until more memory becomes available!? One possible solution is asynchronous pipelines that will be discussed ahead in this dissertation.
 On last, if the server receives a high demand of requests, the server easily blocks in the process of creating and disposing threads. 
 
 To avoid this issue, the authors, recommended the use of dynamic threadpools to process requests, where each request will be linked to a pre-existing thread, avoiding all the overhead of creating and disposing a thread per request;
@@ -189,9 +188,9 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	
 	In the \texttt{Cold} example, the producer only emits data when a subscription is done, and because of that, all the produced numbers were printed, in contrast with what happen in \texttt{Hot} stream, where data loss are almost certain. 
 	\clearpage
-	\subsection{Cancelables} 
+	\subsection{Cancelable} 
 	As already stated above, Asynchronous operations may run outside the main program context. 
-	This implies, that the main program loses visibility and control on what happens in that asynchronous operations.
+	This implies, that the main program loses visibility and control on what happens in the asynchronous operation contexts.
 	Because of that, exists the need to put in place mechanisms of control that allow the main program to maintain control over an asynchronous operation to, for example, cancel the operation or put in place finishing logic that allow, for example: resource disposing, logging, decisions etc...
 
 	These mechanisms, are many times done through the concept of \textit{cancelables}. 
@@ -200,7 +199,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	In C\#, a cancelable is an interface implemented by objects that represent asynchronous operations and provides the means to cancel asynchronous operations, on the fly. 
 	This is achieved through a mechanism named: \texttt{CancellationToken}, that is used to pass information through different execution threads. 
 	
-	In RXJava, a \texttt{Cancelable}, is a functional interface with the method \texttt{cancel()}. Then, the \texttt{Cancelable} can be associated to a data source representation, the \texttt{Observable}, by calling the method \texttt{Observable.setCancelable(Cancelable)}. 
+	In RxJava, a \texttt{Cancelable}, is a functional interface with the method \texttt{cancel()}. Then, the \texttt{Cancelable} can be associated to a data source representation, the \texttt{Observable}, by calling the method \texttt{Observable.setCancelable(Cancelable)}. 
 	When the \texttt{Observable} finishes or is canceled for any reason, the method \texttt{Cancelable.cancel()} will be called. 
 	This way,  proper logic is put in place to handle an asynchronous operation cancelation.
 	
@@ -229,13 +228,13 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	One example of \textit{intrinsic words} mechanisms, is the \texttt{async...await} keywords implemented in \textit{Microsoft's .NET C\#} and in \textit{javascript}. 
 	
 	In the example \ref{fig:enumex} we can see an example of these keywords being used. 
-	Where, for example, we can observe in the line 15, a call to a asynchronous operation, and, by hadding the keyworkd \texttt{await}, the next statment although being to an asynchronous operation the statment orde looks like its synchronous. 
+	Where, for example, we can observe in the line 15, a call to an asynchronous operation, and, by adding the keyworkd \texttt{await}, the next statement although being to an asynchronous operation the statement order looks like its synchronous. 
 	
 	Additionally, the use of \texttt{async...await} in javacript, for example, simplifies error handling in asynchronous code. Instead of use a promise callback to handle an error, by using \texttt{async...await} the error can handled by just using a simple try/catch block. 
 	
-	Yet, Another example of 'intrisic words' used in asynchronous processing is the \texttt{for await...of}, used in javascript to proccess asynchronous enumerables, that will be described in more detail ahead. 
+	Yet, Another example of 'intrinsic words' used in asynchronous processing is the \texttt{for await...of}, used in javascript to process asynchronous enumerables, that will be described in more detail ahead. 
 	
-	To better visualize the advantage of using intrisic words in asynchronous code, on the next example, we can see a code comparation in javascript, with and without the use of intrisic words in asynchronous code, where it is possible to observe the reduce of code complexity and increment of readability 
+	To better visualize the advantage of using intrinsic words in asynchronous code, on the next example, we can see a code comparation in javascript, with and without the use of intrisic words in asynchronous code, where it is possible to observe the reduce of code complexity and increment of readability 
 	
 	
 
@@ -290,9 +289,9 @@ of properties, concepts and design alternatives started to grow by itself. In th
 \section{State of the Art} % (fold)
 \label{sec:state_of_the_art}
 
-In this section, we will be explaining the different frameworks that are the \textit{State of the Art} in asynchronous data processing in several programming languages.
+In this section, we will be explaining the different frameworks that are the \textit{State of the Art} in asynchronous IO pipeline processing in several programming languages.
 
-First of all, in the section \ref{reactivex}, will be presented the multi-language \texttt{reactivex.io} project, and how the \texttt{Observer Pattern} is used in this project to implement real time asynchronous processing with and without \textit{back-pressure}.
+First of all, in the section \ref{reactivex}, will be presented the multi-language \texttt{reactivex.io} project, and how the \texttt{Observer Pattern} is used in this apporach to implement real time asynchronous processing with and without \textit{back-pressure}.
 
 Secondly, in the section 2.3.2, will be presented the \textit{.NET} \textit{Async Enumerables} and how this approach diverges from approaches made in \textit{reactivex.io}, \textit{Javascript}, and in Kotlin with \textit{Kotlin Flow}.
 In the sections 2.3.3 and 2.3.4, will be respectively presented the Javascript and the Kotlin Flow strategies for asynchronous data processing.
@@ -370,12 +369,11 @@ On the next table, it is possible to see how each object type can be mapped
 \subsubsection{.NET Asynchronous Enumerables}
 \label{csenums}
 	\texttt{IEnumerable<T>} in C\#, is a interface that implements a method \texttt{GetEnumerator()} that returns a \texttt{IEnumerator<T>}. 
-	In its turn, \texttt{IEnumerator<T>}, is a interface that allows to iterate over items of a Collection by offering a method \texttt{T getCurrent()}, that allows to retrieve the current item 
+	In its turn, \texttt{IEnumerator<T>}, is an interface that allows to iterate over items of a Collection by offering a method \texttt{T getCurrent()}, that allows to retrieve the current item 
 	and a method \texttt{bool MoveNext()}, that allows to iterate to the next item of the sequence and check if the iteration has finished.
 	\texttt{IAsyncEnumerable<T>}, keeps the same logic of \texttt{IEnumerable<T>}, but instead of returning a synchronous \texttt{IEnumerator<T>} with a synchronous \texttt{MoveNext()} method, returns a \texttt{IAsyncEnumerator<T>} where its method \texttt{bool MoveNextAsync()} is asynchronous. 
 	
-	To better understand what was explained, we have the following diagram that will help to explain what is the the class structure implemented in C\# that allow the enumeration of 
-
+	To better understand what was explained, we have the following diagram that will help to explain what is the class structure implemented in C\# that allow the enumeration of 
 
 	On the other side, the keyword \texttt{yield}, is a syntax sugar introduced in \textbf{C\# 2.0} that allows to avoid the implementation of \texttt{IEnumerable<T>} and \texttt{IEnumerator<T>} interfaces by the programmer,
 	allowing iteration and the lazy return of items. All the work of implementing iteration interfaces is handled by \texttt{.NET} virtual machine in background. 
@@ -392,11 +390,11 @@ On the next table, it is possible to see how each object type can be mapped
 
 \subsubsection{Javascript asynchronous iterables}
 \label{jsae}
-	Javascript tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.
+	Node.js tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.
 
-	The keyworkd to provide the mechanism to iterate over asynchronous streams in relativity similar to what we saw in C\#, with the implementation of the intrisic keywords \texttt{async...await} and \texttt{for await...of}.
+	The mechanism to provide the means to iterate over asynchronous streams, is relativity similar to what we saw in C\#, with the use of the intrinsic keywords \texttt{async...await} and \texttt{for await...of}.
 
-	With the keyword pair \texttt{async...await}, its provided the syntax "sugar" that enables to make asynchronous calls and the code syntax resembling synchronous. 
+	With the keyword pair \texttt{async...await}, its provided the syntax "sugar" that enables to make asynchronous calls and allowing the syntax to resemble synchronous code. 
 	The \texttt{async} mark is used in an asynchronous function and enables the use of the keyword \texttt{await}. The \texttt{await} keyword is then used in an asynchronous call to another asynchronous function
 
 	On the other side, the keywords \texttt{for await...of}, provides support for iteration over asynchronous enumerables, as we can see in the next example:
@@ -408,11 +406,11 @@ On the next table, it is possible to see how each object type can be mapped
 		\label{fig:enumex2}
 	\end{figure}
 
-In this example, the function \texttt{streamAsyncIterable} read a stream of bytes and has the responsibility to lazily return the items as they become available.
+In this example, the function \texttt{streamAsyncIterable}, provides a byte pipeline that emits items as they become available.
 
-On the other side, the function \texttt{getResponseSize}, the keyword \texttt{await} its followed by an asynchronous HTTP request and the mechanism \texttt{for wait...of} it is used to iterate over an asynchronous iterable stream. As we can observe, the code syntax is very similar to a synchronous iteration. \\
+On the other side, the function \texttt{getResponseSize()}, the keyword \texttt{await} its followed by an asynchronous HTTP request and the mechanism \texttt{for wait...of} it is used to iterate over an asynchronous iterable stream. As we can observe, the code syntax is very similar to a synchronous iteration. \\
 
-With the implementation of this mechanism, javascript simplifies in a very subtle way, how asynchronous streams are handled, allowing the code to be easily readable and maintainable and abstracting the programming from: e.g. callbacks, tasks or completion tokens.\\
+With the implementation of this mechanism, JavaScript simplifies in a very subtle way, how asynchronous streams are handled, allowing the code to be easily readable and maintainable and abstracting the programming from: e.g. callbacks, tasks or completion tokens.\\
 
 This solution is usually used in front-end environments, for example, to load several items from remote sources while a web page loads.
 \clearpage

@@ -37,30 +37,16 @@ namespace lookwords.RxNet
         }
 
 
-        public void OnNext(string line)
+        public void OnNext(string lineString)
         {
-            string[] words = line.Split(' ');
-
-            foreach (string word in words)
-            {
+            lineString = new string(lineString.Where(c => !char.IsPunctuation(c)).ToArray());
+            List<String> lines = lineString.Split(' ')
+                .Where(word => !String.IsNullOrEmpty(word) && !lineString.Contains("*** END OF "))
+                .Where(word => word.Length >= MinLength && word.Length <= MaxLength)
+                .ToList();
+                
+            FileUtils.addWordToDictionary(lines, words_dict);
             
-                if (word.Length > MinLength && word.Length < MaxLength)
-                {
-                    string ret = new string(word.Where(c => !char.IsPunctuation(c)).ToArray());
-                    Console.WriteLine(ret);
-                    if (words_dict.ContainsKey(ret))
-                    {
-                        int nextValue;
-                        while (!words_dict.TryRemove(ret, out nextValue)) { };
-
-                        while (!words_dict.TryAdd(ret, nextValue + 1)) { };
-                    }
-                    else
-                    {
-                        while (!words_dict.TryAdd(ret, 1)) { };
-                    }
-                }
-            }
         }
     }
 }

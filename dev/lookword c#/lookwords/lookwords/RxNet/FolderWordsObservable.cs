@@ -47,11 +47,7 @@ namespace lookwords.RxNet
                         {
                             string line = await reader.ReadLineAsync();
 
-                            if (line.Contains("*** END OF ") || String.IsNullOrEmpty(line))
-                            {
-                                continue;
-                            }
-                                observer.OnNext(line);
+                            observer.OnNext(line);
 
                         }
                         catch (Exception ex)

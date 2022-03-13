@@ -1,3 +1,4 @@
 {"rule":"ENGLISH_WORD_REPEAT_BEGINNING_RULE","sentence":"^\\QThis style file is a major rewrite from the most of Universities, which was in turn adapted from a style file from the FCT-UNL (not official version).\\E$"}
 {"rule":"DT_JJ_NO_NOUN","sentence":"^\\QTo better understand what a cancelable is, we will pick the example of RxJava and its representation of a asynchronous stream of events, the Observable.\\E$"}
 {"rule":"DT_JJ_NO_NOUN","sentence":"^\\QIn C, a cancelable is an interface implemented by objects that represent asynchronous operations and that provides the means to cancel asynchronous operations, on the fly.\\E$"}
+{"rule":"DT_JJ_NO_NOUN","sentence":"^\\QIn C, a cancelable is an interface implemented by objects that represent asynchronous operations and provides the means to cancel asynchronous operations, on the fly.\\E$"}
