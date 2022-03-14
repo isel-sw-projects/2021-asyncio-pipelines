@@ -28,26 +28,23 @@ namespace lookwords
             minLength = 2;
             maxLength = 12;
 
-            IAsyncEnumerable<List<string>> enume = FileUtils.getLinesAsync(folderPath)
+            ValueTask<ConcurrentDictionary<string, int>> enumePromise = FileUtils
+                                                           .getLinesAsync(folderPath)
                                                            .Where(line => !line.Contains("*** END OF "))
                                                            .Select(line => new string(line.Where(c => !char.IsPunctuation(c)).ToArray()))
                                                            .Select(line => line.Split(' ')
-                                                                               .Where(word => !String.IsNullOrEmpty(word))
+                                                                               .Where(word => !string.IsNullOrEmpty(word))
                                                                                .Where(word => word.Length >= minLength && word.Length <= maxLength)
-                                                                               .ToList())
-                                                           .Select(line =>
+                                                                               )
+                                                           .AggregateAsync(new ConcurrentDictionary<string, int>(), (prev, curr) =>
                                                            {
-                                                               FileUtils.addWordToDictionary(line, words_dict);
-                                                               return line;
+                                                               FileUtils.addWordToDictionary(curr, prev);
+                                                               return prev;
                                                            });
 
-            await foreach (List<string> word in enume)
-            {
-                word.ForEach(word => Console.WriteLine(word));
-            }
-
-
-            foreach (var curr in words_dict)
+            ConcurrentDictionary<string, int> words = await enumePromise;
+           
+            foreach (var curr in words)
             {
                 Console.WriteLine("Palavra: " + curr.Key + " repetitions: " + curr.Value);
             }

@@ -28,12 +28,10 @@ namespace lookwords
             }
         }
 
-        public static void addWordToDictionary(List<string> line, ConcurrentDictionary<String, int> dict)
+        public static void addWordToDictionary(IEnumerable<string> line, ConcurrentDictionary<String, int> dict)
         {
             foreach (string word in line)
             {
-                for (int i = 0; i < line.Count; i++)
-                {
 
                     if (dict.ContainsKey(word))
                     {
@@ -46,7 +44,6 @@ namespace lookwords
                     {
                         while (!dict.TryAdd(word, 1)) { };
                     }
-                }
             }
         }
 
