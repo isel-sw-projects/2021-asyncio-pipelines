@@ -7,7 +7,8 @@
 \chapter{State of the Art}
 \label{cha:users_manual}
 
-Firstly, on section \ref{sec:related_work}, will be made an overview on previously developted work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on asynchronous data flow in different programming realities, e.g. on Kotlin, JAVA and C\#. 
+This section, aims to provide the background and the current state of the art on the subject related with asynchronous data operations involving asynchronous data flows.  
+On the section \ref{sec:related_work}, will be made an overview on previously developted work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on how asynchronous data flows is handled in different programming realities, e.g. on Kotlin, JAVA and C\#. 
 
 
 % ================
@@ -20,9 +21,9 @@ Firstly, on section \ref{sec:related_work}, will be made an overview on previous
 % The servers design, were made without many concerns about availability under demand pressure or computer resource optimization. 
 % Consequently, operations that required intensive IO interactions or data request from an external sources, were mostly blocking, non-flexible in terms of responsiveness and interoperability. 
 
-From the end of 80´s to the beginning of the 2000´s, with the acceleration of Moores´s Law in hardware and network bandwidth development, the creation of the web as we know today through the wide spread of use of the HTTP protocol and the support from new operative systems to multithreading support, the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism, caused the necessity of design new programming models compatible with concurrent work. 
+From the end of 80´s to the beginning of the 2000´s, with the acceleration of Moores´s Law in hardware and network bandwidth development; the creation of the web as we know today, through the wide spread of use of the HTTP protocol, and the support from new operative systems to multithreading support; the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism envolving asynchronous processing, caused the necessity of design new programming models compatible with concurrent work. 
 
-Taking the wave initiated by the Gang of Four in \cite{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers indentified characteristics that high available server must have, and how the use of asynchronous IO design patterns can help to achieve these caracheristics that are described bellow:
+Taking the wave initiated by the Gang of Four in \cite{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers wrote a paper, where they indentify the characteristics that high available server must have, and how the use of asynchronous IO pipelining design patterns can help to achieve these caracheristics, as described bellow:
 \begin{itemize}
 	\item Concurrency - The server must process multiple client requests simultaneously.\\
 	\item Efficiency - The software design must be built aiming the use of least hardware resources as possible. \\
@@ -30,7 +31,9 @@ Taking the wave initiated by the Gang of Four in \cite{gof}, where 23 patterns w
     \item Adaptability - The system must be totally decoupled from client implementations, allowing it to be easily used by any client independently of the underlying technologic realities. To achieve this, may be used standards e.g. \cite{REST} or SOAP.\\
 \end{itemize}
 
-The authors propose the \textit{Proactor Pattern}. In their opinion, conventional concurrency models fail to fully achieve the enumerated properties. In the document, before presenting the \textit{Proactor Pattern}, are identified two major existing concurrency models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
+The authors propose in their paper the \textit{Proactor Pattern}, because, in their opinion, conventional concurrency models fail to fully achieve the enumerated properties.
+
+On the other side, before presenting the \textit{Proactor Pattern}, are identified two major existing non blocking models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
 
 On multithreading, the paper refers that one of the most direct solution of this approach, is the handling of multiple requests by creating a new thread every request. Each request will then be fully processed and the recently created thread is then be disposed after the work is done. 
 
@@ -304,7 +307,7 @@ Finally, in the section 2.3.5, will be made an overview and taken conclusions ab
 After the historical context explained in the chapter 2.1, many groups of developers started to implement several solutions to handle asynchronous data flows. One of the most ambitious results of this proactivity is the \textit{reactiveX} project.
 
 This project gathers several ideas and known design patterns to implement an asynchronous data flow mechanism. 
-The most positive points about this project implementation is that the mechanism is implemented in several programming languages using an open source approach and the solution design is done in a way, that all the complexity inherent with asynchronous programming is hidden from the programmer, making the code very intuitive and iterative an easily understandable for programmer that are not used to handle with asynchronous enviroments. 
+The most positive points about this project implementation is that the mechanism is implemented in several programming languages using an open source approach. Above that, the solution design is done in a way, that all the complexity inherent with asynchronous programming is hidden from the programmer, making the code very intuitive and iterative an easily understandable for programmer that are not used to handle with asynchronous enviroments. 
 In this dissertation, we will analyze the implementation of reactiveX made for Java, which is named: RXJava
 \clearpage
 \subsubsection{RxJava architecture}
