@@ -31,7 +31,7 @@ Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns 
     \item Adaptability - The system must be totally decoupled from client implementations, allowing it to be easily used by any client independently of the underlying technologic realities. To achieve this, may be used standards e.g. \cite{REST} or SOAP.\\
 \end{itemize}
 
-To achieve these properties, the authors propose the \textit{Proactor Pattern}. In their opinion, conventional concurrency models fail to fully achieve the enumerated properties while this model is a most robust solution in their eyes.
+To achieve these properties, the authors propose the \textit{Proactor Pattern} \citep{proactor}. In their opinion, conventional concurrency models fail to fully achieve the enumerated properties while this model is a most robust solution in their eyes.
 
 On the other side, before presenting the \textit{Proactor Pattern}, are identified two major existing non-blocking models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
 
@@ -113,15 +113,12 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	To better visualize what was explained, we have the following examples: 
 	
 	\begin{figure}[H]
-		\centering
-		\begin{subfigure}[h]{1.2\textwidth}
-			\centering
+		\begin{subfigure}[h]{0.5\textwidth}
 			\lstfromfile{java}{1-14}{Asynchronous call example}{async}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{async.java}
 			\label{fig:ra-vectorial}
 		 \end{subfigure}	
 	\qquad
-		 \begin{subfigure}[h]{1.2\textwidth}
-			\centering
+		 \begin{subfigure}[h]{0.5\textwidth}
 			\lstfromfile{java}{1-15}{Synchronous call example}{Sync}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{Sync.java}
 			\label{fig:ra-raster}
 		\end{subfigure}		
@@ -141,12 +138,10 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 	\begin{figure}[H]
 		\centering
-		\begin{subfigure}[h]{.5\textwidth}
-			\centering
+		\begin{subfigure}[h]{.4\textwidth}
 			\lstfromfile{java}{1-17}{Pull pattern example}{pull}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{pull.java}
 		 \end{subfigure}	
-		 \begin{subfigure}[h]{.5\textwidth}
-			\centering
+		 \begin{subfigure}[h]{.4\textwidth}
 			\lstfromfile{java}{1-17}{Push pattern example}{push}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{push.java}
 		\end{subfigure}		
 	  \caption{Example of Pull and Push data handling patterns}
@@ -173,13 +168,11 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 	\begin{figure}[H]
 		\centering
-		\begin{subfigure}{.5\textwidth}
-			\centering
+		\begin{subfigure}{.4\textwidth}
 			\lstfromfile{java}{1-3}{Cold Example}{cold}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{ColdFlux.java}
 		 \end{subfigure}	
 	\qquad\qquad
-		 \begin{subfigure}{.5\textwidth}
-			\centering
+		 \begin{subfigure}{.4\textwidth}
 			\lstfromfile{java}{1-6}{Hot Example}{hot}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{HotFlux.java}
 		\end{subfigure}		
 	  \caption{Example of Hot and Cold data streams}

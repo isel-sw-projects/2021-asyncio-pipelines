@@ -17,13 +17,3 @@ static async IAsyncEnumerable<int> FetchItems(int delay)
         yield return count++;
     }
 }
-
-//Output:
-//01:00:01: Start
-//01:00:02: 1
-//01:00:03: 2
-//01:00:04: 3
-//01:00:05: 4
-//.....
-//01:00:05: 9
-//01:00:05: End

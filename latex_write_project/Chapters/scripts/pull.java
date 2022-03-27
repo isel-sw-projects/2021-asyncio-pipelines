@@ -6,11 +6,3 @@ Iterator<Long> iterator = flow.blockingIterable().iterator();
 while (iterator.hasNext()) {
     System.out.println(iterator.next());
 }
-//Output:
-//0
-//1
-//2
-//3
-//.
-//.
-//9

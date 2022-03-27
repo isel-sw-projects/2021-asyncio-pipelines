@@ -8,8 +8,5 @@ HttpRequest request = HttpRequest.newBuilder(
          .header("accept", "application/json")
          .build();
 
-// blocking http synchronous request
 HttpResponse<Supplier<DTO>> response = client.send(request, new JsonBodyHandler<>(DTO.class));
 
-// the response:
-System.out.println(response.body().get().title);
