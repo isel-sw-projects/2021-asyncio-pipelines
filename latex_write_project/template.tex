@@ -42,8 +42,8 @@
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[
-	MSc,		% (*) msc, prepmsc, bsc, prepbsc - degree
-					% prepbsc(msc) Preparation of BSc (MSc) dissertation
+	%MSc,		% (*) msc, prepmsc, bsc, prepbsc - degree
+	prepmsc,				% prepbsc(msc) Preparation of BSc (MSc) dissertation
 					% bsc(msc) BSc graduation report/ MSc dissertation
 	en,			% (*) pt, en - languages 
 	twoside,	% (*) twoside, oneside - single or double sided printing
@@ -144,10 +144,10 @@
 \acknowledgementsfile{acknowledgements}
 
 % Resume/summary text in Portuguese
-\ptabstractfile{resumo}
+%\ptabstractfile{resumo}
 
 % Resume/summary text in English
-\enabstractfile{abstract}
+%\enabstractfile{abstract}
 
 %% ------------------------------------------------------------
 % The Table of Contents is always printed. The other lists may be omited.
@@ -165,7 +165,7 @@
 % syntax: \chapterfile{file}
 \chapterfile{chapter1}
 \chapterfile{chapter2}
-\chapterfile{chapter3}
+%\chapterfile{chapter3}
 
 %% ------------------------------------------------------------
 %% Bibliography style
@@ -182,13 +182,13 @@
 %uniquelist=false
 %]{biblatex}
 %
-\addbibresource{bibliography.bib}
+\addbibresource{bibliography}
 %% ------------------------------------------------------------
 %% Text appendixes
 %% ------------------------------------------------------------
 % Comment if not needed
 % sintax: \appendixfile{file}
-\appendixfile{appendix1}
+%\appendixfile{appendix1}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -263,7 +263,7 @@
 %%
 \cleardoublepage
 \setcounter{page}{1} \pagenumbering{roman}
-\printappendixes 
+%\printappendixes 
 \cleardoublepage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -7,7 +7,8 @@
 \chapter{State of the Art}
 \label{cha:users_manual}
 
-Firstly, on section \ref{sec:related_work}, will be made an overview on previously developted work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on asynchronous data flow in different programming realities, e.g. on Kotlin, JAVA and C\#. 
+This section, aims to show the background and the current state of the art on the subject related with asynchronous data operations involving asynchronous data flows.  
+On the section \ref{sec:related_work}, will be made an overview on previously developed work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on how asynchronous data flows is handled in different programming realities, e.g. on Kotlin, JAVA and C\#. 
 
 
 % ================
@@ -20,31 +21,33 @@ Firstly, on section \ref{sec:related_work}, will be made an overview on previous
 % The servers design, were made without many concerns about availability under demand pressure or computer resource optimization. 
 % Consequently, operations that required intensive IO interactions or data request from an external sources, were mostly blocking, non-flexible in terms of responsiveness and interoperability. 
 
-From the end of 80´s to the beginning of the 2000´s, with the acceleration of Moores´s Law in hardware and network bandwidth development, the creation of the web as we know today through the wide spread of use of the HTTP protocol and the support from new operative systems to multithreading support, the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism, caused the necessity of design new programming models compatible with concurrent work. 
+From the end of 80’s to the beginning of the 2000´s, with the acceleration of Moore's Law in hardware and network bandwidth development; the creation of the web as we know today through the wide spread of use of the HTTP protocol, and the support from new operative systems to multithreading support; the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism involving asynchronous flow processing, caused the necessity of design new programming models. 
 
-Taking the wave initiated by the Gang of Four in \cite{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers indentified characteristics that high available server must have, and how the use of asynchronous IO design patterns can help to achieve these caracheristics that are described bellow:
+Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers wrote a paper, where they identify the characteristics that high available server must have, and how the use of asynchronous IO pipe lining design patterns can help to achieve these characteristics, as described bellow:
 \begin{itemize}
 	\item Concurrency - The server must process multiple client requests simultaneously.\\
-	\item Efficiency - The software design must be built aiming the use of least hardware resources as possible. \\
+	\item Efficiency - The software design must be built aiming the use the least hardware resources as possible. \\
 	\item Simplicity - The code of the solution must be easy to understand, modular and avoid own built design patterns as possible. \\
     \item Adaptability - The system must be totally decoupled from client implementations, allowing it to be easily used by any client independently of the underlying technologic realities. To achieve this, may be used standards e.g. \cite{REST} or SOAP.\\
 \end{itemize}
 
-The authors propose the \textit{Proactor Pattern}. In their opinion, conventional concurrency models fail to fully achieve the enumerated properties. In the document, before presenting the \textit{Proactor Pattern}, are identified two major existing concurrency models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
+To achieve these properties, the authors propose the \textit{Proactor Pattern}. In their opinion, conventional concurrency models fail to fully achieve the enumerated properties while this model is a most robust solution in their eyes.
+
+On the other side, before presenting the \textit{Proactor Pattern}, are identified two major existing non-blocking models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
 
 On multithreading, the paper refers that one of the most direct solution of this approach, is the handling of multiple requests by creating a new thread every request. Each request will then be fully processed and the recently created thread is then be disposed after the work is done. 
 
 This solution has several serious issues. Firstly, creating a new thread per request is highly costly in terms of computational resources,
 because are involved context switches between user and kernel modes; secondly, must be taken in account synchronization to maintain data integrity.
-Then, the authors warn about the fact that the IO retrieved data is mainly memory-mappped, wich rises the question: What happens when the data obtained through IO becomes greater than the system memory can hold? The system stalls until more memory becomes available!? One possible solution is asynchronous pipelines that will be discussed ahead in this dissertation.
+Then, the authors warn about the fact that the IO retrieved data is mainly memory-mappped, which rises the question: What happens when the data obtained through IO becomes greater than the system memory can hold? The system stalls until more memory becomes available!? One possible solution is asynchronous pipelines that will be discussed ahead in this dissertation.
 On last, if the server receives a high demand of requests, the server easily blocks in the process of creating and disposing threads. 
 
-To avoid this issue, the authors, recommended the use of dynamic threadpools to process requests, where each request will be linked to a pre-existing thread, avoiding all the overhead of creating and disposing a thread per request;
+To avoid this issue, the authors, recommended the use of dynamic thread pools to process requests, where each request will be linked to a pre-existing thread, avoiding all the overhead of creating and disposing a thread per request;
 however, issues related with memory-mapping and overhead due to the switching of data between different threads maintains. 
 
 Another traditional concurrency model identified by the authors of the paper, is the \textit{Reactive Synchronous Event Dispatching} or more commonly known as \texttt{Reactor Pattern}. In this model, a \textit{Dispatcher}, with a single thread in a loop, is constantly listening requests from clients and sending work requests to an entity named \textit{Handler}. 
 The \textit{Handler}, will then process the IO work Synchronously and request a connection to the client in the \textit{Dispatcher}. When the requested connection is ready to be used, the \textit{Dispatcher} notifies the \textit{Handler}. After the notification, the \textit{Handler} asynchronously sends the data, that is being or has been obtained through IO, to the client.\\
-Although the authors identifying that this approach is positive, because decouples the application logic from the dispatching mechanisms besided with the low overhead due the use of a single thread, the authors identify several drawbacks with this approach. 
+Although the authors identifying that this approach is positive, because decouples the application logic from the dispatching mechanisms, beside with the low overhead due the use of a single thread, the authors identify several drawbacks with this approach. 
 Firstly, since IO operation are synchronous, the code for this approach is complex because must be set in place mechanisms to avoid IO blocking through hand off mechanisms. 
 Then, if a request processing blocks, the processing of another requests may be impacted. 
 
@@ -57,7 +60,7 @@ Finally, the \textit{Completion Dispatcher} has the responsibility to dequeue th
 With this, this model creates a platform that provides: decoupling between application and processing mechanisms,
 offers concurrent work without the issues inherent with the use of threading mechanisms and since IO is managed by the OS subsystems, is avoided code complexity in handling possible blocking and scheduling issues.  
 
-The \textit{Proactor Pattern}, creates the ground for several models used by modern platforms that use a single/few threads to process client requests and parallel mechanisms to do the heavy work in the background; namely, for example: \textit{Javascript NODE.JS}, \textit{Spring Webflux}, \textit{vertx} and others.
+The \textit{Proactor Pattern}, creates the ground for several models used by modern platforms that use a reduced number of threads to process client requests and parallel mechanisms to do the heavy work in the background. Some of these technologies, are, for example: \textit{Javascript NODE.JS}, \textit{Spring Webflux}, \textit{vertx} and others.
 
 From what was explained until now, is evident the tendency followed by software architects in terms of asynchronous processing from non-reactive to event driven approaches. Initially the systems were non-reactive, where each request had to be processed in a 
 specific thread and that thread blocked until something got ready to go further. 
@@ -65,7 +68,7 @@ Then, with the asynchronous systems based on events with the introduction of cal
 
 However, are some limitations in these asynchronous models. For example, if the data to be processed is bigger than the memory available or if the data to be calculated is from a source that produces data at a constant rate that must be processed in real time, these models work badly.  
 The traditional models fail to comply these objectives because are mostly eager by design or not comply with the notion of a continuous source of information that requires to be processed in real time.
-Taken this in account, projects like project Reactor, Asynchronous Enumerable provided by Microsoft or papers like \cite{LAZYVSEAGER}, try to deal with these issues, by providing API's that merge the concepts of Fluent API's, functional programming and code syntax that tries to resemble synchronous code, being the complexity inherent with asynchronous models implementations hidden from the programmer. 
+Taken this in account, projects like project Reactor, Asynchronous Enumerable provided by Microsoft or papers like \cite{LAZYVSEAGER}, try to deal with these issues, by providing API's that merge the concepts of Fluent API's, functional programming and code syntax that tries to resemble synchronous code, being the complexity inherent with asynchronous models implementations hidden from the programmer since the asynchronous events are treated like, for example, a \texttt{Stream} in JAVA would be treated.
 
 \clearpage
 %\begin{figure}[ht]
@@ -98,7 +101,7 @@ Taken this in account, projects like project Reactor, Asynchronous Enumerable pr
 \section{Asynchronous flow key concepts and design alternatives} % (fold)
 \label{sec:async_concepts}
 
-With the development of several approaches related to asynchronous data flow in several programming plataforms; a dictionary
+With the development of several approaches related to asynchronous data flow in some programming platforms; a dictionary
 of properties, concepts and design alternatives started to grow by itself. In the following, are discussed several of the concepts related with asynchronous data flow, namely:
 
 \subsection{Synchronous versus Asynchronous}
@@ -158,7 +161,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 	\subsection{Hot versus Cold}
 	
-	Another property that must be took in account when handling with \textit{Reactive Streams} or asynchronous data processing in general, is the nature of the data flow. 
+	Another property that must be taken in account when handling with \textit{Reactive Streams} or asynchronous data processing in general, is the nature of the data flow. 
 	There are two main adjectives to name a data flow, \texttt{Hot} or \texttt{Cold}. 
 
 	A \texttt{Cold} data flow, is a flow of information that is produced just when the stream pipeline in subscribed by an observer. In this case, the producer only starts sending/producing data when someone is interested in the data from that source. 
@@ -216,13 +219,13 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	\clearpage
 	
 
-	\subsection{Intrisic Keywords} 
+	\subsection{Intrinsic Keywords} 
 	
 	Asynchronous code is tendentiously harder to understand because, in opposition with what happens in synchronous code, the sequence of programming statements operations may not happen chronologically ordered. 
 	Because of that, many times it's difficult to debug and sustain asynchronous code. 
 
 	For that reason, many languages started to add syntax techniques that allow the programmer to build asynchronous code that resembles the synchronous syntax.
-	Under the hoods, the virtual machines that sustain these syntax mechanisms, handle the code bounded with that 'intrisic words'and builds asynchronous routines that the programmer will not be aware of;
+	Under the hoods, the virtual machines that sustain these syntax mechanisms, handle the code bounded with that 'intrinsic words'and builds asynchronous routines that the programmer will not be aware of;
 	being this a way to abstract the programmer from the complexity of handling and sustaining complex asynchronous code. 
 
 	One example of \textit{intrinsic words} mechanisms, is the \texttt{async...await} keywords implemented in \textit{Microsoft's .NET C\#} and in \textit{javascript}. 
@@ -230,11 +233,11 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	In the example \ref{fig:enumex} we can see an example of these keywords being used. 
 	Where, for example, we can observe in the line 15, a call to an asynchronous operation, and, by adding the keyworkd \texttt{await}, the next statement although being to an asynchronous operation the statement order looks like its synchronous. 
 	
-	Additionally, the use of \texttt{async...await} in javacript, for example, simplifies error handling in asynchronous code. Instead of use a promise callback to handle an error, by using \texttt{async...await} the error can handled by just using a simple try/catch block. 
+	Additionally, the use of \texttt{async...await} in javacript, for example, simplifies error handling in asynchronous code. Instead of use a promise callback to handle an error, by using \texttt{async...await} the error can be handled by just using a simple try/catch block. 
 	
 	Yet, Another example of 'intrinsic words' used in asynchronous processing is the \texttt{for await...of}, used in javascript to process asynchronous enumerables, that will be described in more detail ahead. 
 	
-	To better visualize the advantage of using intrinsic words in asynchronous code, on the next example, we can see a code comparation in javascript, with and without the use of intrisic words in asynchronous code, where it is possible to observe the reduce of code complexity and increment of readability 
+	To better visualize the advantage of using intrinsic words in asynchronous code, on the next example, we can see a code comparison in javascript, with and without the use of intrinsic words in asynchronous code, where it is possible to observe a decrease of code complexity and increment of readability 
 	
 	
 
@@ -254,7 +257,7 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	\begin{enumerate}
 		\item \textbf{DROP:} Producer drops items after a retrieving buffer gets full.
 		\item \textbf{Buffer everything:} A buffer, keeps all unprocessed items that are received. Usually, this strategy is used when all received items are critical for the business development and memory managment has flexibility to handle the increase of storage needs.
-		\item \textbf{Error:} An error is thrown when the buffer threshhold is reached, usally all items received after the threshhold is reached are discarded.
+		\item \textbf{Error:} An error is thrown when the buffer threshold is reached, usually all items received after the threshold is reached are discarded.
 		\item \textbf{Lastest:} Only the last received item in the given moment is kept.
 		\item \textbf{Missing:} No back-pressure strategy it is in place, all items that ca not be processed on arrival, are discarded.
 	\end{enumerate}
@@ -291,10 +294,10 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 In this section, we will be explaining the different frameworks that are the \textit{State of the Art} in asynchronous IO pipeline processing in several programming languages.
 
-First of all, in the section \ref{reactivex}, will be presented the multi-language \texttt{reactivex.io} project, and how the \texttt{Observer Pattern} is used in this apporach to implement real time asynchronous processing with and without \textit{back-pressure}.
+First, in the section \ref{reactivex}, will be presented the multi-language \texttt{reactivex.io} project, and how the \texttt{Observer Pattern} is used in this approach to implement real time asynchronous processing with and without \textit{back-pressure}.
 
 Secondly, in the section 2.3.2, will be presented the \textit{.NET} \textit{Async Enumerables} and how this approach diverges from approaches made in \textit{reactivex.io}, \textit{Javascript}, and in Kotlin with \textit{Kotlin Flow}.
-In the sections 2.3.3 and 2.3.4, will be respectively presented the Javascript and the Kotlin Flow strategies for asynchronous data processing.
+In the sections 2.3.3 and 2.3.4, will be respectively presented the JavaScript and the Kotlin Flow strategies for asynchronous data processing.
 
 Finally, in the section 2.3.5, will be made an overview and taken conclusions about the different technologies presented, and how each approach can be used for different problems and objectives. Then, will be made a theoretical prediction on how each technology behaves in several know circumstances. 
 
@@ -304,8 +307,8 @@ Finally, in the section 2.3.5, will be made an overview and taken conclusions ab
 After the historical context explained in the chapter 2.1, many groups of developers started to implement several solutions to handle asynchronous data flows. One of the most ambitious results of this proactivity is the \textit{reactiveX} project.
 
 This project gathers several ideas and known design patterns to implement an asynchronous data flow mechanism. 
-The most positive points about this project implementation is that the mechanism is implemented in several programming languages using an open source approach and the solution design is done in a way, that all the complexity inherent with asynchronous programming is hidden from the programmer, making the code very intuitive and iterative an easily understandable for programmer that are not used to handle with asynchronous enviroments. 
-In this dissertation, we will analyze the implementation of reactiveX made for Java, which is named: RXJava
+The most positive points about this project implementation is that the mechanism is implemented in several programming languages using an open source approach. Above that, the solution design is done in a way, that all the complexity inherent with asynchronous programming is hidden from the programmer, making the code very intuitive and iterative an easily understandable for programmer that are not used to handle with asynchronous enviroments. 
+In this dissertation, we will analyze the implementation of reactive X made for Java, which is named: RXJava
 \clearpage
 \subsubsection{RxJava architecture}
 \label{rxjava}
@@ -317,7 +320,7 @@ In the implementation, the data source/publisher of an asynchronous stream of ev
 On a side note, it is important to refer that in RxJava, the same way \texttt{Observable} and \texttt{Flowable} represent a stream of N events, a single event is represented by a class named \texttt{Single}. 
 
 One of the great advantages of using this framework, is that the \texttt{Observable} and \texttt{Flowable}, although representing asynchronous data source, offer fluent API's that allows chaining operation fluently, like it is done in e.g, on java \texttt{Stream} implementation.
-In these fluent API's, stream processing operations like: \texttt{filter}, \texttt{flatMap} or \texttt{distinct} are available, allowing to treat these asycnhronous sequence of items like is made with synchronous streams.
+In these fluent API's, stream processing operations like: \texttt{filter}, \texttt{flatMap} or \texttt{distinct} are available, allowing to treat these asynchronous sequence of events like data item are treated synchronous streams in fluent API´s like .NET Linq
 
 On the other hand, the observers/subscribers are represented by consumers that are attached to \texttt{Observable} through the method \texttt{Observable.subscribe()}.
 The consumers can be either implementations of the functional interface \texttt{Consumer<T>} or implementations of the interface \texttt{Observer}.
@@ -326,7 +329,7 @@ The \texttt{Observer} interface is built with the intent to offer an extra contr
 
 \begin{enumerate}
      \item \texttt{onSubscription()}: Method called right after the subscription is made with an \texttt{Observable} 
-	 \item \texttt{onNext(T item)}: Method called when an item is emmitted by the asynchronous data source.
+	 \item \texttt{onNext(T item)}: Method called when an item is emitted by the asynchronous data source.
 	 \item \texttt{onError()}: In contrast with Iterator, the RxJava \texttt{Observer} is equipped to support error handling. This callback will be called when an error occurs.
 	 \item \texttt{onComplete()}: Method called when the data source closes or if the subscription finishes.
 \end{enumerate}	
@@ -363,23 +366,22 @@ On the next table, it is possible to see how each object type can be mapped
 	the only difference was that a collection items could be retrieved on demand from memory, while the data flows are iterated over time when items become available for consumption.
 
 	Taking all this in account, has born the idea of creating the notion of the asynchronous enumerable, where the asynchronous enumerable is the representation of a constant source of readable items.
-	With the use of this concept, were implemented several mechanisms, e.g. the AsyncEnumerables in C\#, that simplify the iteration over asynchronous data sources. 
+	With the use of this concept, were implemented several mechanisms, e.g. the Asynchronous Enumerables in C\#, that simplify the iteration over asynchronous data sources. 
 	Making the code similar to synchronous statements, easier to maintain, and, once again, abstracting the programmer from many complex details inherent with asynchronous processing.
 
 \subsubsection{.NET Asynchronous Enumerables}
 \label{csenums}
-	\texttt{IEnumerable<T>} in C\#, is a interface that implements a method \texttt{GetEnumerator()} that returns a \texttt{IEnumerator<T>}. 
-	In its turn, \texttt{IEnumerator<T>}, is an interface that allows to iterate over items of a Collection by offering a method \texttt{T getCurrent()}, that allows to retrieve the current item 
+	\texttt{IEnumerable<T>} in C\#, is an interface that implements a method \texttt{GetEnumerator()} that returns a \texttt{IEnumerator<T>}. 
+	In its turn, \texttt{IEnumerator<T>}, is an interface that allows to iterate over items of a collection by offering the method \texttt{T getCurrent()}, that allows to retrieve the current item 
 	and a method \texttt{bool MoveNext()}, that allows to iterate to the next item of the sequence and check if the iteration has finished.
 	\texttt{IAsyncEnumerable<T>}, keeps the same logic of \texttt{IEnumerable<T>}, but instead of returning a synchronous \texttt{IEnumerator<T>} with a synchronous \texttt{MoveNext()} method, returns a \texttt{IAsyncEnumerator<T>} where its method \texttt{bool MoveNextAsync()} is asynchronous. 
 	
-	To better understand what was explained, we have the following diagram that will help to explain what is the class structure implemented in C\# that allow the enumeration of 
-
+	%To better understand what was explained, we have the following diagram that will help to explain what is the class structure implemented in C\# that allow the enumeration of asynchronous event:
 	On the other side, the keyword \texttt{yield}, is a syntax sugar introduced in \textbf{C\# 2.0} that allows to avoid the implementation of \texttt{IEnumerable<T>} and \texttt{IEnumerator<T>} interfaces by the programmer,
 	allowing iteration and the lazy return of items. All the work of implementing iteration interfaces is handled by \texttt{.NET} virtual machine in background. 
-	On top of that, the use of \texttt{yield} is compatible with asynchronous iteration involving \texttt{IAsyncEnumerable<T>}, which simplifies interation of asynchronous flows in C\#, as we can see in the next example:
+	On top of that, the use of \texttt{yield} is compatible with asynchronous iteration involving \texttt{IAsyncEnumerable<T>}, which simplifies the iteration of asynchronous flows in C\#, as we can see in the next example:
 	
-	//colocar exemplo 
+	%&//colocar exemplo explicar melhor
 
 	\begin{figure}[H]
 		\centering
@@ -401,7 +403,7 @@ On the next table, it is possible to see how each object type can be mapped
 
 	\begin{figure}[H]
 		\centering
-		\lstfromfile{java}{1-30}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for, of},numbers=left, firstnumber=1}{asyncenum.js}
+		\lstfromfile{java}{1-30}{}{asyncenumerables_2}{showlines=true,morekeywords={begin,Console,async,await,static,for, of},numbers=left, firstnumber=1}{asyncenum.js}
 		\caption{Mozilla's Javascript Asynchronous Enumerables example}
 		\label{fig:enumex2}
 	\end{figure}
@@ -417,7 +419,7 @@ This solution is usually used in front-end environments, for example, to load se
 
 \subsection{Kotlin Flow}
 
-Kotlin asynchronous flow implementation is a \ref{Reactive Streams} compliant solution, inspired in RxReactor and another projects, made with the intent to be simple as possible. Similarly to RxJava, Kotlin strongly typifies a stream of N events, which, in this case, is done through the implementation of the interface \texttt{Flow<T>}.\\
+Kotlin asynchronous flow implementation is a \cite{ReactiveStreams} compliant solution, inspired in RxReactor and another projects, made with the intent to be simple as possible. Similarly to RxJava, Kotlin strongly typifies a stream of N events, which, in this case, is done through the implementation of the interface \texttt{Flow<T>}.\\
 A \texttt{Flow<T>} data source implementation is done through a builder, like we can see in the next example:
 
 \begin{figure}[H]
@@ -431,9 +433,9 @@ A consumer, to start listening a particular data flow haves to call the method \
 On the other side, Hot flows in Kotlin are represented by the interface \texttt{SharedFlow<out T> : Flow<T>}. 
 
 The main difference between the implementation of these two interfaces, is at the result of \texttt{collect()} call. 
-While the \texttt{Flow.collect()} starts the flow everytime its called, resulting in the limited emission of the same set of items per call; the \texttt{SharedFlow.collect()} emits an unpredicted set of items from external stream of events initiated before the call to \texttt{SharedFlow.collect()}.
+While the \texttt{Flow.collect()} starts the flow every time its called, resulting in the limited emission of the same set of items per call; the \texttt{SharedFlow.collect()} emits an unpredicted set of items from external stream of events initiated before the call to \texttt{SharedFlow.collect()}.
 On the other side, while the \texttt{Flow.collect()} call context is private to the caller, the \texttt{ShareFlow.collect()} is shareable by N subscribers, which makes this solution ideal for broadcast mechanisms shared by many users.
-On the next example, we can see several calls to the \texttt{Flow.collect()} that results in retrieving the same set of items, because as explained, the call starts a cold flow everytime its called:
+On the next example, we can see several calls to the \texttt{Flow.collect()} that results in retrieving the same set of items, because as explained, the call starts a cold flow every time its called:
 
 \begin{figure}[H]
 	\centering
@@ -442,21 +444,20 @@ On the next example, we can see several calls to the \texttt{Flow.collect()} tha
 	\label{fig:kotlinflowcold}
 \end{figure}
 
-Likewise in RxJava, \texttt{Flow<T>} provides a fluent API of intermediate operators that allow data transformation, where is received a upstream  flow and the operators return a transformed downstream flow through the traditional push methods like: filter, map(), zip(),take() etc... 
-On last, Kotlin provides terminal operators that enable to format the processed data on the most suitable type, through the use of functions like toList() or toSet().
+Likewise in RxJava, \texttt{Flow<T>} provides a fluent API of intermediate operators that allow data transformation, where is received an upstream  flow and the operators return a transformed downstream flow through the traditional push methods like: filter, map(), zip(),take() etc... 
+On last, Kotlin provides terminal operators that enable to format the processed data on the most suitable type, through the use of functions like \texttt{toList()} or \texttt{toSet()}.
 
-With the use of "\textit{intrisic words}" like \texttt{emit}, kotlin can do the same trick that \texttt{yield return} does in C\#, which is to lazily return an item on the fly when the item becomes available to be returned, making the implementation of flowable sources easier to implement.
+With the use of "\textit{intrinsic words}" like \texttt{emit}, Kotlin can do the same trick that \texttt{yield return} does in C\#, which is to lazily return an item on the fly when the item becomes available to be returned, making the implementation of flowable sources easier to implement.
 
 
 
 %% section how_to_write_using_latex (end)
 
 
+\subsection{Technologies comparison}
 
-\subsection{Tecnhlogies comparation}
-
-As we saw, each technology have a set of properties that help to caracterize the solution.
-To help the caracherization of each technology documented, we have a relation between the caracteristics saw in the chapter \ref{sec:async_concepts}.
+As we saw, each technology have a set of properties that help to characterize the solution.
+To help the characterization of each technology documented, we have a relation between the characteristics saw in the chapter \ref{sec:async_concepts}.
 
 \begin{table}[!htbp]
 	\begin{tabular}{|c|c|c|c|c|c|c|}
