@@ -21,9 +21,9 @@ On the section \ref{sec:related_work}, will be made an overview on previously de
 % The servers design, were made without many concerns about availability under demand pressure or computer resource optimization. 
 % Consequently, operations that required intensive IO interactions or data request from an external sources, were mostly blocking, non-flexible in terms of responsiveness and interoperability. 
 
-From the end of 80’s to the beginning of the 2000´s, with the acceleration of Moore's Law in hardware and network bandwidth development; the creation of the web as we know today through the wide spread of use of the HTTP protocol, and the support from new operative systems to multithreading support; the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism involving asynchronous flow processing, caused the necessity of design new programming models. 
+From the end of 80’s to the beginning of the 2000’s, with the acceleration of Moore's Law in hardware and network bandwidth development; the creation of the web as we know today through the wide spread of use of the HTTP protocol, and the support from new operative systems to multithreading support; the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism involving asynchronous flow processing, caused the necessity of design new programming models. 
 
-Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers wrote a paper, where they identify the characteristics that high available server must have, and how the use of asynchronous IO pipe lining design patterns can help to achieve these characteristics, as described bellow:
+Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers wrote a paper \citep{proactor}, where they identify the characteristics that high available server must have, and how the use of asynchronous IO pipe lining design patterns can help to achieve these characteristics, as described bellow:
 \begin{itemize}
 	\item Concurrency - The server must process multiple client requests simultaneously.\\
 	\item Efficiency - The software design must be built aiming the use the least hardware resources as possible. \\
@@ -31,7 +31,7 @@ Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns 
     \item Adaptability - The system must be totally decoupled from client implementations, allowing it to be easily used by any client independently of the underlying technologic realities. To achieve this, may be used standards e.g. \cite{REST} or SOAP.\\
 \end{itemize}
 
-To achieve these properties, the authors propose the \textit{Proactor Pattern} \citep{proactor}. In their opinion, conventional concurrency models fail to fully achieve the enumerated properties while this model is a most robust solution in their eyes.
+To achieve some of these properties, the authors propose the \textit{Proactor Pattern} \citep{proactor}. In their opinion, traditional concurrency models, until that date, failed to fully achieve the enumerated properties.
 
 On the other side, before presenting the \textit{Proactor Pattern}, are identified two major existing non-blocking models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
 
@@ -45,7 +45,7 @@ On last, if the server receives a high demand of requests, the server easily blo
 To avoid this issue, the authors, recommended the use of dynamic thread pools to process requests, where each request will be linked to a pre-existing thread, avoiding all the overhead of creating and disposing a thread per request;
 however, issues related with memory-mapping and overhead due to the switching of data between different threads maintains. 
 
-Another traditional concurrency model identified by the authors of the paper, is the \textit{Reactive Synchronous Event Dispatching} or more commonly known as \texttt{Reactor Pattern}. In this model, a \textit{Dispatcher}, with a single thread in a loop, is constantly listening requests from clients and sending work requests to an entity named \textit{Handler}. 
+Another traditional concurrency model identified by the authors of the paper, is the \textit{Reactive Synchronous Event Dispatching}. In this model, a \textit{Dispatcher}, with a single thread in a loop, is constantly listening requests from clients and sending work requests to an entity named \textit{Handler}. 
 The \textit{Handler}, will then process the IO work Synchronously and request a connection to the client in the \textit{Dispatcher}. When the requested connection is ready to be used, the \textit{Dispatcher} notifies the \textit{Handler}. After the notification, the \textit{Handler} asynchronously sends the data, that is being or has been obtained through IO, to the client.\\
 Although the authors identifying that this approach is positive, because decouples the application logic from the dispatching mechanisms, beside with the low overhead due the use of a single thread, the authors identify several drawbacks with this approach. 
 Firstly, since IO operation are synchronous, the code for this approach is complex because must be set in place mechanisms to avoid IO blocking through hand off mechanisms. 
@@ -62,38 +62,17 @@ offers concurrent work without the issues inherent with the use of threading mec
 
 The \textit{Proactor Pattern}, creates the ground for several models used by modern platforms that use a reduced number of threads to process client requests and parallel mechanisms to do the heavy work in the background. Some of these technologies, are, for example: \textit{Javascript NODE.JS}, \textit{Spring Webflux}, \textit{vertx} and others.
 
-From what was explained until now, is evident the tendency followed by software architects in terms of asynchronous processing from non-reactive to event driven approaches. Initially the systems were non-reactive, where each request had to be processed in a 
-specific thread and that thread blocked until something got ready to go further. 
-Then, with the asynchronous systems based on events with the introduction of callback systems inspired in patterns like the \textit{Reactor} or \textit{Proactor}; the software design started to become more event driven, allowing the servers to be more efficient in responsiveness, flexibility and resources optimization. 
+From what was explained until now, is evident the tendency followed by software architects in terms of asynchronous processing from non-reactive to event driven approaches and trying to make the code simpler and easier to maintain. Initially the systems were non-reactive, where each request had to be processed in a 
+specific thread and that thread blocked until something got ready to go further. The code was usually very complex and hard to maintain. 
+Then, with the asynchronous systems based on events with the introduction of callback systems inspired in patterns like the \textit{Reactor} or \textit{Proactor} The software design started to become more event driven, allowing the servers to be more efficient in responsiveness, resources optimization and code easier to read and maintain by the average programmer.
 
-However, are some limitations in these asynchronous models. For example, if the data to be processed is bigger than the memory available or if the data to be calculated is from a source that produces data at a constant rate that must be processed in real time, these models work badly.  
+However, are some limitations in these asynchronous models. For example, if the data to be processed is bigger than the memory available at a given moment or if the data to be calculated is from a source that produces data at a constant rate that must be processed in real time, these models work badly.  
 The traditional models fail to comply these objectives because are mostly eager by design or not comply with the notion of a continuous source of information that requires to be processed in real time.
 Taken this in account, projects like project Reactor, Asynchronous Enumerable provided by Microsoft or papers like \cite{LAZYVSEAGER}, try to deal with these issues, by providing API's that merge the concepts of Fluent API's, functional programming and code syntax that tries to resemble synchronous code, being the complexity inherent with asynchronous models implementations hidden from the programmer since the asynchronous events are treated like, for example, a \texttt{Stream} in JAVA would be treated.
 
 \clearpage
-%\begin{figure}[ht]
-%	\centering
-%	\includegraphics[width=0.65\textwidth]{alternative_1}
-%	  \caption{Multithreading solution example}
- % \label{fig:bibtex}
-%\end{figure}
 
 
-%\begin{figure}[ht]
-%	\centering
-	%\includegraphics[width=0.65\textwidth]{alternative_2}
-%	  \caption{Dispatcher example}proactor
- % \label{fig:bibtex}
-%\end{figure}
-
-%\begin{figure}[ht]
-%	\centering
-%	\includegraphics[width=0.65\textwidth]{alternative_3}
-%	  \caption{Proactor example}
-%  \label{fig:bibtex}
-%\end{figure} %
-
-% section introduction (end)
 
 % ====================
 % = Folder Structure =
@@ -101,7 +80,9 @@ Taken this in account, projects like project Reactor, Asynchronous Enumerable pr
 \section{Asynchronous flow key concepts and design alternatives} % (fold)
 \label{sec:async_concepts}
 
-With the development of several approaches related to asynchronous data flow in some programming platforms; a dictionary
+
+
+With the development of several approaches related to asynchronous IO processing, and with the growing necessity to build a name set of properties that simplify the description of asynchronous systems, a dictionary
 of properties, concepts and design alternatives started to grow by itself. In the following, are discussed several of the concepts related with asynchronous data flow, namely:
 
 \subsection{Synchronous versus Asynchronous}
@@ -112,22 +93,75 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	Meanwhile, a call to a synchronous function or routine, blocks the caller until the operation finishes. In this case, the caller has to wait for the completion of the synchronous operation before going forward, which limits the program efficiency if parallelism is applicable.
 	To better visualize what was explained, we have the following examples: 
 	
-	\begin{figure}[H]
-		\begin{subfigure}[h]{0.5\textwidth}
-			\lstfromfile{java}{1-14}{Asynchronous call example}{async}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{async.java}
-			\label{fig:ra-vectorial}
-		 \end{subfigure}	
-	\qquad
-		 \begin{subfigure}[h]{0.5\textwidth}
-			\lstfromfile{java}{1-15}{Synchronous call example}{Sync}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{Sync.java}
-			\label{fig:ra-raster}
-		\end{subfigure}		
-	  \caption{Example of Synchronous and Asynchronous calls in JAVA}
-	  \label{fig:figura-completa}
-	\end{figure}
+
+\begin{center}
+	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+	\begin{minipage}[t][][b]{.46\textwidth}
+	\begin{lstlisting}[
+		escapeinside={(*}{*)},
+			caption={Asynchronous call example},
+			label={lst-top5-linq}
+	]
+HttpClient client = HttpClient.newHttpClient();
+
+HttpRequest request = HttpRequest
+	.newBuilder(URI.create("SOME MOVIE API"))...
+
+Task futureResponse = client
+	.sendAsync(request, new JsonBodyHandler<>(DTO.class)) 
+	.thenAccept(res -> {
+		Console.WriteLine( res.title);
+); 
+
+Console.WriteLine("prints something")
+
+client.Wait();
+
+//OUTPUT:
+//prints something
+//movie title
+		
+\end{lstlisting}
+\end{minipage}
+\hfill
+\begin{minipage}{.48\textwidth}
+\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+\begin{lstlisting}[
+	escapeinside={(*}{*)},
+	columns=fullflexible,
+	showstringspaces=false,
+		caption={Synchronous call example},
+		label={lst-top5-async}
+]
+HttpClient client = HttpClient.newHttpClient();
+
+HttpRequest request = HttpRequest.newBuilder(
+	URI.create("SOME URL"))
+	.header("accept", "application/json")
+	.build();
+
+HttpResponse<Supplier<DTO>> res = 
+	client.send(request, new JsonBodyHandler<>(DTO.class))//synchronous
+
+Console.WriteLine(res.title);
+
+Console.WriteLine("prints something")
+
+//OUTPUT:
+//movie title
+//prints something
+
+		\end{lstlisting}
+	\end{minipage}
+\end{center}
+
 	
 	As we can see, in the synchronous call example, the operation return only happens after the whole subsequent remote operation is finished, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed or bandwidth issues. 
-	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work, for example, when the OS is ready to process the received responses from a remote server that handled the operation.
+	This causes that the processing of the next code statements to happen only after the synchronous IO call.
+
+	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work. For example, when the OS is ready to process the received responses from a remote server that handled the operation.
+	In this case, the statement right after the asynchronous call is processed before the asynchronous operation. Allowing the IO asynchronous operation to processed outside the program scope and avoiding any block of the main program.
+
 
 	\subsection{Push vs Pull}
 	Another concept important to understand how asynchronous data flow is handled in programming, is the \textit{Pull} and \textit{Push} processing patterns.
@@ -136,18 +170,45 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	On the other hand, in the \textit{Push} pattern, the items of the data source are "Pushed" to a routine that will operate over that item.
 	To help to assimilate what was just explained, we have the following example:
 
-	\begin{figure}[H]
-		\centering
-		\begin{subfigure}[h]{.4\textwidth}
-			\lstfromfile{java}{1-17}{Pull pattern example}{pull}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{pull.java}
-		 \end{subfigure}	
-		 \begin{subfigure}[h]{.4\textwidth}
-			\lstfromfile{java}{1-17}{Push pattern example}{push}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{push.java}
-		\end{subfigure}		
-	  \caption{Example of Pull and Push data handling patterns}
-	  \label{fig:exmplo2}
-	\end{figure}
-	\clearpage
+
+	\begin{center}
+		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+		\begin{minipage}[t][][b]{.46\textwidth}
+		\begin{lstlisting}[
+			escapeinside={(*}{*)},
+				caption={Example of Pull data handling patterns},
+				label={lst-top5-linq2}
+		]
+Flowable<Long> flow = Flowable
+	.interval(1, TimeUnit.SECONDS);
+
+Iterator<Long> iterator = 
+	flow.blockingIterable().iterator();
+
+while (iterator.hasNext()) 
+	System.out.println(iterator.next());
+		
+		\end{lstlisting}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.48\textwidth}
+		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+		\begin{lstlisting}[
+			escapeinside={(*}{*)},
+			columns=fullflexible,
+			showstringspaces=false,
+				caption={Example of Pull data handling patterns},
+				label={lst-top5-dot-net-imp}
+		]
+Flowable<Long> flow = Flowable
+	.interval(1, TimeUnit.SECONDS);
+
+flow.blockingSubscribe(System.out::println);
+
+		\end{lstlisting}
+		\end{minipage}
+	\end{center}
+
 
 	As we can see, in the pull pattern, the items are "pulled" from a data source through an iteration mechanism. 
 	
@@ -166,26 +227,48 @@ of properties, concepts and design alternatives started to grow by itself. In th
 	In this case, when an observer subscribes to a publisher, exists the possibility of data items being already lost to that publisher while in the \texttt{Cold} flow, the consumer usually receives all items that were produced by the source.
 	In the following examples, a number is produced each 100 milliseconds:
 
-	\begin{figure}[H]
-		\centering
-		\begin{subfigure}{.4\textwidth}
-			\lstfromfile{java}{1-3}{Cold Example}{cold}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{ColdFlux.java}
-		 \end{subfigure}	
-	\qquad\qquad
-		 \begin{subfigure}{.4\textwidth}
-			\lstfromfile{java}{1-6}{Hot Example}{hot}{showlines=true,morekeywords={begin,System,out,print},numbers=left, firstnumber=1}{HotFlux.java}
-		\end{subfigure}		
-	  \caption{Example of Hot and Cold data streams}
-	  \label{fig:exmplo3}
-	\end{figure}
 
-	
-	As we can see, in the \texttt{Hot} data flow example, the items are emitted from the moment the producer is created, independently of existing any subscriber or observer attached to that publisher. Notice that when a consumer is subscribed to the publisher, 1 seconds after the emittion started, the numbers from 0 to 10 were not printed.
+	\begin{center}
+		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+		\begin{minipage}[t][][b]{.46\textwidth}
+		\begin{lstlisting}[
+			escapeinside={(*}{*)},
+				caption={Cold flow example},
+				label={lst-top5-java-cold}
+		]
+ConnectableFlowable<Long> hot = Flowable
+		.intervalRange(0, 100, 0, 100, TimeUnit.MILLISECONDS)
+		.publish();
+flux.connect(); 
+Thread.sleep(1000);
+flux.blockingSubscribe(System.out::println);
+		\end{lstlisting}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.48\textwidth}
+		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+		\begin{lstlisting}[
+			escapeinside={(*}{*)},
+			columns=fullflexible,
+			showstringspaces=false,
+				caption={Hot flow example},
+				label={lst-top5-java-cold}
+		]
+Flowable<Long> cold = Flowable.interval(100, TimeUnit.MILLISECONDS);
+Thread.sleep(1000);
+cold.blockingSubscribe(System.out::println); 
+
+		\end{lstlisting}
+		\end{minipage}
+	\end{center}
+
+
+	As we can see, in the \texttt{Hot} data flow example, the items are emitted from the moment the producer is created, independently of existing any subscriber or observer attached to that publisher. Notice that when a consumer is subscribed to the publisher, 1 seconds after the emition started, the numbers from 0 to 10 were not printed.
 	
 	In the \texttt{Cold} example, the producer only emits data when a subscription is done, and because of that, all the produced numbers were printed, in contrast with what happen in \texttt{Hot} stream, where data loss are almost certain. 
 	\clearpage
 	\subsection{Cancelable} 
-	As already stated above, Asynchronous operations may run outside the main program context. 
+	As already stated above, Asynchronous operations may run outside the main program scope. 
 	This implies, that the main program loses visibility and control on what happens in the asynchronous operation contexts.
 	Because of that, exists the need to put in place mechanisms of control that allow the main program to maintain control over an asynchronous operation to, for example, cancel the operation or put in place finishing logic that allow, for example: resource disposing, logging, decisions etc...
 
@@ -214,25 +297,102 @@ of properties, concepts and design alternatives started to grow by itself. In th
 
 	\subsection{Intrinsic Keywords} 
 	
-	Asynchronous code is tendentiously harder to understand because, in opposition with what happens in synchronous code, the sequence of programming statements operations may not happen chronologically ordered. 
-	Because of that, many times it's difficult to debug and sustain asynchronous code. 
+	As already stated, asynchronous code is tendentiously harder to understand because, in opposition with what happens in synchronous environments, the sequence of programming statements operations may not happen chronologically ordered. 
+	Because of that, many times it is difficult to debug and sustain asynchronous software. 
 
 	For that reason, many languages started to add syntax techniques that allow the programmer to build asynchronous code that resembles the synchronous syntax.
-	Under the hoods, the virtual machines that sustain these syntax mechanisms, handle the code bounded with that 'intrinsic words'and builds asynchronous routines that the programmer will not be aware of;
+	Under the hoods, the virtual machines that sustain these syntax mechanisms, handle the code bounded with that 'intrinsic words' and builds asynchronous routines that the programmer will not be aware of;
 	being this a way to abstract the programmer from the complexity of handling and sustaining complex asynchronous code. 
 
 	One example of \textit{intrinsic words} mechanisms, is the \texttt{async...await} keywords implemented in \textit{Microsoft's .NET C\#} and in \textit{javascript}. 
 	
-	In the example \ref{fig:enumex} we can see an example of these keywords being used. 
-	Where, for example, we can observe in the line 15, a call to an asynchronous operation, and, by adding the keyworkd \texttt{await}, the next statement although being to an asynchronous operation the statement order looks like its synchronous. 
+	In the next example we can see an example of these keywords being used:
+
+	\begin{center}
+		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+		\begin{minipage}[t][][b]{.46\textwidth}
+		\begin{lstlisting}[
+			escapeinside={(*}{*)},
+				caption={Intrisic words .NET C\#},
+				label={lst-top5-linq3}
+		]
+static async Task Main(string[] args)
+{
+	IAsyncEnumerable<int> enumerable = FetchItems(1000);
+	int i = 0;
+	await foreach (var item in enumerable)
+	{
+		if (i++ == 10){ break;}
+	}
+}
+
+static async IAsyncEnumerable<int> FetchItems(int delay)
+{
+	int count = 0;
+	while(true)
+	{
+		await Task.Delay(delay);
+		yield return count++;
+	}
+}
+		
+		\end{lstlisting}
+		\end{minipage}
+	\end{center}
+
+
+	Where, for example, we can observe in the line 16, a call to an asynchronous operation, and, by adding the keyworkd \texttt{await}, the next statement although being a call to an asynchronous operation, the code statement order looks like it is from synchronous set of instructions. 
 	
-	Additionally, the use of \texttt{async...await} in javacript, for example, simplifies error handling in asynchronous code. Instead of use a promise callback to handle an error, by using \texttt{async...await} the error can be handled by just using a simple try/catch block. 
+	Additionally, the use of \texttt{async...await} in .NET, for example, simplifies error handling in asynchronous code. Instead of use a callback to handle an error, by using \texttt{async...await} the error can be handled by just using a simple try/catch block. 
+
 	
-	Yet, Another example of 'intrinsic words' used in asynchronous processing is the \texttt{for await...of}, used in javascript to process asynchronous enumerables, that will be described in more detail ahead. 
+	To better visualize the advantage of using intrinsic words in asynchronous code, on the next example, we can see a code comparison in ECM6 Javascript, with and without the use of intrinsic words in asynchronous code. 
+	In the next example, it is possible to observe a decrease of code complexity and increment of readability where is used the "syntax sugar" provided by the 'yield' return. 
 	
-	To better visualize the advantage of using intrinsic words in asynchronous code, on the next example, we can see a code comparison in javascript, with and without the use of intrinsic words in asynchronous code, where it is possible to observe a decrease of code complexity and increment of readability 
+	The example using promises is purposefully made with a "Pyramid of Doom" code to accentuate a difficulty of reading asynchronous if is made without any concern with readability.
 	
+	\begin{center}
+		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+		\begin{minipage}[t][][b]{.46\textwidth}
+		\begin{lstlisting}[
+			escapeinside={(*}{*)},
+				caption={Javascript Example with promises},
+				label={lst-top5-java-cold}
+		]
+function ourImportantFunction(callback) {
+	task1(function(val1) {
+		task2(val1, function(val2) {
+			task3(val2, callback);
+		});
+	});
+}
+		\end{lstlisting}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.48\textwidth}
+		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+		\begin{lstlisting}[
+			escapeinside={(*}{*)},
+			columns=fullflexible,
+			showstringspaces=false,
+				caption={Javascript syntax sugar},
+				label={lst-top5-java-cold}
+		]
+function ourImportantFunction() {
 	
+	var val1 = yield task1();
+	
+	var val2 = yield task2(val1);
+	
+	var val3 = yield task3(val2);
+
+	return val3;
+});
+
+		\end{lstlisting}
+		\end{minipage}
+	\end{center}
+
 
 	
 	\clearpage
@@ -255,30 +415,8 @@ of properties, concepts and design alternatives started to grow by itself. In th
 		\item \textbf{Missing:} No back-pressure strategy it is in place, all items that ca not be processed on arrival, are discarded.
 	\end{enumerate}
 	\clearpage
-% The template file for writing dissertations in  \texttt{LaTeX} is organized into a main directory, a set of files and sub-directories:
-% \begin{enumerate}
-% 	\item[ThesisISEL] This is the main directory and includes:
-% 	\begin{enumerate}
-% 		\item \textbf{Logo} Directory with Faculty logos;
-% 		\item \textbf{sty} Directory will all sty files that help in formatting document;
-% 		\item \textbf{Chapters} Directory where to put user files (text and figures);
-% 		\begin{enumerate}
-% 		\item \textbf{scripts} Directory with useful bash scripts, e.g., for cleaning all temporary files;
-% 		\item \textbf{img} Directory with all images of your thesis;
-% 		\end{enumerate}
-% 		\item \textbf{alpha-pt.bst} A file with bibliography names in portuguese, e.g., 'Relatório Técnico' e 'Tese de Mestrado' instead of 'Technical Report' and 'Master Thesis'. This file is used automatically if Portuguese is selected as the main language (see below);
-% 		\item \textbf{defaults.tex} A file with the main default values for the package (institution name, faculty's logo, degree name and similars);
-% 		\item \textbf{personaldataofthesis.tex} A file with the main default values for the package (identification of report as well as the author and juries);
-% 		\item \textbf{template.tex} The main file. You should run  \texttt{LaTeX} in this one. Please refrain from changing the file content outside of the well defined area;
-% 		\item \textbf{bibliography.bib} The bib file. An easy way to find to import citation into \texttt{bibtex} is select option \texttt{Show links to import citation into
-% Bib\-Tex} in \href{http://scholar.google.pt/scholar_settings?hl=en&as_sdt=0,5}{\texttt{Scholar google settings}}.
-% 		\item \textbf{thesisisel.cls} The  \texttt{LaTeX} class file for the thesis{} style. Currently, some of the defaults are stored here instead of \verb!defaults.tex!. This file should not be changed, unless you're ready to play with fire! :)
-% 	\end{enumerate}
-% \end{enumerate}
 
-% Again, we would like to recall that all the user \texttt{LaTeX} files should be stored in the \verb!ThesisISEL! directory, and all the images in \verb!ThesisISEL/Chapters/img! directory.\todo[inline]{Yet another note!}
-% section folder_structure (end)
-
+	
 % ===================
 % = Package options =
 % ===================
@@ -374,15 +512,46 @@ On the next table, it is possible to see how each object type can be mapped
 	allowing iteration and the lazy return of items. All the work of implementing iteration interfaces is handled by \texttt{.NET} virtual machine in background. 
 	On top of that, the use of \texttt{yield} is compatible with asynchronous iteration involving \texttt{IAsyncEnumerable<T>}, which simplifies the iteration of asynchronous flows in C\#, as we can see in the next example:
 	
-	%&//colocar exemplo explicar melhor
+	%&//colocar exemplo explicar melho
 
-	\begin{figure}[H]
+
+	\begin{center}
+		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
 		\centering
-		\lstfromfile{java}{1-33}{}{asyncenumerables}{showlines=true,morekeywords={begin,Console,async,await,static,for, yield},numbers=left, firstnumber=1}{asyncEnum.cs}
-		\caption{C\# Asynchronous Enumerables example}
-		\label{fig:enumex}
-	\end{figure}
+		\begin{minipage}[t][][b]{.46\textwidth}
+		\begin{lstlisting}[
+			escapeinside={(*}{*)},
+				caption={C\# Asynchronous Enumerables exampl},
+				label={lst-top5-java-async-enum}
+		]
+static async Task Main(string[] args)
+{
+	IAsyncEnumerable<int> enumerable = FetchItems(1000);
+	int i = 0;
+	await foreach (var item in enumerable)
+	{
+		if (i++ == 10){ break;}
+	}
+}
 
+static async IAsyncEnumerable<int> FetchItems(int delay)
+{
+	int count = 0;
+	while(true)
+	{
+		await Task.Delay(delay);
+		yield return count++;
+	}
+}
+		\end{lstlisting}
+		\end{minipage}
+	\end{center}
+
+	\lstdefinestyle{mystyle}{   
+		stringstyle=\scriptsize,
+		basicstyle=\scriptsize,
+	}
+	
 \subsubsection{Javascript asynchronous iterables}
 \label{jsae}
 	Node.js tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.
