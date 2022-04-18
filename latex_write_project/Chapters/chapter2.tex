@@ -357,7 +357,7 @@ static async IAsyncEnumerable<int> FetchItems(int delay)
 		\begin{lstlisting}[
 			escapeinside={(*}{*)},
 				caption={Javascript Example with promises},
-				label={lst-top5-java-cold}
+				label={lst-top5-js-example}
 		]
 function ourImportantFunction(callback) {
 	task1(function(val1) {
@@ -376,7 +376,7 @@ function ourImportantFunction(callback) {
 			columns=fullflexible,
 			showstringspaces=false,
 				caption={Javascript syntax sugar},
-				label={lst-top5-java-cold}
+				label={lst-top5-js-ss}
 		]
 function ourImportantFunction() {
 	
@@ -517,12 +517,11 @@ On the next table, it is possible to see how each object type can be mapped
 
 	\begin{center}
 		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-		\centering
 		\begin{minipage}[t][][b]{.46\textwidth}
 		\begin{lstlisting}[
 			escapeinside={(*}{*)},
-				caption={C\# Asynchronous Enumerables exampl},
-				label={lst-top5-java-async-enum}
+				caption={Asynchronous Enumerable, C\# example},
+				label={lst-top5-dotnetasenum}
 		]
 static async Task Main(string[] args)
 {
@@ -543,16 +542,13 @@ static async IAsyncEnumerable<int> FetchItems(int delay)
 		yield return count++;
 	}
 }
+
 		\end{lstlisting}
 		\end{minipage}
-	\end{center}
+\end{center}
 
-	\lstdefinestyle{mystyle}{   
-		stringstyle=\scriptsize,
-		basicstyle=\scriptsize,
-	}
 	
-\subsubsection{Javascript asynchronous iterables}
+\subsubsection{Javascript asynchronous enumerables}
 \label{jsae}
 	Node.js tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.
 
@@ -563,12 +559,48 @@ static async IAsyncEnumerable<int> FetchItems(int delay)
 
 	On the other side, the keywords \texttt{for await...of}, provides support for iteration over asynchronous enumerables, as we can see in the next example:
 
-	\begin{figure}[H]
-		\centering
-		\lstfromfile{java}{1-30}{}{asyncenumerables_2}{showlines=true,morekeywords={begin,Console,async,await,static,for, of},numbers=left, firstnumber=1}{asyncenum.js}
-		\caption{Mozilla's Javascript Asynchronous Enumerables example}
-		\label{fig:enumex2}
-	\end{figure}
+
+\begin{center}
+	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+	\centering
+	\begin{minipage}[t][][b]{.46\textwidth}
+	\begin{lstlisting}[
+		escapeinside={(*}{*)},
+			caption={Mozilla's Javascript Asynchronous Enumerables example},
+			label={lst-top5-js-async-enum}
+	]
+async function* streamAsyncIterable(stream) {
+	const reader = stream.getReader();
+	try {
+		while (true) {
+		const { done, value } = await reader.read();
+		if (done) {
+			return;
+		}
+		yield value;
+		}
+	} finally {
+		reader.releaseLock();
+	}
+	}
+
+async function getResponseSize(url) {
+	const response = await fetch(url);
+	let responseSize = 0;
+	
+	const iterable = streamAsyncIterable(response.body);
+	
+	for await (const chunk of iterable) {
+		responseSize += chunk.length;
+	}
+	return responseSize;
+}  
+		
+	\end{lstlisting}
+	\end{minipage}
+\end{center}
+
+
 
 In this example, the function \texttt{streamAsyncIterable}, provides a byte pipeline that emits items as they become available.
 
@@ -584,12 +616,45 @@ This solution is usually used in front-end environments, for example, to load se
 Kotlin asynchronous flow implementation is a \cite{ReactiveStreams} compliant solution, inspired in RxReactor and another projects, made with the intent to be simple as possible. Similarly to RxJava, Kotlin strongly typifies a stream of N events, which, in this case, is done through the implementation of the interface \texttt{Flow<T>}.\\
 A \texttt{Flow<T>} data source implementation is done through a builder, like we can see in the next example:
 
-\begin{figure}[H]
-	\centering
-	\lstfromfile{java}{1-6}{}{kotlinflow}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flow.kt}
-	\caption{Flow builder}
-	\label{fig:kotlinflow}
-\end{figure}
+
+\begin{center}
+	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+	\begin{minipage}[t][][b]{.46\textwidth}
+	\begin{lstlisting}[
+		escapeinside={(*}{*)},
+			caption={Flow builder},
+			language={java},
+			label={lst-top5-kotlin}
+	]
+fun simple(): Flow<Int> = flow { // flow builder
+for (i in 1..3) {
+	delay(100) // pretend we are doing something useful here
+	emit(i) // emit next value
+}
+}
+
+fun main() = runBlocking<Unit> {
+launch {
+	for (k in 1..3) {
+		println("I'm not blocked $k")
+		delay(100)
+	}
+}
+simple().collect { value -> println(value) } 
+}
+
+//output:
+//I'm not blocked 1
+//1
+//I'm not blocked 2
+//2
+//I'm not blocked 3
+//3
+	
+	\end{lstlisting}
+	\end{minipage}
+\end{center}
+
 
 A consumer, to start listening a particular data flow haves to call the method \texttt{Flow.collect()}. Since \texttt{Flow} provides support only to cold flows, calling \texttt{collect()} has the particularity of initiating flow the sequence.
 On the other side, Hot flows in Kotlin are represented by the interface \texttt{SharedFlow<out T> : Flow<T>}. 
@@ -599,12 +664,50 @@ While the \texttt{Flow.collect()} starts the flow every time its called, resulti
 On the other side, while the \texttt{Flow.collect()} call context is private to the caller, the \texttt{ShareFlow.collect()} is shareable by N subscribers, which makes this solution ideal for broadcast mechanisms shared by many users.
 On the next example, we can see several calls to the \texttt{Flow.collect()} that results in retrieving the same set of items, because as explained, the call starts a cold flow every time its called:
 
-\begin{figure}[H]
-	\centering
-	\lstfromfile{java}{1-29}{}{kotlinflowcold}{showlines=true,morekeywords={fun,Flow<T>,suspend,emit,static,for, of},numbers=left, firstnumber=1}{flowcold.kt}
-	\caption{Kotlin collect multicall example}
-	\label{fig:kotlinflowcold}
-\end{figure}
+
+\begin{center}
+	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+	\begin{minipage}[t][][b]{.46\textwidth}
+	\begin{lstlisting}[
+		escapeinside={(*}{*)},
+			caption={Kotlin collect multicall example},
+			language={java},
+			label={lst-top5-kotlin-cold}
+	]
+fun simple(): Flow<Int> = flow { 
+	println("Flow started")
+	for (i in 1..3) {
+		delay(100)
+		emit(i)
+	}
+}
+
+fun main() = runBlocking<Unit> {
+	println("Calling simple function...")
+	val flow = simple()
+	println("Calling collect...")
+	flow.collect { value -> println(value) } 
+	println("Calling collect again...")
+	flow.collect { value -> println(value) } 
+}
+
+//Output:
+//Calling simple function...
+//Calling collect...
+//Flow started
+//1
+//2
+//3
+//Calling collect again...
+//Flow started
+//1
+//2
+//3
+	
+	\end{lstlisting}
+	\end{minipage}
+\end{center}
+
 
 Likewise in RxJava, \texttt{Flow<T>} provides a fluent API of intermediate operators that allow data transformation, where is received an upstream  flow and the operators return a transformed downstream flow through the traditional push methods like: filter, map(), zip(),take() etc... 
 On last, Kotlin provides terminal operators that enable to format the processed data on the most suitable type, through the use of functions like \texttt{toList()} or \texttt{toSet()}.
