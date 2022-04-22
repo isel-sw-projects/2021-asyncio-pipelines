@@ -310,7 +310,6 @@ cold.blockingSubscribe(System.out::println);
 
 	\begin{center}
 		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-		\begin{minipage}[t][][b]{.46\textwidth}
 		\begin{lstlisting}[
 			escapeinside={(*}{*)},
 				caption={Intrisic words .NET C\#},
@@ -337,7 +336,6 @@ static async IAsyncEnumerable<int> FetchItems(int delay)
 }
 		
 		\end{lstlisting}
-		\end{minipage}
 	\end{center}
 
 
@@ -517,7 +515,6 @@ On the next table, it is possible to see how each object type can be mapped
 
 	\begin{center}
 		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-		\begin{minipage}[t][][b]{.46\textwidth}
 		\begin{lstlisting}[
 			escapeinside={(*}{*)},
 				caption={Asynchronous Enumerable, C\# example},
@@ -527,9 +524,10 @@ static async Task Main(string[] args)
 {
 	IAsyncEnumerable<int> enumerable = FetchItems(1000);
 	int i = 0;
-	await foreach (var item in enumerable)
+	await foreach (int item in enumerable)
 	{
 		if (i++ == 10){ break;}
+		Console.WriteLine(item);
 	}
 }
 
@@ -542,12 +540,21 @@ static async IAsyncEnumerable<int> FetchItems(int delay)
 		yield return count++;
 	}
 }
-
+//
+//1
+//1 sec delay
+//2
+//1 sec delay
+//3
+//....
 		\end{lstlisting}
-		\end{minipage}
 \end{center}
 
+As we can see in the example, although the operations and the emission of items being asynchronous, thanks to the the IAsynEnumerable and the use of the 
+intrisic words the code is very similar to a synchronous code.
+
 	
+
 \subsubsection{Javascript asynchronous enumerables}
 \label{jsae}
 	Node.js tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.
@@ -563,7 +570,6 @@ static async IAsyncEnumerable<int> FetchItems(int delay)
 \begin{center}
 	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
 	\centering
-	\begin{minipage}[t][][b]{.46\textwidth}
 	\begin{lstlisting}[
 		escapeinside={(*}{*)},
 			caption={Mozilla's Javascript Asynchronous Enumerables example},
@@ -595,9 +601,7 @@ async function getResponseSize(url) {
 	}
 	return responseSize;
 }  
-		
 	\end{lstlisting}
-	\end{minipage}
 \end{center}
 
 
@@ -619,7 +623,6 @@ A \texttt{Flow<T>} data source implementation is done through a builder, like we
 
 \begin{center}
 	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-	\begin{minipage}[t][][b]{.46\textwidth}
 	\begin{lstlisting}[
 		escapeinside={(*}{*)},
 			caption={Flow builder},
@@ -652,7 +655,6 @@ simple().collect { value -> println(value) }
 //3
 	
 	\end{lstlisting}
-	\end{minipage}
 \end{center}
 
 
@@ -667,7 +669,6 @@ On the next example, we can see several calls to the \texttt{Flow.collect()} tha
 
 \begin{center}
 	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-	\begin{minipage}[t][][b]{.46\textwidth}
 	\begin{lstlisting}[
 		escapeinside={(*}{*)},
 			caption={Kotlin collect multicall example},
@@ -705,7 +706,6 @@ fun main() = runBlocking<Unit> {
 //3
 	
 	\end{lstlisting}
-	\end{minipage}
 \end{center}
 
 
