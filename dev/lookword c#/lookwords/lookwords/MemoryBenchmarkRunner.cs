@@ -34,8 +34,7 @@ namespace lookwords
                                                            .Select(line => new string(line.Where(c => !char.IsPunctuation(c)).ToArray()))
                                                            .Select(line => line.Split(' ')
                                                                                .Where(word => !string.IsNullOrEmpty(word))
-                                                                               .Where(word => word.Length >= minLength && word.Length <= maxLength)
-                                                                               )
+                                                                               .Where(word => word.Length >= minLength && word.Length <= maxLength))
                                                            .AggregateAsync(new ConcurrentDictionary<string, int>(), (prev, curr) =>
                                                            {
                                                                FileUtils.addWordToDictionary(curr, prev);
@@ -56,8 +55,26 @@ namespace lookwords
         {
             FolderWordsObservable observable = new FolderWordsObservable(folderPath);
             WordObserver obs = new WordObserver(words_dict, 2, 12);
-
+            
             observable.Subscribe(obs);
+            observable.ToAsyncEnumerable<string>()
+                            .Where(line => !line.Contains("*** END OF "))
+                            .Select(line => new string(line.Where(c => !char.IsPunctuation(c)).ToArray()))
+                            .Select(line => line.Split(' ')
+                                                .Where(word => !string.IsNullOrEmpty(word))
+                                                .Where(word => word.Length >= minLength && word.Length <= maxLength))
+                            .AggregateAsync(new ConcurrentDictionary<string, int>(), (prev, curr) =>
+                            {
+                                FileUtils.addWordToDictionary(curr, prev);
+                                return prev;
+                            });
+
+            ConcurrentDictionary<string, int> words = await enumePromise;
+
+            foreach (var curr in words)
+            {
+                Console.WriteLine("Palavra: " + curr.Key + " repetitions: " + curr.Value);
+            }
         }
     }
 }
