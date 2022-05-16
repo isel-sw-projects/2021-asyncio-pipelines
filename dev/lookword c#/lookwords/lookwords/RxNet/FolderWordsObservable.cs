@@ -10,11 +10,11 @@ namespace lookwords.RxNet
     public class FolderWordsObservable : IObservable<string>
     {
         private List<IObserver<string>> observers = new List<IObserver<string>>();
-        string folderPath;
+        string file;
 
-        public FolderWordsObservable( string folderPath)
+        public FolderWordsObservable( string file)
         {
-            this.folderPath = folderPath;
+            this.file = file;
         }
 
         public IDisposable Subscribe(IObserver<string> observer)
@@ -31,30 +31,20 @@ namespace lookwords.RxNet
 
         private async Task countWords( IObserver<string> observer)
         {
-            Console.WriteLine("Initiation: ");
-
-
-            string[] allfiles = Directory.GetFiles(folderPath, "*.txt", SearchOption.AllDirectories);
-
-            foreach (var file in allfiles)
+            using (StreamReader reader = new StreamReader(file))
             {
-
-                using (StreamReader reader = new StreamReader(file))
+                while (!reader.EndOfStream)
                 {
-                    while (!reader.EndOfStream)
+                    try
                     {
-                        try
-                        {
-                            string line = await reader.ReadLineAsync();
+                        string line = await reader.ReadLineAsync();
 
-                            observer.OnNext(line);
+                        observer.OnNext(line);
 
-                        }
-                        catch (Exception ex)
-                        {
-                            observer.OnError(ex);
-                        }
-
+                    }
+                    catch (Exception ex)
+                    {
+                        observer.OnError(ex);
                     }
                 }
             }    

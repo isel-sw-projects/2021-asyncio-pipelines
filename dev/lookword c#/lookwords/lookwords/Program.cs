@@ -20,7 +20,7 @@ namespace lookwords
 
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<MemoryBenchmarkRunner>();
+            var summary = BenchmarkRunner.Run<LookforWordsIOTests>();
             Console.ReadLine();
         }
 

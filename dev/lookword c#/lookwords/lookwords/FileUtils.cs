@@ -9,10 +9,22 @@ using System.Threading.Tasks;
 
 namespace lookwords
 {
-    internal class FileUtils
+    public class FileUtils
     {
 
-        public static async IAsyncEnumerable<String> getLinesAsync(String folderPath)
+        public static async IAsyncEnumerable<String> getLinesAsyncEnum(String file, int minSize, int maxSize)
+        {
+            using (StreamReader reader = new StreamReader(file))
+            {
+                while (!reader.EndOfStream)
+                {
+                    yield return await reader.ReadLineAsync();
+                }
+            }
+            
+        }
+
+        public static async Task getWordsInSizeInterval (String folderPath, int minWordSize, int maxSize)
         {
             string[] allfiles = Directory.GetFiles(folderPath, "*.txt", SearchOption.AllDirectories);
 
@@ -22,7 +34,22 @@ namespace lookwords
                 {
                     while (!reader.EndOfStream)
                     {
-                        yield return await reader.ReadLineAsync();
+                        string line = await reader.ReadLineAsync();
+
+                        if (line.Contains("*** END OF "))
+                        {
+                            return;
+                        }
+                        line = line.Trim();
+                        IEnumerable<string> enume = line.Split(' ')
+                            .Where(word => !string.IsNullOrEmpty(word))
+                            .Where(word => word.Length >= minWordSize && word.Length <= maxSize);
+
+
+                        foreach (string word in enume)
+                        {
+                            Console.WriteLine(word);
+                        }
                     }
                 }
             }
@@ -33,19 +60,37 @@ namespace lookwords
             foreach (string word in line)
             {
 
-                    if (dict.ContainsKey(word))
-                    {
-                        int nextValue = dict[word];
-                        while (!dict.TryRemove(word, out nextValue)) { };
+                if (dict.ContainsKey(word))
+                {
+                    int nextValue = dict[word];
+                    while (!dict.TryRemove(word, out nextValue)) { };
 
-                        while (!dict.TryAdd(word, nextValue + 1)) { };
-                    }
-                    else
-                    {
-                        while (!dict.TryAdd(word, 1)) { };
-                    }
+                    while (!dict.TryAdd(word, nextValue + 1)) { };
+                }
+                else
+                {
+                    while (!dict.TryAdd(word, 1)) { };
+                }
             }
         }
 
+
+        public static void proccessLine(string line, int minLength, int maxLength)
+        {
+           if( line.Contains("*** END OF "))
+            {
+                return;
+            }
+            line = line.Trim();
+            IEnumerable<string> enume = line.Split(' ')
+                .Where(word => !string.IsNullOrEmpty(word))
+                .Where(word => word.Length >= minLength && word.Length <= maxLength);
+                 
+
+            foreach(string word in enume)
+            {
+                Console.WriteLine(word);
+            }
+        }
     }
 }
