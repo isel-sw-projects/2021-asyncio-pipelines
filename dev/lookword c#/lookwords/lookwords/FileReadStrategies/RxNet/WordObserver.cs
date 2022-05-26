@@ -9,9 +9,9 @@ namespace lookwords.RxNet
 {
     public class WordObserver : IObserver<string>
     {
-        ConcurrentDictionary<String, int> words_dict;
+        Dictionary<String, int> words_dict;
 
-        public WordObserver(ConcurrentDictionary<String, int> words_dict, int minLength, int maxLength)
+        public WordObserver(Dictionary<String, int> words_dict, int minLength, int maxLength)
         {
             this.words_dict = words_dict;
             MinLength = minLength;
@@ -37,15 +37,9 @@ namespace lookwords.RxNet
         }
 
 
-        public void OnNext(string lineString)
+        public void OnNext(string word)
         {
-            lineString = new string(lineString.Where(c => !char.IsPunctuation(c)).ToArray());
-            List<String> lines = lineString.Split(' ')
-                .Where(word => !String.IsNullOrEmpty(word) && !lineString.Contains("*** END OF "))
-                .Where(word => word.Length >= MinLength && word.Length <= MaxLength)
-                .ToList();
-                
-            FileUtils.addWordToDictionary(lines, words_dict);
+            Console.WriteLine(word);
             
         }
     }

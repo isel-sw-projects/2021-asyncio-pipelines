@@ -20,8 +20,9 @@ namespace lookwords
 
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<LookforWordsIOTests>();
-            Console.ReadLine();
+            //var summary = BenchmarkRunner.Run<IOTStategiesBenchmark>();
+            //Console.ReadLine();
+            FileReadStrategies.folderWordOccurrencesInSizeRangeSync(folderPath, 2, 12);
         }
 
     }

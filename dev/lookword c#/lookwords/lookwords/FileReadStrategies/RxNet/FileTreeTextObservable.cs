@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace lookwords.RxNet
 {
-    public class FolderWordsObservable : IObservable<string>
+    public class FileTreeTextObservable : IObservable<string>
     {
         private List<IObserver<string>> observers = new List<IObserver<string>>();
         string file;
 
-        public FolderWordsObservable( string file)
+        public FileTreeTextObservable( string file)
         {
             this.file = file;
         }
@@ -24,7 +24,7 @@ namespace lookwords.RxNet
                 observers.Add(observer);
             }
 
-            countWords(observer).Wait();
+            countWords(observer);
 
             return new Unsubscriber(observers, observer);
         }
