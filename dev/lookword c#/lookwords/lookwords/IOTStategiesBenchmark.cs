@@ -39,9 +39,15 @@ namespace lookwords
 
 
         [Benchmark]
-        public void RunRxTest()
+        public ConcurrentDictionary<string, int> RunRxTest()
         {
-            FileReadStrategies.folderWordOccurrencesInSizeRangeWithRX(folderPath, minWordSize, maxWordSize).Wait();
+            Task<ConcurrentDictionary<string, int>> task = FileReadStrategies.folderWordOccurrencesInSizeRangeWithRX(folderPath, minWordSize, maxWordSize);
+            task.Wait();
+            //
+            // Each benchmark should return a value to ensure the VM optimizations
+            // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
+            //
+            return task.Result;
         }
     }
 }

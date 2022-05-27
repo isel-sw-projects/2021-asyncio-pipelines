@@ -29,7 +29,7 @@ namespace lookwords.RxNet
             return new Unsubscriber(observers, observer);
         }
 
-        private async Task countWords( IObserver<string> observer)
+        private void countWords( IObserver<string> observer)
         {
             using (StreamReader reader = new StreamReader(file))
             {
@@ -37,9 +37,11 @@ namespace lookwords.RxNet
                 {
                     try
                     {
-                        string line = await reader.ReadLineAsync();
-
-                        observer.OnNext(line);
+                        //
+                        // Not sure if there is any throughput gain by reading the file Asynchrnously.
+                        // Test bith: ReadLine() and ReadLineAsync() and check which one performs better??
+                        //
+                        observer.OnNext(reader.ReadLine());
 
                     }
                     catch (Exception ex)
