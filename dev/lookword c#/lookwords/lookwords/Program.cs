@@ -22,7 +22,8 @@ namespace lookwords
         {
             //var summary = BenchmarkRunner.Run<IOTStategiesBenchmark>();
             //Console.ReadLine();
-            FileReadStrategies.folderWordOccurrencesInSizeRangeSync(folderPath, 2, 12);
+            //IOFileReadStrategies.folderWordOccurrencesInSizeRangeSync(folderPath, 2, 12);
+            BenchmarckIOFileReadStrategies.RunRxTest();
         }
 
     }

@@ -283,13 +283,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileReadStrategies\FileReadStrategies.cs" />
+    <Compile Include="FileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />
+    <Compile Include="FileReadStrategies\Examples.cs" />
     <Compile Include="FileReadStrategies\FileUtils.cs" />
-    <Compile Include="IOTStategiesBenchmark.cs" />
+    <Compile Include="FileReadStrategies\IIOFileReadStrategy.cs" />
+    <Compile Include="FileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />
+    <Compile Include="FileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
+    <Compile Include="BenchmarckIOFileReadStrategies.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileReadStrategies\RxNet\FileTreeTextObservable.cs" />
-    <Compile Include="FileReadStrategies\RxNet\WordObserver.cs" />
     <Compile Include="FileReadStrategiesTests\RXNetTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -308,6 +311,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

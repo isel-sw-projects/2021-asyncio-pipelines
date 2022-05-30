@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace lookwords
 {
-    public class FileReadStrategies
+    public class Examples
     {
         public static Dictionary<string, int> folderWordOccurrencesInSizeRangeSync(string folderPath, int minWordSize, int maxWordSize)
         {
