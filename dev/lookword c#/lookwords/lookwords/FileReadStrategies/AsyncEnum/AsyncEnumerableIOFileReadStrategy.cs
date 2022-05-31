@@ -15,12 +15,18 @@ namespace lookwords.FileReadStrategies.AsyncEnum
         private  Task parseFileDistinctWordsIntoDictionary(string filename, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
         {
             return FileUtils.getLinesAsyncEnum(filename, minWordSize, maxWordSize)
-                 .Where(line => line.Length == 0)                           // Skip empty lines
-                 .Skip(14)                                                  // Skip gutenberg header
-                 .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
-                 .SelectMany<string, string>(line => line.Split(' ', ',', ';', '.', ':').ToAsyncEnumerable()) //?? to review ?? 
-                 .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
-                 .ForEachAsync((word) => words.AddOrUpdate(word, 1, (k, v) => v + 1)); // Merge words in dictionary.
+                 .Where(line => line.Length == 0)                     // Skip empty lines
+                 .Skip(14)                                            // Skip gutenberg header
+                 .TakeWhile(line => !line.Contains("*** END OF "))    // Skip gutenberg footnote
+                 .Select(line => line.Split(' ', ',', ';', '.', ':')) //?? to review ?? 
+                 .ForEachAsync((arr) => arr
+                    .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
+                    .Aggregate(words, (prev, word) =>
+                    {
+                        prev.AddOrUpdate(word, 1, (k, v) => v + 1); // Merge words in dictionary.
+                        return prev;
+                    })
+                );     
         }
 
 
