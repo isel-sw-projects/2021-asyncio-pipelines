@@ -30,7 +30,7 @@ namespace lookwords.FileReadStrategies.RxNet
         }
 
         //RXNET implementation
-        public Task<ConcurrentDictionary<string, int>> getDistingWordsFromFileAsyncEnumerable(string folderPath, int minWordSize, int maxWordSize)
+        public Task<ConcurrentDictionary<string, int>> getDistingWordsFromFileAsync(string folderPath, int minWordSize, int maxWordSize)
         {
             Console.WriteLine("Initiation: ");
             var words = new ConcurrentDictionary<string, int>();

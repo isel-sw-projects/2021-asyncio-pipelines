@@ -33,7 +33,7 @@ namespace lookwords
         [Benchmark]
         public static ConcurrentDictionary<string, int> RunAsyncEnumerableTest()
         {
-            Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategy().getDistingWordsFromFileAsyncEnumerable(folderPath, minWordSize, maxWordSize);
+            Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategy().getDistingWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
             task.Wait();
             //
             // Each benchmark should return a value to ensure the VM optimizations
@@ -47,7 +47,7 @@ namespace lookwords
         [Benchmark]
         public static ConcurrentDictionary<string, int> RunRxTest()
         {
-            Task<ConcurrentDictionary<string, int>> task = new RXNetIOFileReadStrategy().getDistingWordsFromFileAsyncEnumerable(folderPath, minWordSize, maxWordSize);
+            Task<ConcurrentDictionary<string, int>> task = new RXNetIOFileReadStrategy().getDistingWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
             task.Wait();
             //
             // Each benchmark should return a value to ensure the VM optimizations

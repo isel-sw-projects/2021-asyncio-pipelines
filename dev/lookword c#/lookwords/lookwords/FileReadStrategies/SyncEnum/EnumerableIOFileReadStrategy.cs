@@ -41,7 +41,7 @@ namespace lookwords.FileReadStrategies.SyncEnum
             return words;
         }
 
-        public Task<ConcurrentDictionary<string, int>> getDistingWordsFromFileAsyncEnumerable(string folderName, int minWordLength, int maxWordLength)
+        public Task<ConcurrentDictionary<string, int>> getDistingWordsFromFileAsync(string folderName, int minWordLength, int maxWordLength)
         {
             throw new NotImplementedException();
         }

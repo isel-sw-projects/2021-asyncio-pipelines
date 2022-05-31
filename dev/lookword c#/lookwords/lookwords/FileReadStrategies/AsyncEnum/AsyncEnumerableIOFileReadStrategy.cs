@@ -24,7 +24,7 @@ namespace lookwords.FileReadStrategies.AsyncEnum
         }
 
 
-        public Task<ConcurrentDictionary<string, int>> getDistingWordsFromFileAsyncEnumerable(string folderName, int minWordLength, int maxWordLength)
+        public Task<ConcurrentDictionary<string, int>> getDistingWordsFromFileAsync(string folderName, int minWordLength, int maxWordLength)
         {
             Console.WriteLine("Initiation: ");
             var words = new ConcurrentDictionary<string, int>();
