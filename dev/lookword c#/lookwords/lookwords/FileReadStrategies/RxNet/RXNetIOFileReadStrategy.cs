@@ -24,15 +24,13 @@ namespace lookwords.FileReadStrategies.RxNet
                 .Skip(14)                                                  // Skip gutenberg header
                 .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
                 .SelectMany(line => line.Split(' ', ',', ';', '.', ':'))   // Split each line in Words
-                .Where(word =>                                             // Filter words in range [minWordSize, maxWordSize]
-                    word.Length >= minWordSize && word.Length <= maxWordSize)
+                .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
                 .ForEachAsync((word) => words.AddOrUpdate(word, 1, (k, v) => v + 1)); // Merge words in dictionary.
         }
 
         //RXNET implementation
         public Task<ConcurrentDictionary<string, int>> getDistingWordsFromFileAsync(string folderPath, int minWordSize, int maxWordSize)
         {
-            Console.WriteLine("Initiation: ");
             var words = new ConcurrentDictionary<string, int>();
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!

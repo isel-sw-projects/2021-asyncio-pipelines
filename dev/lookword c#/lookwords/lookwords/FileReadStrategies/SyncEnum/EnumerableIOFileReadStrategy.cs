@@ -25,8 +25,6 @@ namespace lookwords.FileReadStrategies.SyncEnum
 
         public ConcurrentDictionary<string, int> getDistingWordsFromFileSync(string folderName, int minWordLength, int maxWordLength)
         {
-
-            Console.WriteLine("Initiation: ");
             var words = new ConcurrentDictionary<string, int>();
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!

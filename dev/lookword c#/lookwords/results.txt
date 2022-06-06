@@ -1,0 +1,461 @@
+// Validating benchmarks:
+// ***** BenchmarkRunner: Start   *****
+// ***** Found 4 benchmark(s) in total *****
+// ***** Building 1 exe(s) in Parallel: Start   *****
+BuildScript: F:\escola\MEIC\TESE\2021-asyncio-pipelines\dev\lookword c#\lookwords\lookwords\bin\Release\737b2948-1a93-4278-9d55-7391a84b7f81.bat
+// ***** Done, took 00:00:01 (2 sec)   *****
+// Found 4 benchmarks:
+//   BenchmarckIOFileReadStrategies.RunSyncTest: DefaultJob
+//   BenchmarckIOFileReadStrategies.RunAsyncEnumerableTest: DefaultJob
+//   BenchmarckIOFileReadStrategies.RunAsyncEnumerableWithToAsyncEnumerableConvertionTest: DefaultJob
+//   BenchmarckIOFileReadStrategies.RunRxTest: DefaultJob
+
+// **************************
+// Benchmark: BenchmarckIOFileReadStrategies.RunSyncTest: DefaultJob
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: F:\escola\MEIC\TESE\2021-asyncio-pipelines\dev\lookword c#\lookwords\lookwords\bin\Release\737b2948-1a93-4278-9d55-7391a84b7f81.exe --benchmarkName "lookwords.BenchmarckIOFileReadStrategies.RunSyncTest" --job "Default" --benchmarkId 0 in
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Framework 4.8 (4.8.4510.0), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 1 op, 273400.00 ns, 273.4000 us/op
+WorkloadJitting  1: 1 op, 2606729800.00 ns, 2.6067 s/op
+
+WorkloadWarmup   1: 1 op, 1262657800.00 ns, 1.2627 s/op
+WorkloadWarmup   2: 1 op, 1242585400.00 ns, 1.2426 s/op
+WorkloadWarmup   3: 1 op, 1226832000.00 ns, 1.2268 s/op
+WorkloadWarmup   4: 1 op, 1237843300.00 ns, 1.2378 s/op
+WorkloadWarmup   5: 1 op, 1225980400.00 ns, 1.2260 s/op
+WorkloadWarmup   6: 1 op, 1219982000.00 ns, 1.2200 s/op
+WorkloadWarmup   7: 1 op, 1243047000.00 ns, 1.2430 s/op
+WorkloadWarmup   8: 1 op, 1242451000.00 ns, 1.2425 s/op
+
+// BeforeActualRun
+WorkloadActual   1: 1 op, 1233515400.00 ns, 1.2335 s/op
+WorkloadActual   2: 1 op, 1216672100.00 ns, 1.2167 s/op
+WorkloadActual   3: 1 op, 1232572200.00 ns, 1.2326 s/op
+WorkloadActual   4: 1 op, 1224725000.00 ns, 1.2247 s/op
+WorkloadActual   5: 1 op, 1225646700.00 ns, 1.2256 s/op
+WorkloadActual   6: 1 op, 1231190700.00 ns, 1.2312 s/op
+WorkloadActual   7: 1 op, 1227278300.00 ns, 1.2273 s/op
+WorkloadActual   8: 1 op, 1222818400.00 ns, 1.2228 s/op
+WorkloadActual   9: 1 op, 1224968600.00 ns, 1.2250 s/op
+WorkloadActual  10: 1 op, 1224425100.00 ns, 1.2244 s/op
+WorkloadActual  11: 1 op, 1228286000.00 ns, 1.2283 s/op
+WorkloadActual  12: 1 op, 1226842800.00 ns, 1.2268 s/op
+WorkloadActual  13: 1 op, 1228151300.00 ns, 1.2282 s/op
+WorkloadActual  14: 1 op, 1227371100.00 ns, 1.2274 s/op
+WorkloadActual  15: 1 op, 1225890400.00 ns, 1.2259 s/op
+
+// AfterActualRun
+WorkloadResult   1: 1 op, 1216672100.00 ns, 1.2167 s/op
+WorkloadResult   2: 1 op, 1232572200.00 ns, 1.2326 s/op
+WorkloadResult   3: 1 op, 1224725000.00 ns, 1.2247 s/op
+WorkloadResult   4: 1 op, 1225646700.00 ns, 1.2256 s/op
+WorkloadResult   5: 1 op, 1231190700.00 ns, 1.2312 s/op
+WorkloadResult   6: 1 op, 1227278300.00 ns, 1.2273 s/op
+WorkloadResult   7: 1 op, 1222818400.00 ns, 1.2228 s/op
+WorkloadResult   8: 1 op, 1224968600.00 ns, 1.2250 s/op
+WorkloadResult   9: 1 op, 1224425100.00 ns, 1.2244 s/op
+WorkloadResult  10: 1 op, 1228286000.00 ns, 1.2283 s/op
+WorkloadResult  11: 1 op, 1226842800.00 ns, 1.2268 s/op
+WorkloadResult  12: 1 op, 1228151300.00 ns, 1.2282 s/op
+WorkloadResult  13: 1 op, 1227371100.00 ns, 1.2274 s/op
+WorkloadResult  14: 1 op, 1225890400.00 ns, 1.2259 s/op
+GC:  283 1 0 1789314008 1
+Threading:  0 0 1
+
+// AfterAll
+// Benchmark Process 2568 has exited with code 0.
+
+Mean = 1.226 s, StdErr = 0.001 s (0.08%), N = 14, StdDev = 0.004 s
+Min = 1.217 s, Q1 = 1.225 s, Median = 1.226 s, Q3 = 1.228 s, Max = 1.233 s
+IQR = 0.003 s, LowerFence = 1.220 s, UpperFence = 1.233 s
+ConfidenceInterval = [1.222 s; 1.230 s] (CI 99.9%), Margin = 0.004 s (0.35% of Mean)
+Skewness = -0.68, Kurtosis = 3.73, MValue = 2
+
+// **************************
+// Benchmark: BenchmarckIOFileReadStrategies.RunAsyncEnumerableTest: DefaultJob
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: F:\escola\MEIC\TESE\2021-asyncio-pipelines\dev\lookword c#\lookwords\lookwords\bin\Release\737b2948-1a93-4278-9d55-7391a84b7f81.exe --benchmarkName "lookwords.BenchmarckIOFileReadStrategies.RunAsyncEnumerableTest" --job "Default" --benchmarkId 1 in
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Framework 4.8 (4.8.4510.0), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 1 op, 268900.00 ns, 268.9000 us/op
+WorkloadJitting  1: 1 op, 2575318400.00 ns, 2.5753 s/op
+
+WorkloadWarmup   1: 1 op, 2377176600.00 ns, 2.3772 s/op
+WorkloadWarmup   2: 1 op, 2396799600.00 ns, 2.3968 s/op
+WorkloadWarmup   3: 1 op, 2278376400.00 ns, 2.2784 s/op
+WorkloadWarmup   4: 1 op, 2247357200.00 ns, 2.2474 s/op
+WorkloadWarmup   5: 1 op, 2502215200.00 ns, 2.5022 s/op
+WorkloadWarmup   6: 1 op, 2335069800.00 ns, 2.3351 s/op
+
+// BeforeActualRun
+WorkloadActual   1: 1 op, 2334306000.00 ns, 2.3343 s/op
+WorkloadActual   2: 1 op, 2361805700.00 ns, 2.3618 s/op
+WorkloadActual   3: 1 op, 2265469600.00 ns, 2.2655 s/op
+WorkloadActual   4: 1 op, 2231680900.00 ns, 2.2317 s/op
+WorkloadActual   5: 1 op, 2210983800.00 ns, 2.2110 s/op
+WorkloadActual   6: 1 op, 2350477400.00 ns, 2.3505 s/op
+WorkloadActual   7: 1 op, 2438419200.00 ns, 2.4384 s/op
+WorkloadActual   8: 1 op, 2191717600.00 ns, 2.1917 s/op
+WorkloadActual   9: 1 op, 2218762200.00 ns, 2.2188 s/op
+WorkloadActual  10: 1 op, 2293404400.00 ns, 2.2934 s/op
+WorkloadActual  11: 1 op, 2241252300.00 ns, 2.2413 s/op
+WorkloadActual  12: 1 op, 2420393800.00 ns, 2.4204 s/op
+WorkloadActual  13: 1 op, 2348167400.00 ns, 2.3482 s/op
+WorkloadActual  14: 1 op, 2455500000.00 ns, 2.4555 s/op
+WorkloadActual  15: 1 op, 2326060300.00 ns, 2.3261 s/op
+WorkloadActual  16: 1 op, 2265973700.00 ns, 2.2660 s/op
+WorkloadActual  17: 1 op, 2319172200.00 ns, 2.3192 s/op
+WorkloadActual  18: 1 op, 2463378800.00 ns, 2.4634 s/op
+WorkloadActual  19: 1 op, 2234857600.00 ns, 2.2349 s/op
+WorkloadActual  20: 1 op, 2228506600.00 ns, 2.2285 s/op
+WorkloadActual  21: 1 op, 2224860400.00 ns, 2.2249 s/op
+WorkloadActual  22: 1 op, 2176863500.00 ns, 2.1769 s/op
+WorkloadActual  23: 1 op, 2176158700.00 ns, 2.1762 s/op
+WorkloadActual  24: 1 op, 2192257900.00 ns, 2.1923 s/op
+WorkloadActual  25: 1 op, 2260274700.00 ns, 2.2603 s/op
+WorkloadActual  26: 1 op, 2239104800.00 ns, 2.2391 s/op
+WorkloadActual  27: 1 op, 2251565200.00 ns, 2.2516 s/op
+WorkloadActual  28: 1 op, 2203827000.00 ns, 2.2038 s/op
+WorkloadActual  29: 1 op, 2250964400.00 ns, 2.2510 s/op
+WorkloadActual  30: 1 op, 2226684500.00 ns, 2.2267 s/op
+WorkloadActual  31: 1 op, 2415533700.00 ns, 2.4155 s/op
+WorkloadActual  32: 1 op, 2304106300.00 ns, 2.3041 s/op
+WorkloadActual  33: 1 op, 2231388300.00 ns, 2.2314 s/op
+WorkloadActual  34: 1 op, 2165576500.00 ns, 2.1656 s/op
+WorkloadActual  35: 1 op, 2282893800.00 ns, 2.2829 s/op
+WorkloadActual  36: 1 op, 2165928000.00 ns, 2.1659 s/op
+WorkloadActual  37: 1 op, 2422153100.00 ns, 2.4222 s/op
+WorkloadActual  38: 1 op, 2238831200.00 ns, 2.2388 s/op
+WorkloadActual  39: 1 op, 2307752200.00 ns, 2.3078 s/op
+WorkloadActual  40: 1 op, 2381998300.00 ns, 2.3820 s/op
+WorkloadActual  41: 1 op, 2268214200.00 ns, 2.2682 s/op
+WorkloadActual  42: 1 op, 2335036600.00 ns, 2.3350 s/op
+
+// AfterActualRun
+WorkloadResult   1: 1 op, 2334306000.00 ns, 2.3343 s/op
+WorkloadResult   2: 1 op, 2361805700.00 ns, 2.3618 s/op
+WorkloadResult   3: 1 op, 2265469600.00 ns, 2.2655 s/op
+WorkloadResult   4: 1 op, 2231680900.00 ns, 2.2317 s/op
+WorkloadResult   5: 1 op, 2210983800.00 ns, 2.2110 s/op
+WorkloadResult   6: 1 op, 2350477400.00 ns, 2.3505 s/op
+WorkloadResult   7: 1 op, 2438419200.00 ns, 2.4384 s/op
+WorkloadResult   8: 1 op, 2191717600.00 ns, 2.1917 s/op
+WorkloadResult   9: 1 op, 2218762200.00 ns, 2.2188 s/op
+WorkloadResult  10: 1 op, 2293404400.00 ns, 2.2934 s/op
+WorkloadResult  11: 1 op, 2241252300.00 ns, 2.2413 s/op
+WorkloadResult  12: 1 op, 2420393800.00 ns, 2.4204 s/op
+WorkloadResult  13: 1 op, 2348167400.00 ns, 2.3482 s/op
+WorkloadResult  14: 1 op, 2455500000.00 ns, 2.4555 s/op
+WorkloadResult  15: 1 op, 2326060300.00 ns, 2.3261 s/op
+WorkloadResult  16: 1 op, 2265973700.00 ns, 2.2660 s/op
+WorkloadResult  17: 1 op, 2319172200.00 ns, 2.3192 s/op
+WorkloadResult  18: 1 op, 2463378800.00 ns, 2.4634 s/op
+WorkloadResult  19: 1 op, 2234857600.00 ns, 2.2349 s/op
+WorkloadResult  20: 1 op, 2228506600.00 ns, 2.2285 s/op
+WorkloadResult  21: 1 op, 2224860400.00 ns, 2.2249 s/op
+WorkloadResult  22: 1 op, 2176863500.00 ns, 2.1769 s/op
+WorkloadResult  23: 1 op, 2176158700.00 ns, 2.1762 s/op
+WorkloadResult  24: 1 op, 2192257900.00 ns, 2.1923 s/op
+WorkloadResult  25: 1 op, 2260274700.00 ns, 2.2603 s/op
+WorkloadResult  26: 1 op, 2239104800.00 ns, 2.2391 s/op
+WorkloadResult  27: 1 op, 2251565200.00 ns, 2.2516 s/op
+WorkloadResult  28: 1 op, 2203827000.00 ns, 2.2038 s/op
+WorkloadResult  29: 1 op, 2250964400.00 ns, 2.2510 s/op
+WorkloadResult  30: 1 op, 2226684500.00 ns, 2.2267 s/op
+WorkloadResult  31: 1 op, 2415533700.00 ns, 2.4155 s/op
+WorkloadResult  32: 1 op, 2304106300.00 ns, 2.3041 s/op
+WorkloadResult  33: 1 op, 2231388300.00 ns, 2.2314 s/op
+WorkloadResult  34: 1 op, 2165576500.00 ns, 2.1656 s/op
+WorkloadResult  35: 1 op, 2282893800.00 ns, 2.2829 s/op
+WorkloadResult  36: 1 op, 2165928000.00 ns, 2.1659 s/op
+WorkloadResult  37: 1 op, 2422153100.00 ns, 2.4222 s/op
+WorkloadResult  38: 1 op, 2238831200.00 ns, 2.2388 s/op
+WorkloadResult  39: 1 op, 2307752200.00 ns, 2.3078 s/op
+WorkloadResult  40: 1 op, 2381998300.00 ns, 2.3820 s/op
+WorkloadResult  41: 1 op, 2268214200.00 ns, 2.2682 s/op
+WorkloadResult  42: 1 op, 2335036600.00 ns, 2.3350 s/op
+GC:  617 8 2 3881300144 1
+Threading:  0 0 1
+
+// AfterAll
+// Benchmark Process 13528 has exited with code 0.
+
+Mean = 2.284 s, StdErr = 0.013 s (0.56%), N = 42, StdDev = 0.083 s
+Min = 2.166 s, Q1 = 2.227 s, Median = 2.263 s, Q3 = 2.335 s, Max = 2.463 s
+IQR = 0.108 s, LowerFence = 2.066 s, UpperFence = 2.496 s
+ConfidenceInterval = [2.238 s; 2.329 s] (CI 99.9%), Margin = 0.046 s (2.00% of Mean)
+Skewness = 0.6, Kurtosis = 2.28, MValue = 2.47
+
+// **************************
+// Benchmark: BenchmarckIOFileReadStrategies.RunAsyncEnumerableWithToAsyncEnumerableConvertionTest: DefaultJob
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: F:\escola\MEIC\TESE\2021-asyncio-pipelines\dev\lookword c#\lookwords\lookwords\bin\Release\737b2948-1a93-4278-9d55-7391a84b7f81.exe --benchmarkName "lookwords.BenchmarckIOFileReadStrategies.RunAsyncEnumerableWithToAsyncEnumerableConvertionTest" --job "Default" --benchmarkId 2 in
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Framework 4.8 (4.8.4510.0), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 1 op, 269900.00 ns, 269.9000 us/op
+WorkloadJitting  1: 1 op, 2468818200.00 ns, 2.4688 s/op
+
+WorkloadWarmup   1: 1 op, 2378789600.00 ns, 2.3788 s/op
+WorkloadWarmup   2: 1 op, 2332344500.00 ns, 2.3323 s/op
+WorkloadWarmup   3: 1 op, 1938679900.00 ns, 1.9387 s/op
+WorkloadWarmup   4: 1 op, 2418442000.00 ns, 2.4184 s/op
+WorkloadWarmup   5: 1 op, 2408185700.00 ns, 2.4082 s/op
+WorkloadWarmup   6: 1 op, 2411437600.00 ns, 2.4114 s/op
+WorkloadWarmup   7: 1 op, 2492889500.00 ns, 2.4929 s/op
+WorkloadWarmup   8: 1 op, 2413937400.00 ns, 2.4139 s/op
+
+// BeforeActualRun
+WorkloadActual   1: 1 op, 2481732100.00 ns, 2.4817 s/op
+WorkloadActual   2: 1 op, 2331802800.00 ns, 2.3318 s/op
+WorkloadActual   3: 1 op, 2470359300.00 ns, 2.4704 s/op
+WorkloadActual   4: 1 op, 2464483200.00 ns, 2.4645 s/op
+WorkloadActual   5: 1 op, 2533076300.00 ns, 2.5331 s/op
+WorkloadActual   6: 1 op, 2633463500.00 ns, 2.6335 s/op
+WorkloadActual   7: 1 op, 2408071600.00 ns, 2.4081 s/op
+WorkloadActual   8: 1 op, 2329732000.00 ns, 2.3297 s/op
+WorkloadActual   9: 1 op, 2461660600.00 ns, 2.4617 s/op
+WorkloadActual  10: 1 op, 2703077700.00 ns, 2.7031 s/op
+WorkloadActual  11: 1 op, 2466601000.00 ns, 2.4666 s/op
+WorkloadActual  12: 1 op, 2497034100.00 ns, 2.4970 s/op
+WorkloadActual  13: 1 op, 2383179100.00 ns, 2.3832 s/op
+WorkloadActual  14: 1 op, 2412645000.00 ns, 2.4126 s/op
+WorkloadActual  15: 1 op, 2298958300.00 ns, 2.2990 s/op
+WorkloadActual  16: 1 op, 2465227100.00 ns, 2.4652 s/op
+WorkloadActual  17: 1 op, 2400299200.00 ns, 2.4003 s/op
+WorkloadActual  18: 1 op, 2655914100.00 ns, 2.6559 s/op
+WorkloadActual  19: 1 op, 2379357500.00 ns, 2.3794 s/op
+WorkloadActual  20: 1 op, 2456690600.00 ns, 2.4567 s/op
+WorkloadActual  21: 1 op, 2440113900.00 ns, 2.4401 s/op
+WorkloadActual  22: 1 op, 2398218400.00 ns, 2.3982 s/op
+WorkloadActual  23: 1 op, 2311275100.00 ns, 2.3113 s/op
+WorkloadActual  24: 1 op, 2405832900.00 ns, 2.4058 s/op
+WorkloadActual  25: 1 op, 2417859100.00 ns, 2.4179 s/op
+WorkloadActual  26: 1 op, 2339307800.00 ns, 2.3393 s/op
+WorkloadActual  27: 1 op, 2501662000.00 ns, 2.5017 s/op
+WorkloadActual  28: 1 op, 2523969000.00 ns, 2.5240 s/op
+WorkloadActual  29: 1 op, 2470713800.00 ns, 2.4707 s/op
+
+// AfterActualRun
+WorkloadResult   1: 1 op, 2481732100.00 ns, 2.4817 s/op
+WorkloadResult   2: 1 op, 2331802800.00 ns, 2.3318 s/op
+WorkloadResult   3: 1 op, 2470359300.00 ns, 2.4704 s/op
+WorkloadResult   4: 1 op, 2464483200.00 ns, 2.4645 s/op
+WorkloadResult   5: 1 op, 2533076300.00 ns, 2.5331 s/op
+WorkloadResult   6: 1 op, 2408071600.00 ns, 2.4081 s/op
+WorkloadResult   7: 1 op, 2329732000.00 ns, 2.3297 s/op
+WorkloadResult   8: 1 op, 2461660600.00 ns, 2.4617 s/op
+WorkloadResult   9: 1 op, 2466601000.00 ns, 2.4666 s/op
+WorkloadResult  10: 1 op, 2497034100.00 ns, 2.4970 s/op
+WorkloadResult  11: 1 op, 2383179100.00 ns, 2.3832 s/op
+WorkloadResult  12: 1 op, 2412645000.00 ns, 2.4126 s/op
+WorkloadResult  13: 1 op, 2298958300.00 ns, 2.2990 s/op
+WorkloadResult  14: 1 op, 2465227100.00 ns, 2.4652 s/op
+WorkloadResult  15: 1 op, 2400299200.00 ns, 2.4003 s/op
+WorkloadResult  16: 1 op, 2379357500.00 ns, 2.3794 s/op
+WorkloadResult  17: 1 op, 2456690600.00 ns, 2.4567 s/op
+WorkloadResult  18: 1 op, 2440113900.00 ns, 2.4401 s/op
+WorkloadResult  19: 1 op, 2398218400.00 ns, 2.3982 s/op
+WorkloadResult  20: 1 op, 2311275100.00 ns, 2.3113 s/op
+WorkloadResult  21: 1 op, 2405832900.00 ns, 2.4058 s/op
+WorkloadResult  22: 1 op, 2417859100.00 ns, 2.4179 s/op
+WorkloadResult  23: 1 op, 2339307800.00 ns, 2.3393 s/op
+WorkloadResult  24: 1 op, 2501662000.00 ns, 2.5017 s/op
+WorkloadResult  25: 1 op, 2523969000.00 ns, 2.5240 s/op
+WorkloadResult  26: 1 op, 2470713800.00 ns, 2.4707 s/op
+GC:  628 8 3 3945853104 1
+Threading:  0 0 1
+
+// AfterAll
+// Benchmark Process 10116 has exited with code 0.
+
+Mean = 2.425 s, StdErr = 0.013 s (0.53%), N = 26, StdDev = 0.066 s
+Min = 2.299 s, Q1 = 2.387 s, Median = 2.429 s, Q3 = 2.469 s, Max = 2.533 s
+IQR = 0.082 s, LowerFence = 2.263 s, UpperFence = 2.593 s
+ConfidenceInterval = [2.377 s; 2.473 s] (CI 99.9%), Margin = 0.048 s (1.97% of Mean)
+Skewness = -0.31, Kurtosis = 2.01, MValue = 2
+
+// **************************
+// Benchmark: BenchmarckIOFileReadStrategies.RunRxTest: DefaultJob
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: F:\escola\MEIC\TESE\2021-asyncio-pipelines\dev\lookword c#\lookwords\lookwords\bin\Release\737b2948-1a93-4278-9d55-7391a84b7f81.exe --benchmarkName "lookwords.BenchmarckIOFileReadStrategies.RunRxTest" --job "Default" --benchmarkId 3 in
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Framework 4.8 (4.8.4510.0), X64 RyuJIT
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+OverheadJitting  1: 1 op, 270300.00 ns, 270.3000 us/op
+WorkloadJitting  1: 1 op, 1288782200.00 ns, 1.2888 s/op
+
+WorkloadWarmup   1: 1 op, 1248307100.00 ns, 1.2483 s/op
+WorkloadWarmup   2: 1 op, 1250739000.00 ns, 1.2507 s/op
+WorkloadWarmup   3: 1 op, 1245783600.00 ns, 1.2458 s/op
+WorkloadWarmup   4: 1 op, 1245801300.00 ns, 1.2458 s/op
+WorkloadWarmup   5: 1 op, 1252192500.00 ns, 1.2522 s/op
+WorkloadWarmup   6: 1 op, 1246839200.00 ns, 1.2468 s/op
+
+// BeforeActualRun
+WorkloadActual   1: 1 op, 1246973400.00 ns, 1.2470 s/op
+WorkloadActual   2: 1 op, 1253473900.00 ns, 1.2535 s/op
+WorkloadActual   3: 1 op, 1253282300.00 ns, 1.2533 s/op
+WorkloadActual   4: 1 op, 1253052400.00 ns, 1.2531 s/op
+WorkloadActual   5: 1 op, 1249224400.00 ns, 1.2492 s/op
+WorkloadActual   6: 1 op, 1251862900.00 ns, 1.2519 s/op
+WorkloadActual   7: 1 op, 1260863800.00 ns, 1.2609 s/op
+WorkloadActual   8: 1 op, 1264853100.00 ns, 1.2649 s/op
+WorkloadActual   9: 1 op, 1248887000.00 ns, 1.2489 s/op
+WorkloadActual  10: 1 op, 1251705700.00 ns, 1.2517 s/op
+WorkloadActual  11: 1 op, 1254893900.00 ns, 1.2549 s/op
+WorkloadActual  12: 1 op, 1252574100.00 ns, 1.2526 s/op
+WorkloadActual  13: 1 op, 1247272200.00 ns, 1.2473 s/op
+WorkloadActual  14: 1 op, 1246322000.00 ns, 1.2463 s/op
+WorkloadActual  15: 1 op, 1252051800.00 ns, 1.2521 s/op
+
+// AfterActualRun
+WorkloadResult   1: 1 op, 1246973400.00 ns, 1.2470 s/op
+WorkloadResult   2: 1 op, 1253473900.00 ns, 1.2535 s/op
+WorkloadResult   3: 1 op, 1253282300.00 ns, 1.2533 s/op
+WorkloadResult   4: 1 op, 1253052400.00 ns, 1.2531 s/op
+WorkloadResult   5: 1 op, 1249224400.00 ns, 1.2492 s/op
+WorkloadResult   6: 1 op, 1251862900.00 ns, 1.2519 s/op
+WorkloadResult   7: 1 op, 1248887000.00 ns, 1.2489 s/op
+WorkloadResult   8: 1 op, 1251705700.00 ns, 1.2517 s/op
+WorkloadResult   9: 1 op, 1254893900.00 ns, 1.2549 s/op
+WorkloadResult  10: 1 op, 1252574100.00 ns, 1.2526 s/op
+WorkloadResult  11: 1 op, 1247272200.00 ns, 1.2473 s/op
+WorkloadResult  12: 1 op, 1246322000.00 ns, 1.2463 s/op
+WorkloadResult  13: 1 op, 1252051800.00 ns, 1.2521 s/op
+GC:  284 1 0 1790436680 1
+Threading:  0 0 1
+
+// AfterAll
+// Benchmark Process 3560 has exited with code 0.
+
+Mean = 1.251 s, StdErr = 0.001 s (0.06%), N = 13, StdDev = 0.003 s
+Min = 1.246 s, Q1 = 1.249 s, Median = 1.252 s, Q3 = 1.253 s, Max = 1.255 s
+IQR = 0.004 s, LowerFence = 1.243 s, UpperFence = 1.259 s
+ConfidenceInterval = [1.248 s; 1.254 s] (CI 99.9%), Margin = 0.003 s (0.27% of Mean)
+Skewness = -0.35, Kurtosis = 1.51, MValue = 2
+
+// ***** BenchmarkRunner: Finish  *****
+
+// * Export *
+  BenchmarkDotNet.Artifacts\results\lookwords.BenchmarckIOFileReadStrategies-report.csv
+  BenchmarkDotNet.Artifacts\results\lookwords.BenchmarckIOFileReadStrategies-report-github.md
+  BenchmarkDotNet.Artifacts\results\lookwords.BenchmarckIOFileReadStrategies-report.html
+
+// * Detailed results *
+BenchmarckIOFileReadStrategies.RunSyncTest: DefaultJob
+Runtime = .NET Framework 4.8 (4.8.4510.0), X64 RyuJIT; GC = Concurrent Workstation
+Mean = 1.226 s, StdErr = 0.001 s (0.08%), N = 14, StdDev = 0.004 s
+Min = 1.217 s, Q1 = 1.225 s, Median = 1.226 s, Q3 = 1.228 s, Max = 1.233 s
+IQR = 0.003 s, LowerFence = 1.220 s, UpperFence = 1.233 s
+ConfidenceInterval = [1.222 s; 1.230 s] (CI 99.9%), Margin = 0.004 s (0.35% of Mean)
+Skewness = -0.68, Kurtosis = 3.73, MValue = 2
+-------------------- Histogram --------------------
+[1.215 s ; 1.235 s) | @@@@@@@@@@@@@@
+---------------------------------------------------
+
+BenchmarckIOFileReadStrategies.RunAsyncEnumerableTest: DefaultJob
+Runtime = .NET Framework 4.8 (4.8.4510.0), X64 RyuJIT; GC = Concurrent Workstation
+Mean = 2.284 s, StdErr = 0.013 s (0.56%), N = 42, StdDev = 0.083 s
+Min = 2.166 s, Q1 = 2.227 s, Median = 2.263 s, Q3 = 2.335 s, Max = 2.463 s
+IQR = 0.108 s, LowerFence = 2.066 s, UpperFence = 2.496 s
+ConfidenceInterval = [2.238 s; 2.329 s] (CI 99.9%), Margin = 0.046 s (2.00% of Mean)
+Skewness = 0.6, Kurtosis = 2.28, MValue = 2.47
+-------------------- Histogram --------------------
+[2.134 s ; 2.208 s) | @@@@@@@
+[2.208 s ; 2.271 s) | @@@@@@@@@@@@@@@@@
+[2.271 s ; 2.353 s) | @@@@@@@@@@
+[2.353 s ; 2.408 s) | @@
+[2.408 s ; 2.471 s) | @@@@@@
+---------------------------------------------------
+
+BenchmarckIOFileReadStrategies.RunAsyncEnumerableWithToAsyncEnumerableConvertionTest: DefaultJob
+Runtime = .NET Framework 4.8 (4.8.4510.0), X64 RyuJIT; GC = Concurrent Workstation
+Mean = 2.425 s, StdErr = 0.013 s (0.53%), N = 26, StdDev = 0.066 s
+Min = 2.299 s, Q1 = 2.387 s, Median = 2.429 s, Q3 = 2.469 s, Max = 2.533 s
+IQR = 0.082 s, LowerFence = 2.263 s, UpperFence = 2.593 s
+ConfidenceInterval = [2.377 s; 2.473 s] (CI 99.9%), Margin = 0.048 s (1.97% of Mean)
+Skewness = -0.31, Kurtosis = 2.01, MValue = 2
+-------------------- Histogram --------------------
+[2.290 s ; 2.348 s) | @@@@@
+[2.348 s ; 2.428 s) | @@@@@@@@
+[2.428 s ; 2.508 s) | @@@@@@@@@@@
+[2.508 s ; 2.562 s) | @@
+---------------------------------------------------
+
+BenchmarckIOFileReadStrategies.RunRxTest: DefaultJob
+Runtime = .NET Framework 4.8 (4.8.4510.0), X64 RyuJIT; GC = Concurrent Workstation
+Mean = 1.251 s, StdErr = 0.001 s (0.06%), N = 13, StdDev = 0.003 s
+Min = 1.246 s, Q1 = 1.249 s, Median = 1.252 s, Q3 = 1.253 s, Max = 1.255 s
+IQR = 0.004 s, LowerFence = 1.243 s, UpperFence = 1.259 s
+ConfidenceInterval = [1.248 s; 1.254 s] (CI 99.9%), Margin = 0.003 s (0.27% of Mean)
+Skewness = -0.35, Kurtosis = 1.51, MValue = 2
+-------------------- Histogram --------------------
+[1.245 s ; 1.256 s) | @@@@@@@@@@@@@
+---------------------------------------------------
+
+// * Summary *
+
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19044.1706 (21H2)
+12th Gen Intel Core i5-12400, 1 CPU, 12 logical and 6 physical cores
+  [Host]     : .NET Framework 4.8 (4.8.4510.0), X64 RyuJIT
+  DefaultJob : .NET Framework 4.8 (4.8.4510.0), X64 RyuJIT
+
+
+|                                                Method |    Mean |    Error |   StdDev | Ratio | RatioSD |       Gen 0 |     Gen 1 |     Gen 2 | Allocated |
+|------------------------------------------------------ |--------:|---------:|---------:|------:|--------:|------------:|----------:|----------:|----------:|
+|                                           RunSyncTest | 1.226 s | 0.0043 s | 0.0038 s |  1.00 |    0.00 | 283000.0000 | 1000.0000 |         - |      2 GB |
+|                                RunAsyncEnumerableTest | 2.284 s | 0.0456 s | 0.0834 s |  1.89 |    0.07 | 617000.0000 | 8000.0000 | 2000.0000 |      4 GB |
+| RunAsyncEnumerableWithToAsyncEnumerableConvertionTest | 2.425 s | 0.0479 s | 0.0655 s |  1.98 |    0.06 | 628000.0000 | 8000.0000 | 3000.0000 |      4 GB |
+|                                             RunRxTest | 1.251 s | 0.0034 s | 0.0028 s |  1.02 |    0.00 | 284000.0000 | 1000.0000 |         - |      2 GB |
+
+// * Hints *
+Outliers
+  BenchmarckIOFileReadStrategies.RunSyncTest: Default                                           -> 1 outlier  was  removed, 2 outliers were detected (1.22 s, 1.23 s)
+  BenchmarckIOFileReadStrategies.RunAsyncEnumerableWithToAsyncEnumerableConvertionTest: Default -> 3 outliers were removed (2.63 s..2.70 s)
+  BenchmarckIOFileReadStrategies.RunRxTest: Default                                             -> 2 outliers were removed (1.26 s, 1.26 s)
+
+// * Legends *
+  Mean      : Arithmetic mean of all measurements
+  Error     : Half of 99.9% confidence interval
+  StdDev    : Standard deviation of all measurements
+  Ratio     : Mean of the ratio distribution ([Current]/[Baseline])
+  RatioSD   : Standard deviation of the ratio distribution ([Current]/[Baseline])
+  Gen 0     : GC Generation 0 collects per 1000 operations
+  Gen 1     : GC Generation 1 collects per 1000 operations
+  Gen 2     : GC Generation 2 collects per 1000 operations
+  Allocated : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
+  1 s       : 1 Second (1 sec)
+
+// * Diagnostic Output - MemoryDiagnoser *
+
+
+// ***** BenchmarkRunner: End *****
+// ** Remained 0 benchmark(s) to run **
+Run time: 00:04:33 (273.04 sec), executed benchmarks: 4
+
+Global total time: 00:04:35 (275.05 sec), executed benchmarks: 4
+// * Artifacts cleanup *

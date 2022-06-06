@@ -283,6 +283,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategyWithConverter.cs" />
     <Compile Include="FileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />
     <Compile Include="FileReadStrategies\Examples.cs" />
     <Compile Include="FileReadStrategies\FileUtils.cs" />
