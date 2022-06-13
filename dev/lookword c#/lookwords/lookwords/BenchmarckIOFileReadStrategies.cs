@@ -10,6 +10,7 @@ using System.Reactive.Linq;
 using lookwords.FileReadStrategies.AsyncEnum;
 using lookwords.FileReadStrategies.RxNet;
 using lookwords.FileReadStrategies.SyncEnum;
+using lookwords.CountCharactersStrategies.AsyncEnum;
 
 namespace lookwords
 {
@@ -25,7 +26,7 @@ namespace lookwords
         [Benchmark(Baseline=true)]
         public ConcurrentDictionary<string,int> RunSyncTest()
         {
-           return new EnumerableIOFileReadStrategy().getDistingWordsFromFileSync(folderPath, minWordSize, maxWordSize);
+           return new EnumerableIOFileReadStrategy().countWordsFromFileSync(folderPath, minWordSize, maxWordSize);
         }
 
 
@@ -33,7 +34,7 @@ namespace lookwords
         [Benchmark]
         public ConcurrentDictionary<string, int> RunAsyncEnumerableTest()
         {
-            Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategy().getDistingWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
+            Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
             task.Wait();
             //
             // Each benchmark should return a value to ensure the VM optimizations
@@ -45,7 +46,7 @@ namespace lookwords
         [Benchmark]
         public ConcurrentDictionary<string, int> RunAsyncEnumerableWithToAsyncEnumerableConvertionTest()
         {
-            Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategyWithConverter().getDistingWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
+            Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
             task.Wait();
             //
             // Each benchmark should return a value to ensure the VM optimizations
@@ -57,7 +58,7 @@ namespace lookwords
         [Benchmark]
         public ConcurrentDictionary<string, int> RunRxTest()
         {
-            Task<ConcurrentDictionary<string, int>> task = new RXNetIOFileReadStrategy().getDistingWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
+            Task<ConcurrentDictionary<string, int>> task = new RXNetIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
             task.Wait();
             //
             // Each benchmark should return a value to ensure the VM optimizations

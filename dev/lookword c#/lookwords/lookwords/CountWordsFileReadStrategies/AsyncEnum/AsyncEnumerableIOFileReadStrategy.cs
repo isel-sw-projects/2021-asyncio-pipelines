@@ -30,7 +30,7 @@ namespace lookwords.FileReadStrategies.AsyncEnum
         }
 
 
-        public Task<ConcurrentDictionary<string, int>> getDistingWordsFromFileAsync(string folderName, int minWordLength, int maxWordLength)
+        public Task<ConcurrentDictionary<string, int>> countWordsFromFileAsync(string folderName, int minWordLength, int maxWordLength)
         {
             var words = new ConcurrentDictionary<string, int>();
             //
@@ -47,7 +47,17 @@ namespace lookwords.FileReadStrategies.AsyncEnum
             return Task.WhenAll(allTasks).ContinueWith((prev) => words);
         }
 
-        ConcurrentDictionary<string, int> IIOFileReadStrategy.getDistingWordsFromFileSync(string folderName, int minWordLength, int maxWordLength)
+        ConcurrentDictionary<string, int> IIOFileReadStrategy.countWordsFromFileSync(string folderName, int minWordLength, int maxWordLength)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> countCharactersFromFileAsync(string folderName, char character)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int countCharactersFromFileSync(string folderName, char character)
         {
             throw new NotImplementedException();
         }
