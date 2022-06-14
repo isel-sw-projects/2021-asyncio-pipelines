@@ -32,7 +32,7 @@ namespace lookwords.CountCharactersStrategies.AsyncEnum
             throw new NotImplementedException();
         }
 
-        Task<int> IIOFileReadStrategy.countCharactersFromFileAsync(string folderName, char character)
+        public Task<int> countCharactersFromFileAsync(string folderName, char character)
         {
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!
