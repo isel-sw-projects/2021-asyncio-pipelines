@@ -16,24 +16,33 @@ using lookwords.CountCharactersStrategies.SyncEnum;
 namespace lookwords
 {
     [MemoryDiagnoser]
-    public class BenchmarckIOFileReadStrategies
+    public class BenchmarckIOCountWordsStrategies
     {
-        static private string folderPath = @"F:\escola\MEIC\TESE\dev\lookwords-master\src\main\resources\gutenberg\";
+        private string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
         static ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
-        static int minWordSize = 2;
+        static int minWordSize = 1;
         static int maxWordSize = 8;
 
+        public BenchmarckIOCountWordsStrategies(string folderPath = null)
+        {
+            if(folderPath != null)
+            {
+                this.folderPath = folderPath;
+            }
+        }
 
-        [Benchmark(Baseline=true)]
-        public ConcurrentDictionary<string,int> RunSyncTest()
+
+        [Benchmark(Baseline = true)]
+        public ConcurrentDictionary<string, int> RunSyncTest()
         {
             int init = Environment.TickCount;
-            ConcurrentDictionary<string,int> ret = new EnumerableIOFileReadStrategy().countWordsFromFileSync(folderPath, minWordSize, maxWordSize);
+            ConcurrentDictionary<string, int> ret = new EnumerableIOFileReadStrategy().countWordsFromFileSync(folderPath, minWordSize, maxWordSize);
 
             int elapsed = Environment.TickCount - init;
 
-            Console.WriteLine(@"Count all wors RunSyncTest took: {0} seconds", elapsed);
+            Console.WriteLine(@"Count all words RunSyncTest took: {0} miliseconds", elapsed);
 
+            
 
             return ret;
         }
@@ -51,8 +60,9 @@ namespace lookwords
             //
             int elapsed = Environment.TickCount - init;
 
-            Console.WriteLine(@"Count all wors RunAsyncEnumerableTest took: {0} seconds", elapsed);
+            Console.WriteLine(@"Count all words RunAsyncEnumerableTest took: {0} miliseconds", elapsed);
 
+           
 
             return task.Result;
         }
@@ -69,7 +79,9 @@ namespace lookwords
             //
             int elapsed = Environment.TickCount - init;
 
-            Console.WriteLine(@"Count all word RunAsyncEnumerableWithToAsyncEnumerableConvertionTest took: {0} seconds", elapsed);
+            Console.WriteLine(@"Count all words RunAsyncEnumerableWithToAsyncEnumerableConvertionTest took: {0} miliseconds", elapsed);
+
+           
 
             return task.Result;
         }
@@ -83,65 +95,25 @@ namespace lookwords
 
             int elapsed = Environment.TickCount - init;
 
-            Console.WriteLine(@"Count all word RxTest took: {0} seconds", elapsed);
+            Console.WriteLine(@"Count all words RxTest took: {0} miliseconds", elapsed);
             //
             // Each benchmark should return a value to ensure the VM optimizations
             // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
             //
+
+           
             return task.Result;
         }
 
 
-        [Benchmark]
-        public ConcurrentDictionary<string, int> RunCountCharacterRxTest()
+        private void printResult(ConcurrentDictionary<string, int> dict)
         {
-            int init = Environment.TickCount;
-            Task<ConcurrentDictionary<string, int>> task = new RXNetIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
-            task.Wait();
-
-            int elapsed = Environment.TickCount - init;
-
-            Console.WriteLine(@"Count all word RunCountCharacterRxTest took: {0} seconds", elapsed);
-            //
-            // Each benchmark should return a value to ensure the VM optimizations
-            // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
-            //
-            return task.Result;
-        }
-
-        [Benchmark]
-        public int RunCharacterCountSyncTest()
-        {
-            char character = 'e';
-            int init = Environment.TickCount;
-            int ret = new EnumerableIOCountCharacterStrategy().countCharactersFromFileSync(folderPath, character);
-
-            int elapsed = Environment.TickCount - init;
-
-            Console.WriteLine(@"Count all wors RunCharacterCountSyncTest took: {0} seconds", elapsed);
-
-
-            return ret;
-        }
-
-
-        [Benchmark]
-        public int RunCharacterCountAsyncEnumerableTest()
-        {
-            char character = 'e';
-            int init = Environment.TickCount;
-            Task<int> task = new AsyncEnumerableIOCountCharacterStrategy().countCharactersFromFileAsync(folderPath, character);
-            task.Wait();
-            //
-            // Each benchmark should return a value to ensure the VM optimizations
-            // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
-            //
-            int elapsed = Environment.TickCount - init;
-
-            Console.WriteLine(@"Count all wors RunCharacterCountAsyncEnumerableTest took: {0} seconds", elapsed);
-
-
-            return task.Result;
+            foreach (var item in dict)
+            {
+                {
+                    Console.WriteLine("The word {0} repeated: {1} times", item.Key, item.Value);
+                }
+            }
         }
     }
 }

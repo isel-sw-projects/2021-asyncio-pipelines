@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace lookwords.CountCharactersStrategies.AsyncEnum
 {
-    public class AsyncEnumerableIOCountCharacterStrategy : IIOFileReadStrategy
+    public class AsyncEnumerableIOBiggestWordStrategy 
     {
         
 
@@ -21,16 +21,6 @@ namespace lookwords.CountCharactersStrategies.AsyncEnum
                  .AsTask();   
         }
 
-
-        public Task<ConcurrentDictionary<string, int>> countWordsFromFileAsync(string folderName, int minWordLength, int maxWordLength)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ConcurrentDictionary<string, int> countWordsFromFileSync(string folderName, int minWordLength, int maxWordLength)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<int> countCharactersFromFileAsync(string folderName, char character)
         {
@@ -52,9 +42,5 @@ namespace lookwords.CountCharactersStrategies.AsyncEnum
                 });
         }
 
-        public int countCharactersFromFileSync(string folderName, char character)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

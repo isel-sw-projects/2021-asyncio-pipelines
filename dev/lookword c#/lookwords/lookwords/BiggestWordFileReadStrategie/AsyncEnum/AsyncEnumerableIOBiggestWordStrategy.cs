@@ -7,27 +7,30 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace lookwords.FileReadStrategies.AsyncEnum
+namespace lookwords.BiggestWordFileReadStrategies.AsyncEnum
 {
-    public class AsyncEnumerableIOCountCharacterStrategyWithConverter 
+    public class AsyncEnumerableIOBiggestWordStrategy 
     {
-        
 
-        private  Task parseFileDistinctWordsIntoDictionary(string filename, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
+
+        private Task parseFileDistinctWordsIntoDictionary(string filename, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
         {
-            Console.WriteLine(filename);
+            int wordLength = 0;
             return FileUtils.getLinesAsyncEnum(filename, minWordSize, maxWordSize)
                  .Where(line => line.Length != 0)                     // Skip empty lines
                  .Skip(14)                                            // Skip gutenberg header
                  .TakeWhile(line => !line.Contains("*** END OF "))    // Skip gutenberg footnote
-                 .SelectMany<string, string>(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' ').ToAsyncEnumerable()) //?? to review ?? 
-                 .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
-                 .ForEachAsync((word) =>
-                 {
-                     //Console.WriteLine(word);
-                     words.AddOrUpdate(word, 1, (k, v) => v + 1);
-                 }); // Merge words in dictionary.
-
+                 .Select(line => Regex.Replace(line, "[^a-zA-Z0-9-]+", "", RegexOptions.Compiled).Split(' ')) //?? to review ?? 
+                 .ForEachAsync((arr) => arr
+                    .Where(word => word.Length > wordLength)
+                    .Aggregate(words, (prev, word) =>
+                    {
+                        wordLength = word.Length;
+                        //Console.WriteLine(word);
+                        prev.AddOrUpdate(word, 1, (k, v) => v + 1); // Merge words in dictionary.
+                        return prev;
+                    })
+                );
         }
 
 

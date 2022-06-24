@@ -43,6 +43,7 @@ namespace lookwords
 
         public static async IAsyncEnumerable<String> getLinesAsyncEnum(String file, int minSize, int maxSize)
         {
+
             using (StreamReader reader = new StreamReader(file))
             {
                 while (!reader.EndOfStream)
@@ -60,7 +61,7 @@ namespace lookwords
                 while (!reader.EndOfStream)
                 {
                     string words = await reader.ReadLineAsync();
-
+                    //Console.WriteLine(words);
                     foreach (char character in words)
                     {
                         yield return character;
@@ -74,7 +75,7 @@ namespace lookwords
         {
             foreach (string word in line)
             {
-                Console.WriteLine(word);//to comment
+                //Console.WriteLine(word);//to comment
                 if (dict.ContainsKey(word))
                 {
                     dict[word] = ++dict[word];
@@ -90,7 +91,6 @@ namespace lookwords
         {
             foreach (char character in charEnum)
             {
-                Console.WriteLine(character);//to comment
                 if (dict.ContainsKey(character))
                 {
                     dict[character] = ++dict[character];

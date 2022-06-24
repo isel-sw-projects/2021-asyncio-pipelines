@@ -9,12 +9,9 @@ using System.Threading.Tasks;
 
 namespace lookwords.CountCharactersStrategies.SyncEnum
 {
-    public class EnumerableIOCountCharacterStrategy : IIOFileReadStrategy
+    public class EnumerableIOCountCharacterStrategy 
     {
-        public Task<int> countCharactersFromFileAsync(string folderName, char character)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public int countCharactersFromFileSync(string folderName, char character)
         {
@@ -27,16 +24,7 @@ namespace lookwords.CountCharactersStrategies.SyncEnum
         }
     
 
-        public Task<ConcurrentDictionary<string, int>> countWordsFromFileAsync(string folderName, int minWordLength, int maxWordLength)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ConcurrentDictionary<string, int> countWordsFromFileSync(string folderName, int minWordLength, int maxWordLength)
-        {
-            throw new NotImplementedException();
-        }
-
+      
         private int countCharacterOcurrencesInFileSync(string filename, char character)
         {
             return FileUtils.getCharacterSync(filename)

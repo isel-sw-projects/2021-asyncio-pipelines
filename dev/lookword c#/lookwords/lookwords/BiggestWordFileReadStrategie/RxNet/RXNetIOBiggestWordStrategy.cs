@@ -9,27 +9,29 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace lookwords.FileReadStrategies.RxNet
+namespace lookwords.BiggestWordFileReadStrategies.RxNet
 {
-    public class RXNetIOFileReadStrategy 
+    public class RXNetIOBiggestWordStrategy 
     {
-      
+
         /// <summary>
         /// Collects all distinct words of given filePath into words Dictionary, which is shared across concurrent threads.
         /// ??? Not sure about the concurrent behavior of ForEachAsync ???
         /// </summary>
         private Task parseFileDistinctWordsIntoDictionary(string filePath, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
         {
+            int wordLength = 0;
             return new FileTreeTextObservable(filePath)
                 .Where(line => line.Length != 0)                           // Skip empty lines
                 .Skip(14)                                                  // Skip gutenberg header
                 .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
                 .SelectMany(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' '))
-                .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
+                .Where(word => word.Length > wordLength)
                 .ForEachAsync((word) => {
+                    wordLength = word.Length;
                     //Console.WriteLine(word);
                     words.AddOrUpdate(word, 1, (k, v) => v + 1);
-                
+
                 }); // Merge words in dictionary.
         }
 
@@ -50,7 +52,5 @@ namespace lookwords.FileReadStrategies.RxNet
             // 
             return Task.WhenAll(allTasks).ContinueWith((prev) => words);
         }
-
-
     }
 }

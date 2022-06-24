@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace lookwords.CountCharactersStrategies.RxNet
 {
-    public class RXNetIOCountCharacterStrategy : IIOFileReadStrategy
+    public class RXNetIOBiggestWordStrategy 
     {
       
         /// <summary>
@@ -26,17 +26,7 @@ namespace lookwords.CountCharactersStrategies.RxNet
                  
         }
 
-        //RXNET implementation
-        public Task<ConcurrentDictionary<string, int>> countWordsFromFileAsync(string folderPath, int minWordSize, int maxWordSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        ConcurrentDictionary<string, int> IIOFileReadStrategy.countWordsFromFileSync(string folderName, int minWordLength, int maxWordLength)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public Task<int> countCharactersFromFileAsync(string folderPath, char character)
         {
 
@@ -58,11 +48,6 @@ namespace lookwords.CountCharactersStrategies.RxNet
                     return prev.Result.Aggregate(count, (prev, curr) => prev + curr);
                 });
 
-        }
-
-        public int countCharactersFromFileSync(string folderName, char character)
-        {
-            throw new NotImplementedException();
         }
     }
 }

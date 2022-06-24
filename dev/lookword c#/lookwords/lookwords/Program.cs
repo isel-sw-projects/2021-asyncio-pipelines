@@ -1,7 +1,9 @@
 ﻿
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using lookwords.FileReadStrategies.SyncEnum;
 using lookwords.RxNet;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,20 +14,28 @@ using System.Threading.Tasks;
 
 namespace lookwords
 {
-    [MemoryDiagnoser]
-    internal class Program
+    class Program
     {
-        static private string folderPath = @"F:\escola\MEIC\TESE\dev\lookwords-master\src\main\resources\gutenberg\";
-        static ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
 
         static void Main(string[] args)
         {
             //var summary = BenchmarkRunner.Run<IOTStategiesBenchmark>();
-            //Console.ReadLine();
+            Console.WriteLine("Tests initiated: ");
             //IOFileReadStrategies.folderWordOccurrencesInSizeRangeSync(folderPath, 2, 12);
 
-            BenchmarkRunner.Run<BenchmarckIOFileReadStrategies>();
-        }
 
+            //string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
+
+
+            BenchmarkRunner.Run<BenchmarckIOCountWordsStrategies>();
+
+           // var test = new BenchmarckIOCountWordsStrategies(folderPath);
+           // test.RunSyncTest();
+           // test.RunAsyncEnumerableTest();
+           // test.RunRxTest();
+
+
+
+        }
     }
 }

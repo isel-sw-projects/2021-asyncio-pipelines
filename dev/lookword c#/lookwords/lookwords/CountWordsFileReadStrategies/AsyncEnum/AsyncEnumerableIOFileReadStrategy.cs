@@ -4,25 +4,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace lookwords.FileReadStrategies.AsyncEnum
 {
-    public class AsyncEnumerableIOFileReadStrategy : IIOFileReadStrategy
+    public class AsyncEnumerableIOFileReadStrategy 
     {
         
 
         private  Task parseFileDistinctWordsIntoDictionary(string filename, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
         {
             return FileUtils.getLinesAsyncEnum(filename, minWordSize, maxWordSize)
-                 .Where(line => line.Length == 0)                     // Skip empty lines
+                 .Where(line => line.Length != 0)                     // Skip empty lines
                  .Skip(14)                                            // Skip gutenberg header
                  .TakeWhile(line => !line.Contains("*** END OF "))    // Skip gutenberg footnote
-                 .Select(line => line.Split(' ', ',', ';', '.', ':')) //?? to review ?? 
+                 .Select(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' ')) //?? to review ?? 
                  .ForEachAsync((arr) => arr
                     .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
                     .Aggregate(words, (prev, word) =>
                     {
+                        //Console.WriteLine(word);
                         prev.AddOrUpdate(word, 1, (k, v) => v + 1); // Merge words in dictionary.
                         return prev;
                     })
@@ -47,19 +49,6 @@ namespace lookwords.FileReadStrategies.AsyncEnum
             return Task.WhenAll(allTasks).ContinueWith((prev) => words);
         }
 
-        ConcurrentDictionary<string, int> IIOFileReadStrategy.countWordsFromFileSync(string folderName, int minWordLength, int maxWordLength)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> countCharactersFromFileAsync(string folderName, char character)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int countCharactersFromFileSync(string folderName, char character)
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 }

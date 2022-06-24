@@ -1,4 +1,5 @@
-﻿using System;
+﻿using lookwords.FileReadStrategies;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -7,23 +8,28 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace lookwords.FileReadStrategies.SyncEnum
+namespace lookwords.BiggestWordFileReadStrategies.SyncEnum
 {
-    public class EnumerableIOFileReadStrategy 
+    public class EnumerableIOBiggestWordStrategy 
     {
+
+
         private void parseFileDistinctWordsIntoDictionary(string filename, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
         {
-             FileUtils.getLinesSync(filename, minWordSize, maxWordSize)
-                 .Where(line => line.Length != 0)                           // Skip empty lines
-                 .Skip(14)                                                  // Skip gutenberg header
-                 .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
-                 .SelectMany(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' '))
-                 .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
-                 .ToList()
-                 .ForEach((word) => {
+           int wordLength = 0;
+
+            FileUtils.getLinesSync(filename, minWordSize, maxWordSize)
+                .Where(line => line.Length != 0)                           // Skip empty lines
+                .Skip(14)                                                  // Skip gutenberg header
+                .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
+                .SelectMany(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' '))
+                .Where(word => word.Length > wordLength)
+                .ToList()
+                .ForEach((word) => {
+                    wordLength = word.Length;
                      //Console.WriteLine(word);
-                     words.AddOrUpdate(word, 1, (k, v) => v + 1);
-                 }); // Merge words in dictionary.
+                    words.AddOrUpdate(word, 1, (k, v) => v + 1);
+                }); // Merge words in dictionary.
         }
 
 
@@ -43,5 +49,7 @@ namespace lookwords.FileReadStrategies.SyncEnum
             return words;
         }
 
+
     }
+    
 }
