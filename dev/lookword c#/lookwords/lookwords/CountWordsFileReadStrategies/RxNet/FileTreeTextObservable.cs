@@ -29,7 +29,7 @@ namespace lookwords.RxNet
             return new Unsubscriber(observers, observer);
         }
 
-        private void countWords( IObserver<string> observer)
+        private async void countWords( IObserver<string> observer)
         {
             using (StreamReader reader = new StreamReader(file))
             {
@@ -37,21 +37,30 @@ namespace lookwords.RxNet
                 {
                     try
                     {
+                        String line = null;
+                        do
+                        {
+                            //
+                            // Not sure if there is any throughput gain by reading the file Asynchrnously.
+                            // Test both: ReadLine() and ReadLineAsync() and check which one performs better??
+                            //
+                            await reader.ReadLineAsync();
+                            observer.OnNext(line);
+                        } while (line != null);
                         //
-                        // Not sure if there is any throughput gain by reading the file Asynchrnously.
-                        // Test bith: ReadLine() and ReadLineAsync() and check which one performs better??
+                        // Complete successfuly
                         //
-                        observer.OnNext(reader.ReadLine());
-
+                        observer.OnCompleted();
                     }
                     catch (Exception ex)
                     {
+                        //
+                        // Complete with error
+                        //
                         observer.OnError(ex);
                     }
                 }
             }    
-            
-            observer.OnCompleted();
         }
         private class Unsubscriber : IDisposable
         {

@@ -26,7 +26,7 @@ namespace lookwords.FileReadStrategies.RxNet
                 .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
                 .SelectMany(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' '))
                 .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
-                .ForEachAsync((word) => {
+                .ForEachAsync((word) => { // Implicit Subscribe on Observable()
                     //Console.WriteLine(word);
                     words.AddOrUpdate(word, 1, (k, v) => v + 1);
                 

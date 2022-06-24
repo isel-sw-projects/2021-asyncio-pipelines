@@ -9,8 +9,17 @@ using System.Threading.Tasks;
 
 namespace lookwords.FileReadStrategies.SyncEnum
 {
+    public static class EnumerableUtils {
+        public static void ForEach<T>(this IEnumerable<T> src, Action<T> cons) {
+            foreach (var item in src) {
+                cons(item);
+            }
+        }
+    }
+
     public class EnumerableIOFileReadStrategy 
     {
+
         private void parseFileDistinctWordsIntoDictionary(string filename, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
         {
              FileUtils.getLinesSync(filename, minWordSize, maxWordSize)
@@ -19,7 +28,6 @@ namespace lookwords.FileReadStrategies.SyncEnum
                  .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
                  .SelectMany(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' '))
                  .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
-                 .ToList()
                  .ForEach((word) => {
                      //Console.WriteLine(word);
                      words.AddOrUpdate(word, 1, (k, v) => v + 1);
