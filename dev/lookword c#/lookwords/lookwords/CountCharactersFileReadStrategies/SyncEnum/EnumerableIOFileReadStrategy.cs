@@ -19,7 +19,7 @@ namespace lookwords.CountCharactersStrategies.SyncEnum
             return Directory.GetFiles(folderName, "*.txt", SearchOption.AllDirectories)
                       .ToList()
                       .Select(file => countCharacterOcurrencesInFileSync(file, character))
-                      .Aggregate(count, (total, character) => total + character);
+                      .Aggregate(count, (prev, newValue) => prev + newValue);
                     
         }
     

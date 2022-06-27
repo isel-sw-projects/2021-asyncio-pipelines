@@ -290,10 +290,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BenchmarkFiles\BenchmarckIOCountCharactersStrategies.cs" />
+    <Compile Include="BenchmarkFiles\BenchmarkFindBiggestwordTest.cs" />
     <Compile Include="BiggestWordFileReadStrategie\AsyncEnum\AsyncEnumerableIOBiggestWordStrategy.cs" />
     <Compile Include="BiggestWordFileReadStrategie\RxNet\FileTreeTextObservable.cs" />
     <Compile Include="BiggestWordFileReadStrategie\RxNet\RXNetIOBiggestWordStrategy.cs" />
-    <Compile Include="BiggestWordFileReadStrategie\SyncEnum\EnumerableIOBiggestWordStrategy.cs" />
+    <Compile Include="BiggestWordFileReadStrategie\SyncEnum\EnumerableIOFindBiggestWordStrategy.cs" />
     <Compile Include="CountCharactersFileReadStrategies\AsyncEnum\AsyncEnumerableIOCountCharacterStrategy.cs" />
     <Compile Include="CountCharactersFileReadStrategies\RxNet\FileTreeTextObservable.cs" />
     <Compile Include="CountCharactersFileReadStrategies\RxNet\RXNetIOCountCharacterStrategy.cs" />

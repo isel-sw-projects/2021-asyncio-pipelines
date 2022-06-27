@@ -18,39 +18,35 @@ namespace lookwords.BiggestWordFileReadStrategies.RxNet
         /// Collects all distinct words of given filePath into words Dictionary, which is shared across concurrent threads.
         /// ??? Not sure about the concurrent behavior of ForEachAsync ???
         /// </summary>
-        private Task parseFileDistinctWordsIntoDictionary(string filePath, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
+        private Task<string> parseFileDistinctWordsIntoDictionary(string filePath)
         {
-            int wordLength = 0;
+
             return new FileTreeTextObservable(filePath)
                 .Where(line => line.Length != 0)                           // Skip empty lines
                 .Skip(14)                                                  // Skip gutenberg header
                 .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
-                .SelectMany(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' '))
-                .Where(word => word.Length > wordLength)
-                .ForEachAsync((word) => {
-                    wordLength = word.Length;
-                    //Console.WriteLine(word);
-                    words.AddOrUpdate(word, 1, (k, v) => v + 1);
-
-                }); // Merge words in dictionary.
+                .Select(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' '))
+                .Select((arr) => arr.OrderByDescending(s => s.Length).First())
+                .ToAsyncEnumerable()
+                .FirstAsync()
+                .AsTask();
         }
 
         //RXNET implementation
-        public Task<ConcurrentDictionary<string, int>> countWordsFromFileAsync(string folderPath, int minWordSize, int maxWordSize)
+        public Task<string> countWordsFromFileAsync(string folderPath, int minWordSize, int maxWordSize)
         {
-            var words = new ConcurrentDictionary<string, int>();
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!
             //
-            List<Task> allTasks = Directory
+            List<Task<string>> allTasks = Directory
                             .GetFiles(folderPath, "*.txt", SearchOption.AllDirectories)
-                            .Select(file => parseFileDistinctWordsIntoDictionary(file, minWordSize, maxWordSize, words))
+                            .Select(file => parseFileDistinctWordsIntoDictionary(file))
                             .ToList();
             //
             // Returns a new task that will complete when all of the Task objects
             // in allTasks collection have completed!
             // 
-            return Task.WhenAll(allTasks).ContinueWith((prev) => words);
+            return Task.WhenAll(allTasks).ContinueWith(task => task.Result.OrderByDescending(s => s.Length).First());
         }
     }
 }

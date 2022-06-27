@@ -16,7 +16,7 @@ namespace lookwords.FileReadStrategies.AsyncEnum
         private  Task parseFileDistinctWordsIntoDictionary(string filename, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
         {
             Console.WriteLine(filename);
-            return FileUtils.getLinesAsyncEnum(filename, minWordSize, maxWordSize)
+            return FileUtils.getLinesAsyncEnum(filename)
                  .Where(line => line.Length != 0)                     // Skip empty lines
                  .Skip(14)                                            // Skip gutenberg header
                  .TakeWhile(line => !line.Contains("*** END OF "))    // Skip gutenberg footnote

@@ -24,12 +24,12 @@ namespace lookwords.CountCharactersStrategies.RxNet
                 observers.Add(observer);
             }
 
-            countWords(observer);
+            readFileAsync(observer);
 
             return new Unsubscriber(observers, observer);
         }
 
-        private void countWords( IObserver<char> observer)
+        private void readFileAsync( IObserver<char> observer)
         {
             using (StreamReader reader = new StreamReader(file))
             {

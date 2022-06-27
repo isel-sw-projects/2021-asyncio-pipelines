@@ -12,7 +12,7 @@ namespace lookwords
     public class FileUtils
     {
 
-        public static IEnumerable<String> getLinesSync(String file, int minSize, int maxSize)
+        public static IEnumerable<String> getLinesSync(String file)
         {
             using (StreamReader reader = new StreamReader(file))
             {
@@ -41,7 +41,7 @@ namespace lookwords
 
         }
 
-        public static async IAsyncEnumerable<String> getLinesAsyncEnum(String file, int minSize, int maxSize)
+        public static async IAsyncEnumerable<String> getLinesAsyncEnum(String file)
         {
 
             using (StreamReader reader = new StreamReader(file))
@@ -70,36 +70,6 @@ namespace lookwords
             }
 
         }
-
-        public static void addWordToDictionary(IEnumerable<string> line, Dictionary<String, int> dict)
-        {
-            foreach (string word in line)
-            {
-                //Console.WriteLine(word);//to comment
-                if (dict.ContainsKey(word))
-                {
-                    dict[word] = ++dict[word];
-                }
-                else
-                {
-                    dict.Add(word, 1);
-                }
-            }
-        }
-
-        public static void addCharacterToDictionary(IEnumerable<char> charEnum, Dictionary<char, int> dict)
-        {
-            foreach (char character in charEnum)
-            {
-                if (dict.ContainsKey(character))
-                {
-                    dict[character] = ++dict[character];
-                }
-                else
-                {
-                    dict.Add(character, 1);
-                }
-            }
-        }
+       
     }
 }

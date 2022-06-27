@@ -29,7 +29,7 @@ namespace lookwords.BiggestWordFileReadStrategies.RxNet
             return new Unsubscriber(observers, observer);
         }
 
-        private void countWords( IObserver<char> observer)
+        private async void countWords( IObserver<char> observer)
         {
             using (StreamReader reader = new StreamReader(file))
             {
@@ -41,7 +41,7 @@ namespace lookwords.BiggestWordFileReadStrategies.RxNet
                         // Not sure if there is any throughput gain by reading the file Asynchrnously.
                         // Test bith: ReadLine() and ReadLineAsync() and check which one performs better??
                         //
-                        string words = reader.ReadLine();
+                        string words = await reader.ReadLineAsync();
 
                         foreach (char c in words) { observer.OnNext(c); }
 
@@ -51,9 +51,10 @@ namespace lookwords.BiggestWordFileReadStrategies.RxNet
                         observer.OnError(ex);
                     }
                 }
+                observer.OnCompleted();
             }    
             
-            observer.OnCompleted();
+           
         }
         private class Unsubscriber : IDisposable
         {

@@ -106,7 +106,7 @@ namespace Tests
             Assert.AreEqual(ret["10"], 10);
             Assert.AreEqual(ret["15"], 1);
 
-            test.countWordsFromFileAsync(folderPath, 2, 8);
+            task = test.countWordsFromFileAsync(folderPath, 2, 8);
             task.Wait();
 
             ret = task.Result;
@@ -128,7 +128,7 @@ namespace Tests
             Assert.AreEqual(ret["10"], 10);
             Assert.AreEqual(ret["15"], 1);
 
-            test.countWordsFromFileAsync(folderPath, 5, 8);
+            task = test.countWordsFromFileAsync(folderPath, 5, 8);
             task.Wait();
 
             ret = task.Result;

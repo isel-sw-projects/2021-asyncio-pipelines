@@ -19,17 +19,16 @@ namespace lookwords
     public class BenchmarckIOCountWordsStrategies
     {
         private string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
-        static ConcurrentDictionary<String, int> words_dict = new ConcurrentDictionary<String, int>();
         static int minWordSize = 1;
         static int maxWordSize = 8;
 
-        public BenchmarckIOCountWordsStrategies(string folderPath = null)
-        {
-            if(folderPath != null)
-            {
-                this.folderPath = folderPath;
-            }
-        }
+       public BenchmarckIOCountWordsStrategies(string folderPath = null)
+       {
+           if(folderPath != null)
+           {
+               this.folderPath = folderPath;
+           }
+       }
 
 
         [Benchmark(Baseline = true)]
