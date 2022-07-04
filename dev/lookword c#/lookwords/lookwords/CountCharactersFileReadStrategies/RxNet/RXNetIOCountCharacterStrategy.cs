@@ -23,7 +23,6 @@ namespace lookwords.CountCharactersStrategies.RxNet
                  .ToAsyncEnumerable()
                  .CountAsync()
                  .AsTask();
-                 
         }
 
        

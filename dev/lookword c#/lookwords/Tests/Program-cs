@@ -1,0 +1,39 @@
+﻿using Look4Words_WithoutLinq;
+using lookwords;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Tests
+{
+     class Program
+    {
+        public static void Main(string[] args)
+        {
+            {
+                string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
+                var test = new BenchmarckIOCountWordsStrategies(folderPath);
+                test.RunSyncTest();
+                test.RunAsyncEnumerableTest();
+                test.RunRxTest();
+
+
+                EnumerableIOFileReadWithoutLinqStrategy enume = new EnumerableIOFileReadWithoutLinqStrategy();
+
+
+                EnumerableIOFileReadWithoutLinqStrategy enumerableIOFileReadWithoutLinqStrategy = new EnumerableIOFileReadWithoutLinqStrategy();
+
+                Console.WriteLine("Test initiated");
+
+                int init = Environment.TickCount;
+                enumerableIOFileReadWithoutLinqStrategy.countWordsFromFileSync(folderPath, 2, 12);
+
+                int elapsed = Environment.TickCount - init;
+
+                Console.WriteLine(@"Count all words RunSyncTest without linq took: {0} miliseconds", elapsed);
+            }
+        }
+    }
+}

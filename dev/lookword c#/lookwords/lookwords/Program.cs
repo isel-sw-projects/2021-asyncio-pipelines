@@ -1,7 +1,6 @@
 ﻿
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using lookwords.FileReadStrategies.SyncEnum;
 using lookwords.RxNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -27,25 +26,27 @@ namespace lookwords
            string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
 
 
-         BenchmarkRunner.Run<BenchmarckIOCountWordsStrategies>();
-
-         // var test = new BenchmarckIOCountWordsStrategies(folderPath);
-         // test.RunSyncTest();
-         // test.RunAsyncEnumerableTest();
-         // test.RunRxTest();
-         // test.RunAsyncEnumerableWithToAsyncEnumerableConvertionTest();
-
-
-         // var test2 = new BenchmarckIOCountCharactersStrategies();
-         // test2.RunCharacterCountSyncTest();
-         // test2.RunCharacterCountAsyncEnumerableTest();
-         // test2.RunCountCharacterRxTest();
+         //BenchmarkRunner.Run<BenchmarckIOCountWordsStrategies>();
+          
+            var test = new BenchmarckIOCountWordsStrategies(folderPath);
+            test.RunSyncTest();
+            test.RunAsyncEnumerableTest();
+            test.RunRxTest();
 
 
-         //  var test2 = new Bigg();
-         //  test2.RunCharacterCountSyncTest();
-         //  test2.RunCharacterCountAsyncEnumerableTest();
-         //  test2.RunCountCharacterRxTest();
+            //test.RunAsyncEnumerableWithToAsyncEnumerableConvertionTest();
+
+
+            // var test2 = new BenchmarckIOCountCharactersStrategies();
+            // test2.RunCharacterCountSyncTest();
+            // test2.RunCharacterCountAsyncEnumerableTest();
+            // test2.RunCountCharacterRxTest();
+
+
+            //  var test2 = new Bigg();
+            //  test2.RunCharacterCountSyncTest();
+            //  test2.RunCharacterCountAsyncEnumerableTest();
+            //  test2.RunCountCharacterRxTest();
 
 
         }

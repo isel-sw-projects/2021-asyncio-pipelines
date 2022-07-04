@@ -22,6 +22,7 @@ namespace lookwords.FileReadStrategies.SyncEnum
 
         private void parseFileDistinctWordsIntoDictionary(string filename, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
         {
+            //Console.WriteLine(filename);
              FileUtils.getLinesSync(filename)
                  .Where(line => line.Length != 0)                           // Skip empty lines
                  .Skip(14)                                                  // Skip gutenberg header
