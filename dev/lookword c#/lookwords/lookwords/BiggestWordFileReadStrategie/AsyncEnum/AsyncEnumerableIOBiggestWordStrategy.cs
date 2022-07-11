@@ -20,14 +20,16 @@ namespace lookwords.BiggestWordFileReadStrategies.AsyncEnum
                  .Where(line => line.Length != 0)                     // Skip empty lines
                  .Skip(14)                                            // Skip gutenberg header
                  .TakeWhile(line => !line.Contains("*** END OF "))    // Skip gutenberg footnote
-                 .Select(line => Regex.Replace(line, "[^a-zA-Z0- 9-]+", "", RegexOptions.Compiled).Split(' ')) //?? to review ?? 
-                 .Select((arr) => arr.OrderByDescending(s => s.Length).First())
-                 .FirstOrDefaultAsync()
+                 .Select(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled)
+                                        .Split(' ')
+                                        .Max(arr => arr))
+                 .AggregateAsync(string.Empty, (biggest, current) => current.Length > biggest.Length ? current : biggest)
                  .AsTask();
+               
         }
 
 
-        public Task<string> countWordsFromFileAsync(string folderName)
+        public Task<string> getBiggestWordInDirectory(string folderName)
         {
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!
@@ -40,7 +42,7 @@ namespace lookwords.BiggestWordFileReadStrategies.AsyncEnum
             // Returns a new task that will complete when all of the Task objects
             // in allTasks collection have completed!
             // 
-            return Task.WhenAll(allTasks).ContinueWith(task => task.Result.OrderByDescending(s => s.Length).First());
+            return Task.WhenAll(allTasks).ContinueWith(task => task.Result.Aggregate("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest));
         }
 
     }

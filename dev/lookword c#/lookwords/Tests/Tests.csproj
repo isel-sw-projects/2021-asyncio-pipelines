@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Look4Words_WithoutLinq\Look4Words_WithoutLinq.csproj" />
     <ProjectReference Include="..\lookwords\lookwords.csproj" />
   </ItemGroup>
 

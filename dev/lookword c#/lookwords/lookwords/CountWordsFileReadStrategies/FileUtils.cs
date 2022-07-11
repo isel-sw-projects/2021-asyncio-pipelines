@@ -43,7 +43,6 @@ namespace lookwords
 
         public static async IAsyncEnumerable<String> getLinesAsyncEnum(String file)
         {
-
             using (StreamReader reader = new StreamReader(file))
             {
                 while (!reader.EndOfStream)

@@ -48,7 +48,8 @@ namespace lookwords.FileReadStrategies.RxNet
             // Returns a new task that will complete when all of the Task objects
             // in allTasks collection have completed!
             // 
-            return Task.WhenAll(allTasks).ContinueWith((prev) => words);
+            return Task.WhenAll(allTasks)
+                .ContinueWith((prev) => words);
         }
 
 

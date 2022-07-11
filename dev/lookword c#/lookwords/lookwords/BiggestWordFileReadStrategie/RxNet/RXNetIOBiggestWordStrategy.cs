@@ -11,42 +11,46 @@ using System.Threading.Tasks;
 
 namespace lookwords.BiggestWordFileReadStrategies.RxNet
 {
-    public class RXNetIOBiggestWordStrategy 
+    public class RXNetIOBiggestWordStrategy
     {
 
         /// <summary>
         /// Collects all distinct words of given filePath into words Dictionary, which is shared across concurrent threads.
         /// ??? Not sure about the concurrent behavior of ForEachAsync ???
         /// </summary>
-        private Task<string> parseFileDistinctWordsIntoDictionary(string filePath)
+        private Task<string> findBiggestWordInFile(string filePath)
         {
+            string biggestWord = "";
 
             return new FileTreeTextObservable(filePath)
                 .Where(line => line.Length != 0)                           // Skip empty lines
                 .Skip(14)                                                  // Skip gutenberg header
                 .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
-                .Select(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' '))
-                .Select((arr) => arr.OrderByDescending(s => s.Length).First())
+                .Select(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled)
+                                        .Split(' ')
+                                        .Max(arr => arr))
                 .ToAsyncEnumerable()
-                .FirstAsync()
+                .AggregateAsync("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest)
                 .AsTask();
+
+
         }
 
         //RXNET implementation
-        public Task<string> countWordsFromFileAsync(string folderPath, int minWordSize, int maxWordSize)
+        public Task<string> getBiggestWordInDirectory(string folderPath)
         {
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!
             //
             List<Task<string>> allTasks = Directory
                             .GetFiles(folderPath, "*.txt", SearchOption.AllDirectories)
-                            .Select(file => parseFileDistinctWordsIntoDictionary(file))
+                            .Select(file => findBiggestWordInFile(file))
                             .ToList();
             //
             // Returns a new task that will complete when all of the Task objects
             // in allTasks collection have completed!
             // 
-            return Task.WhenAll(allTasks).ContinueWith(task => task.Result.OrderByDescending(s => s.Length).First());
+            return Task.WhenAll(allTasks).ContinueWith(task => task.Result.Aggregate("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest));
         }
     }
 }

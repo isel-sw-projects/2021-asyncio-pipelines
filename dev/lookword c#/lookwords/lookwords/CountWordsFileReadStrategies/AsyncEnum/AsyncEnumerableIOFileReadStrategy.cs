@@ -24,7 +24,6 @@ namespace lookwords.FileReadStrategies.AsyncEnum
                     .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
                     .Aggregate(words, (prev, word) =>
                     {
-                        //Console.WriteLine(word);
                         prev.AddOrUpdate(word, 1, (k, v) => v + 1); // Merge words in dictionary.
                         return prev;
                     })

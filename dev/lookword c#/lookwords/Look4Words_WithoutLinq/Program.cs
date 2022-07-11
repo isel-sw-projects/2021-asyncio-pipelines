@@ -9,18 +9,21 @@ namespace noLinq_lookwords
 
        public static void Main(string[] args)
        {
-           string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
-           EnumerableIOFileReadWithoutLinqStrategy enumerableIOFileReadWithoutLinqStrategy = new EnumerableIOFileReadWithoutLinqStrategy();
+          // string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
+          // EnumerableIOFileReadWithoutLinqStrategy enumerableIOFileReadWithoutLinqStrategy = new EnumerableIOFileReadWithoutLinqStrategy();
+          //
+          //  Console.WriteLine("Test initiated");
+          //
+          // int init = Environment.TickCount;
+          // enumerableIOFileReadWithoutLinqStrategy.countWordsFromFileSync(folderPath, 2, 12);
+          //
+          // int elapsed = Environment.TickCount - init;
+          //
+          // Console.WriteLine(@"Count all words RunSyncTest without linq took: {0} miliseconds", elapsed);
       
-            Console.WriteLine("Test initiated");
-      
-           int init = Environment.TickCount;
-           enumerableIOFileReadWithoutLinqStrategy.countWordsFromFileSync(folderPath, 2, 12);
-      
-           int elapsed = Environment.TickCount - init;
-      
-           Console.WriteLine(@"Count all words RunSyncTest without linq took: {0} miliseconds", elapsed);
-      
+            string word =  "the is two words here ha ha".Split(' ').Max(word => word);
+
+            Console.WriteLine(word);
        }
     }
 }

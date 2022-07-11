@@ -38,19 +38,13 @@ namespace lookwords.RxNet
                     try
                     {
                         String line = null;
-                        do
-                        {
+                        
                             //
                             // Not sure if there is any throughput gain by reading the file Asynchrnously.
                             // Test both: ReadLine() and ReadLineAsync() and check which one performs better??
                             //
-                            await reader.ReadLineAsync();
-                            observer.OnNext(line);
-                        } while (line != null);
-                        //
-                        // Complete successfuly
-                        //
-                        observer.OnCompleted();
+                        line = await reader.ReadLineAsync();
+                        observer.OnNext(line);
                     }
                     catch (Exception ex)
                     {
@@ -60,6 +54,7 @@ namespace lookwords.RxNet
                         observer.OnError(ex);
                     }
                 }
+                observer.OnCompleted();
             }    
         }
         private class Unsubscriber : IDisposable

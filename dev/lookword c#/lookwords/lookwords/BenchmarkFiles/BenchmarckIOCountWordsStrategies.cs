@@ -41,7 +41,21 @@ namespace lookwords
 
             Console.WriteLine(@"Count all words RunSyncTest took: {0} miliseconds", elapsed);
 
-            
+            return ret;
+        }
+
+        [Benchmark(Baseline = true)]
+        public ConcurrentDictionary<string, int> RunSyncTestWOLinq()
+        {
+            int init = Environment.TickCount;
+
+            CountWordsWithoutLinqStrategy test = new CountWordsWithoutLinqStrategy();
+            ConcurrentDictionary<string, int> ret = test.countWordsFromFileSync(folderPath, 1, 8);
+
+
+            int elapsed = Environment.TickCount - init;
+
+            Console.WriteLine(@"Count all words RunSyncTest without linq took: {0} miliseconds", elapsed);
 
             return ret;
         }
