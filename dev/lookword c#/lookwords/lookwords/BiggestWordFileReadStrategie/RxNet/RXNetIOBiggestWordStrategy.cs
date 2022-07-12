@@ -18,7 +18,7 @@ namespace lookwords.BiggestWordFileReadStrategies.RxNet
         /// Collects all distinct words of given filePath into words Dictionary, which is shared across concurrent threads.
         /// ??? Not sure about the concurrent behavior of ForEachAsync ???
         /// </summary>
-        private Task<string> findBiggestWordInFile(string filePath)
+        private IObservable<string> findBiggestWordInFile(string filePath)
         {
             string biggestWord = "";
 
@@ -29,28 +29,22 @@ namespace lookwords.BiggestWordFileReadStrategies.RxNet
                 .Select(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled)
                                         .Split(' ')
                                         .Max(arr => arr))
-                .ToAsyncEnumerable()
-                .AggregateAsync("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest)
-                .AsTask();
-
-
+                .Aggregate("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest)
+                .SingleAsync();
         }
 
         //RXNET implementation
-        public Task<string> getBiggestWordInDirectory(string folderPath)
+        public IObservable<string> getBiggestWordInDirectory(string folderPath)
         {
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!
             //
-            List<Task<string>> allTasks = Directory
+            return Directory
                             .GetFiles(folderPath, "*.txt", SearchOption.AllDirectories)
-                            .Select(file => findBiggestWordInFile(file))
-                            .ToList();
-            //
-            // Returns a new task that will complete when all of the Task objects
-            // in allTasks collection have completed!
-            // 
-            return Task.WhenAll(allTasks).ContinueWith(task => task.Result.Aggregate("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest));
+                            .ToObservable()
+                            .SelectMany(file => findBiggestWordInFile(file))
+                            .Aggregate("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest)
+                            .LastOrDefaultAsync();
         }
     }
 }
