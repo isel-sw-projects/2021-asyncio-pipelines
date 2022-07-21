@@ -20,7 +20,6 @@ namespace lookwords.BiggestWordFileReadStrategies.RxNet
         /// </summary>
         private IObservable<string> findBiggestWordInFile(string filePath)
         {
-            string biggestWord = "";
 
             return new FileTreeTextObservable(filePath)
                 .Where(line => line.Length != 0)                           // Skip empty lines

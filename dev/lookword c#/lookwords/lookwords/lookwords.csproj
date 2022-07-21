@@ -299,8 +299,8 @@
     <Compile Include="CountCharactersFileReadStrategies\RxNet\FileTreeTextObservable.cs" />
     <Compile Include="CountCharactersFileReadStrategies\RxNet\RXNetIOCountCharacterStrategy.cs" />
     <Compile Include="CountCharactersFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
-    <Compile Include="noLinqStategies\SyncEnum\BiggestWordNoLinq.cs" />
-    <Compile Include="noLinqStategies\SyncEnum\CountWordsWithoutLinqStrategy.cs" />
+    <Compile Include="noLinqStrategies\SyncEnum\BiggestWordNoLinq.cs" />
+    <Compile Include="noLinqStrategies\SyncEnum\CountWordsWithoutLinqStrategy.cs" />
     <Compile Include="CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategyWithConverter.cs" />
     <Compile Include="CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />
     <Compile Include="CountWordsFileReadStrategies\FileUtils.cs" />

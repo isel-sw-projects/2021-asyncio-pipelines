@@ -73,18 +73,23 @@ namespace lookwords.BenchmarkFiles
        {
 
            int init = Environment.TickCount;
-           Task<string> task = new RXNetIOBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
-           task.Wait();
-           //
-           // Each benchmark should return a value to ensure the VM optimizations
-           // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
-           //
-           int elapsed = Environment.TickCount - init;
+           IObservable<string> obsrvable = new RXNetIOBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
+
+            var t = new TaskCompletionSource<string>();
+            obsrvable.Subscribe(str => t.TrySetResult(str));
+
+            t.Task.Wait();
+            
+            //
+            // Each benchmark should return a value to ensure the VM optimizations
+            // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
+            //
+            int elapsed = Environment.TickCount - init;
   
            Console.WriteLine(@"Count all wors RunGetBiggestWordRxTest took: {0} seconds", elapsed);
   
   
-           return task.Result;
+           return t.Task.Result;
        }
   
     }

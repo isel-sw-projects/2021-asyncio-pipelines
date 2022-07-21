@@ -332,19 +332,26 @@ namespace Tests
         }
 
         [TestMethod]
-        public void BiggestWordSync_Rx()
+        public async Task BiggestWordSync_Rx()
         {
             
 
             string folderPath = @Environment.GetEnvironmentVariable("TESE_TESTE_PATH");
 #pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
             RXNetIOBiggestWordStrategy test = new RXNetIOBiggestWordStrategy();
-            Task<string> task = test.getBiggestWordInDirectory(folderPath);
-            task.Wait();
 
-            string word = task.Result;
+            IObservable<string> obsrvable = new RXNetIOBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
 
-            Assert.AreEqual(word, "bigggest33333333333333333333333333333333");
+            string word = "";
+
+
+            var t = new TaskCompletionSource<object>();
+            obsrvable.Subscribe(str => t.TrySetResult(str));
+
+
+            await t.Task;
+
+            Assert.AreEqual(t.Task.Result, "bigggest33333333333333333333333333333333");
         }
     }
 }
