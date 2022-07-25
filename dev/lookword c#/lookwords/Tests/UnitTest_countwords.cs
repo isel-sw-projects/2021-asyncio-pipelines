@@ -1,11 +1,11 @@
 
 using lookwords;
-using lookwords.BiggestWordFileReadStrategies.AsyncEnum;
-using lookwords.BiggestWordFileReadStrategies.RxNet;
-using lookwords.BiggestWordFileReadStrategies.SyncEnum;
-using lookwords.FileReadStrategies.AsyncEnum;
-using lookwords.FileReadStrategies.RxNet;
-using lookwords.FileReadStrategies.SyncEnum;
+using lookwords.MixedSourceStrategies.AsyncEnum;
+using lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.SyncEnum;
+using lookwords.MixedSourceStrategies.FileReadStrategies.AsyncEnum;
+using lookwords.MixedSourceStrategies.FileReadStrategies.RxNet;
+using lookwords.MixedSourceStrategies.FileReadStrategies.SyncEnum;
+using lookwords.MixedSourceStrategies.RxNet;
 using lookwords.noLinqStategies.SyncEnum;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -341,9 +341,6 @@ namespace Tests
             RXNetIOBiggestWordStrategy test = new RXNetIOBiggestWordStrategy();
 
             IObservable<string> obsrvable = new RXNetIOBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
-
-            string word = "";
-
 
             var t = new TaskCompletionSource<object>();
             obsrvable.Subscribe(str => t.TrySetResult(str));

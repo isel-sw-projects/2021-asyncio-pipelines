@@ -1,8 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
-using lookwords.BiggestWordFileReadStrategies.AsyncEnum;
-using lookwords.BiggestWordFileReadStrategies.RxNet;
-using lookwords.BiggestWordFileReadStrategies.SyncEnum;
+using lookwords.MixedSourceStrategies.AsyncEnum;
+using lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.SyncEnum;
 using lookwords.noLinqStategies.SyncEnum;
+using lookwords.SyncSourceStrategies.BiggestWordFileReadStrategies.RxNet;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace lookwords.BenchmarkFiles
   
            int elapsed = Environment.TickCount - init;
   
-           Console.WriteLine(@"Count all word RunGetBiggestWordAsyncEnumerableTest took: {0} seconds", elapsed);
+           Console.WriteLine(@"Find the biggest word with RunGetBiggestWordAsyncEnumerableTest took: {0} seconds", elapsed);
            //
            // Each benchmark should return a value to ensure the VM optimizations
            // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
@@ -45,7 +45,7 @@ namespace lookwords.BenchmarkFiles
   
            int elapsed = Environment.TickCount - init;
   
-           Console.WriteLine(@"Count all wors RunGetBiggestWordSyncTest took: {0} seconds", elapsed);
+           Console.WriteLine(@"Find the biggest word with RunGetBiggestWordSyncTest took: {0} seconds", elapsed);
   
   
            return ret;
@@ -60,7 +60,7 @@ namespace lookwords.BenchmarkFiles
 
             int elapsed = Environment.TickCount - init;
 
-            Console.WriteLine(@"Count all wors RunGetBiggestWordWOLinqSyncTest took: {0} seconds", elapsed);
+            Console.WriteLine(@"Find the biggest word with RunGetBiggestWordWOLinqSyncTest took: {0} seconds", elapsed);
 
 
             return ret;
@@ -86,7 +86,7 @@ namespace lookwords.BenchmarkFiles
             //
             int elapsed = Environment.TickCount - init;
   
-           Console.WriteLine(@"Count all wors RunGetBiggestWordRxTest took: {0} seconds", elapsed);
+           Console.WriteLine(@"Find the biggest word with RunGetBiggestWordRxTest took: {0} seconds", elapsed);
   
   
            return t.Task.Result;

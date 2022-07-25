@@ -7,11 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reactive.Linq;
-using lookwords.FileReadStrategies.AsyncEnum;
-using lookwords.FileReadStrategies.RxNet;
-using lookwords.FileReadStrategies.SyncEnum;
-using lookwords.CountCharactersStrategies.AsyncEnum;
-using lookwords.CountCharactersStrategies.SyncEnum;
+using lookwords.MixedSourceStrategies.FileReadStrategies.SyncEnum;
+using lookwords.MixedSourceStrategies.FileReadStrategies.AsyncEnum;
+using lookwords.MixedSourceStrategies.FileReadStrategies.RxNet;
 
 namespace lookwords
 {

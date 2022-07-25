@@ -2,8 +2,7 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using lookwords.BenchmarkFiles;
-using lookwords.BiggestWordFileReadStrategies.SyncEnum;
-using lookwords.RxNet;
+using lookwords.testRunnables;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Concurrent;
@@ -25,45 +24,32 @@ namespace lookwords
             //IOFileReadStrategies.folderWordOccurrencesInSizeRangeSync(folderPath, 2, 12);
             string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
 
+            Dictionary<string, Runnable> dictionary = new Dictionary<string, Runnable>();
+            dictionary.Add("1", new CountWorldsRunnable());
+            dictionary.Add("2", new FindBiggestWordRunnable());
+            dictionary.Add("3", new TestStrategiesWithSyncSourcesRunnable());
+            dictionary.Add("4", new TestStrategiesWithSyncSourcesWithParallelismRunnable());
+
             string input = "";
+            
+            
+            
+            
             while (!input.Equals("esc")) {
-                Console.WriteLine(" 1 - To find biggest words in test directory,\n 2 - To count all word occurrences in test directory \n a - run all \n esc - To leave");
+                Console.WriteLine("\n\n 1 - Count words in test directory," +
+                    "\n 2 - Find biggest word in test directory " +
+                    "\n 3 - Run tests with synchronous sources only " +
+                    "\n 4 - Run tests with synchronous sources only but with paralelism " +
+                    "\n esc - To leave \n \n \n");
 
                 input = Console.ReadLine();
-                if (input.Equals("1"))
+
+                Runnable test = null;
+                bool res = dictionary.TryGetValue(input, out test);
+
+                if(res)
                 {
-                    Console.WriteLine("Tests to BenchmarckIOCountWordsStrategies initiated: ");
-                    var test = new BenchmarckIOCountWordsStrategies(folderPath);
-                    test.RunSyncTestWOLinq();
-                    test.RunSyncTest();
-                    test.RunAsyncEnumerableTest();
-                    test.RunRxTest();
-                } else if (input.Equals("2"))
-                {
-                    Console.WriteLine("Tests to BenchmarckIOCountWordsStrategies initiated: ");
-                    var test = new BenchmarkFindBiggestwordTest();
-                    test.RunGetBiggestWordWOLinqSyncTest();
-                    test.RunGetBiggestWordSyncTest();
-                    test.RunGetBiggestWordAsyncEnumerableTest();
-                    test.RunGetBiggestWordRxTest();
-                    
-
-                }
-                else if(input.Equals("a")) {
-                    Console.WriteLine("Tests to BenchmarckIOCountWordsStrategies initiated: ");
-                    var test2 = new BenchmarckIOCountWordsStrategies(folderPath);
-                    test2.RunSyncTestWOLinq();
-                    test2.RunSyncTest();
-                    test2.RunAsyncEnumerableTest();
-                    test2.RunRxTest();
-
-                    Console.WriteLine("\nTests to BenchmarkFindBiggestwordStrategies initiated: ");
-                    var test = new BenchmarkFindBiggestwordTest();
-                    test.RunGetBiggestWordWOLinqSyncTest();
-                    test.RunGetBiggestWordSyncTest();
-                    test.RunGetBiggestWordAsyncEnumerableTest();
-                    test.RunGetBiggestWordRxTest();
-
+                    test.Run();
                 }
 
             }

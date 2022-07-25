@@ -291,25 +291,46 @@
   <ItemGroup>
     <Compile Include="BenchmarkFiles\BenchmarckIOCountCharactersStrategies.cs" />
     <Compile Include="BenchmarkFiles\BenchmarkFindBiggestwordTest.cs" />
-    <Compile Include="BiggestWordFileReadStrategie\AsyncEnum\AsyncEnumerableIOBiggestWordStrategy.cs" />
-    <Compile Include="BiggestWordFileReadStrategie\RxNet\FileTreeTextObservable.cs" />
-    <Compile Include="BiggestWordFileReadStrategie\RxNet\RXNetIOBiggestWordStrategy.cs" />
-    <Compile Include="BiggestWordFileReadStrategie\SyncEnum\EnumerableIOFindBiggestWordStrategy.cs" />
-    <Compile Include="CountCharactersFileReadStrategies\AsyncEnum\AsyncEnumerableIOCountCharacterStrategy.cs" />
-    <Compile Include="CountCharactersFileReadStrategies\RxNet\FileTreeTextObservable.cs" />
-    <Compile Include="CountCharactersFileReadStrategies\RxNet\RXNetIOCountCharacterStrategy.cs" />
-    <Compile Include="CountCharactersFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
-    <Compile Include="noLinqStrategies\SyncEnum\BiggestWordNoLinq.cs" />
-    <Compile Include="noLinqStrategies\SyncEnum\CountWordsWithoutLinqStrategy.cs" />
-    <Compile Include="CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategyWithConverter.cs" />
-    <Compile Include="CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />
-    <Compile Include="CountWordsFileReadStrategies\FileUtils.cs" />
-    <Compile Include="CountWordsFileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />
-    <Compile Include="CountWordsFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
+    <Compile Include="BenchmarkFiles\BenchmarkIOStrategiesWithSyncSourceOnly.cs" />
+    <Compile Include="BenchmarkFiles\BenchmarkIOStrategiesWSyncAndAsParallel.cs" />
+    <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\AsyncEnum\AsyncEnumerableIOBiggestWordStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
+    <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\RXNetIOBiggestWordStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\SyncEnum\EnumerableIOFindBiggestWordStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\AsyncEnum\AsyncEnumerableIOCountCharacterStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\RxNet\FileTreeTextObservable.cs" />
+    <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\RxNet\RXNetIOCountCharacterStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\noLinqStrategies\SyncEnum\BiggestWordNoLinq.cs" />
+    <Compile Include="MixedSourceStrategies\noLinqStrategies\SyncEnum\CountWordsWithoutLinqStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategyWithConverter.cs" />
+    <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />
+    <Compile Include="FileUtils.cs" />
+    <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
     <Compile Include="BenchmarkFiles\BenchmarckIOCountWordsStrategies.cs" />
+    <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />
+    <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
+    <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />
+    <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
+    <Compile Include="ParallelButWSyncSourceStrategies\FindBiggestWordFileReadStrategies\AsyncEnum\AsyncEnumerableIOBiggestWordStrategy.cs" />
+    <Compile Include="ParallelButWSyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
+    <Compile Include="ParallelButWSyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\RXNetIOBiggestWordStrategy.cs" />
+    <Compile Include="ParallelButWSyncSourceStrategies\FindBiggestWordFileReadStrategies\SyncEnum\EnumerableIOFindBiggestWordStrategy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CountWordsFileReadStrategies\RxNet\FileTreeTextObservable.cs" />
+    <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
+    <Compile Include="SyncSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />
+    <Compile Include="SyncSourceStrategies\CountWordsFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
+    <Compile Include="SyncSourceStrategies\CountWordsFileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />
+    <Compile Include="SyncSourceStrategies\FindBiggestWordFileReadStrategies\AsyncEnum\AsyncEnumerableIOBiggestWordStrategy.cs" />
+    <Compile Include="SyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
+    <Compile Include="SyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\RXNetIOBiggestWordStrategy.cs" />
+    <Compile Include="testRunnables\CountWorldsRunnable.cs" />
+    <Compile Include="testRunnables\FindBiggestWordRunnable.cs" />
+    <Compile Include="testRunnables\Runnable.cs" />
+    <Compile Include="testRunnables\TestStrategiesWithSyncSourcesWithParallelismRunnable.cs" />
+    <Compile Include="testRunnables\TestStrategiesWithSyncSourcesRunnable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -330,6 +351,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
