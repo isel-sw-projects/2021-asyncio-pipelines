@@ -9,31 +9,35 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.RxNet
+namespace lookwords.MixedSourceStrategies.FindWordStrategies.RxNet
 {
-    public class RXNetIOBiggestWordStrategy
+    public class RXNetIOFindWordStrategy
     {
 
         /// <summary>
         /// Collects all distinct words of given filePath into words Dictionary, which is shared across concurrent threads.
         /// ??? Not sure about the concurrent behavior of ForEachAsync ???
         /// </summary>
-        private IObservable<string> findBiggestWordInFile(string filePath)
+        private IObservable<bool> findWordInFile(string filePath, string word)
         {
-
             return new ReadFolderFilesObservable(filePath)
                 .Where(line => line.Length != 0)                           // Skip empty lines
                 .Skip(14)                                                  // Skip gutenberg header
                 .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
-                .Select(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled)
-                                        .Split(' ')
-                                        .Max(arr => arr))
-                .Aggregate("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest)
-                .SingleAsync();
+                .Any(line =>
+                {
+                    if (line.Contains(word))
+                    {
+                        Console.WriteLine("found in: " + filePath);
+                        return true;
+                    }
+                    return false;
+
+                });
         }
 
         //RXNET implementation
-        public IObservable<string> getBiggestWordInDirectory(string folderPath)
+        public IObservable<bool> findWordInDirectory(string folderPath, string word)
         {
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!
@@ -41,9 +45,8 @@ namespace lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.RxNet
             return Directory
                             .GetFiles(folderPath, "*.txt", SearchOption.AllDirectories)
                             .ToObservable()
-                            .SelectMany(file => findBiggestWordInFile(file))
-                            .Aggregate("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest)
-                            .LastOrDefaultAsync();
+                            .SelectMany(file => findWordInFile(file, word))
+                            .Any(obs => obs);
         }
     }
 }

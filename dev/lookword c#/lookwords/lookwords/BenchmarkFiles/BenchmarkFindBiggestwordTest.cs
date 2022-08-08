@@ -1,5 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using lookwords.MixedSourceStrategies.AsyncEnum;
+using lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.AsyncEnum;
 using lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.SyncEnum;
 using lookwords.noLinqStategies.SyncEnum;
 using lookwords.SyncSourceStrategies.BiggestWordFileReadStrategies.RxNet;

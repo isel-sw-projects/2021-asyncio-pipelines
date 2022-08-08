@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace lookwords.MixedSourceStrategies.AsyncEnum
+namespace lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.AsyncEnum
 {
     public class AsyncEnumerableIOBiggestWordStrategy 
     {

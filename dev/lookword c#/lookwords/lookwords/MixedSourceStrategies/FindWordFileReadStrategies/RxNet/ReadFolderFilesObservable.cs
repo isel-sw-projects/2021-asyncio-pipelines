@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.RxNet
+namespace lookwords.MixedSourceStrategies.FindWordStrategies.RxNet
 {
     public class FileTreeCharacterObservable : IObservable<char>
     {

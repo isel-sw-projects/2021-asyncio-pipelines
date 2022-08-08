@@ -29,6 +29,7 @@ namespace lookwords
             dictionary.Add("2", new FindBiggestWordRunnable());
             dictionary.Add("3", new TestStrategiesWithSyncSourcesRunnable());
             dictionary.Add("4", new TestStrategiesWithSyncSourcesWithParallelismRunnable());
+            dictionary.Add("5", new FindWordTestRunnable());
 
             string input = "";
             
@@ -40,6 +41,7 @@ namespace lookwords
                     "\n 2 - Find biggest word in test directory " +
                     "\n 3 - Run tests with synchronous sources only " +
                     "\n 4 - Run tests with synchronous sources only but with paralelism " +
+                    "\n 5 - Run Find word tests " +
                     "\n esc - To leave \n \n \n");
 
                 input = Console.ReadLine();

@@ -291,6 +291,7 @@
   <ItemGroup>
     <Compile Include="BenchmarkFiles\BenchmarckIOCountCharactersStrategies.cs" />
     <Compile Include="BenchmarkFiles\BenchmarkFindBiggestwordTest.cs" />
+    <Compile Include="BenchmarkFiles\BenchmarkFindWordStrategies.cs" />
     <Compile Include="BenchmarkFiles\BenchmarkIOStrategiesWithSyncSourceOnly.cs" />
     <Compile Include="BenchmarkFiles\BenchmarkIOStrategiesWSyncAndAsParallel.cs" />
     <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\AsyncEnum\AsyncEnumerableIOBiggestWordStrategy.cs" />
@@ -301,6 +302,10 @@
     <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\RxNet\FileTreeTextObservable.cs" />
     <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\RxNet\RXNetIOCountCharacterStrategy.cs" />
     <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\AsyncEnum\AsyncEnumerableIOFindWordStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
+    <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\RxNet\RXNetIOFindWordStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\SyncEnum\EnumerableIOFindWordStrategy.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\SyncEnum\BiggestWordNoLinq.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\SyncEnum\CountWordsWithoutLinqStrategy.cs" />
     <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategyWithConverter.cs" />
@@ -328,6 +333,7 @@
     <Compile Include="SyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\RXNetIOBiggestWordStrategy.cs" />
     <Compile Include="testRunnables\CountWorldsRunnable.cs" />
     <Compile Include="testRunnables\FindBiggestWordRunnable.cs" />
+    <Compile Include="testRunnables\FindWordTestRunnable.cs" />
     <Compile Include="testRunnables\Runnable.cs" />
     <Compile Include="testRunnables\TestStrategiesWithSyncSourcesWithParallelismRunnable.cs" />
     <Compile Include="testRunnables\TestStrategiesWithSyncSourcesRunnable.cs" />
