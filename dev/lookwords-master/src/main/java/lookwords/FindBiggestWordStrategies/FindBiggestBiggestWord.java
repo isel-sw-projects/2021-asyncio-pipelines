@@ -1,8 +1,5 @@
 package lookwords.FindBiggestWordStrategies;
 
-import java.util.Map;
-import java.util.Optional;
-
-public interface FindBiggestWord {
+public interface FindBiggestBiggestWord {
     Containner<String> findBiggestWord(String folder);
 }

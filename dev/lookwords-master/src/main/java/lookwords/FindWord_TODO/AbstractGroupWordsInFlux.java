@@ -1,4 +1,4 @@
-package lookwords.FindBiggestWordStrategies;
+package lookwords.FindWord_TODO;
 
 
 import reactor.core.publisher.Flux;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 
-public abstract class AbstractGroupWordsInFlux implements FindBiggestBiggestWord {
+public abstract class AbstractGroupWordsInFlux implements FindWord {
 
     public final Containner<String> findBiggestWord(String folder) {
         Containner<String> cont = new Containner<>("");

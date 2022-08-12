@@ -7,7 +7,6 @@ import java.io.UncheckedIOException;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
-import java.util.Map;
 import java.util.concurrent.Flow;
 
 import static io.reactivex.rxjava3.core.Observable.fromArray;
@@ -21,7 +20,7 @@ import static org.reactivestreams.FlowAdapters.toPublisher;
  *
  * !!!!! Yet it is not scaling although it is using a similar Observable pipeline to that one used in RxIo.
  */
-public class FindWordBodyPublisherInObservable {
+public class FindBiggestWordBodyPublisherInObservable {
 
     Object mon = new Object();
     protected Observable<String> lines(Path file, Containner<String> cont) {

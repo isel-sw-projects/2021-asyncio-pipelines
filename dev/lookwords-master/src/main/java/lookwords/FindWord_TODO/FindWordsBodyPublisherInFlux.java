@@ -1,4 +1,4 @@
-package lookwords.FindBiggestWordStrategies;
+package lookwords.FindWord_TODO;
 
 import reactor.core.publisher.Flux;
 
@@ -7,14 +7,12 @@ import java.io.UncheckedIOException;
 import java.net.http.HttpRequest;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.Flow;
 
 import static org.reactivestreams.FlowAdapters.toPublisher;
 import static reactor.core.publisher.Flux.fromArray;
 
-public class FindWordsBodyPublisherInFlux  {
+public class FindWordsBodyPublisherInFlux {
 
 
     protected Flux<String> lines(Path file, Containner<String> cont) {

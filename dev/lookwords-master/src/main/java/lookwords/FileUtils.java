@@ -34,22 +34,53 @@ public class FileUtils {
     public static CompletableFuture<Void> lines(Path file, Containner<String> cont) {
         BufferedReader reader = bufferedReaderFrom(file);
         CompletableFuture<Void> cf = new CompletableFuture<>();
-        reader
-            .lines()
-            .filter(line -> !line.isEmpty())                   // Skip empty lines
-            .skip(14)                                          // Skip gutenberg header
-            .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
-            .flatMap(line -> stream(line.split(" "))).forEach(w -> {
+
+        cf.thenRun( () ->
+            reader
+                .lines()
+                .filter(line -> !line.isEmpty())                   // Skip empty lines
+                .skip(14)                                          // Skip gutenberg header
+                .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
+                .flatMap(line -> stream(line.split(" ")))
+                .forEach(w -> {
                     synchronized (mon) {
                         if (cont.value.length() < w.length()) {
                             cont.value = w;
                         }
                     }
                     cf.complete(null);
-                });
+                }));
+
+        //reader
+        //        .lines()
+        //        .filter(line -> !line.isEmpty())                   // Skip empty lines
+        //        .skip(14)                                          // Skip gutenberg header
+        //        .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
+        //        .flatMap(line -> stream(line.split(" ")))
+        //        .forEach(w -> {
+        //            synchronized (mon) {
+        //                if (cont.value.length() < w.length()) {
+        //                    cont.value = w;
+        //                }
+        //            }
+        //            cf.complete(null);
+        //        }));
+
+
         return cf;
     }
 
+    public static Stream<String> lines(Path file, int minLength, int maxLength) {
+        BufferedReader reader = bufferedReaderFrom(file);
+        return reader
+                .lines()
+                .filter(line -> !line.isEmpty())                   // Skip empty lines
+                .skip(14)                                          // Skip gutenberg header
+                .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
+                .flatMap(line -> stream(line.split(" ")))
+                .filter(word -> word.length() > minLength && word.length() < maxLength)
+                .onClose(() -> close(reader));
+    }
 
     public static Path pathFrom(String file) {
         try {

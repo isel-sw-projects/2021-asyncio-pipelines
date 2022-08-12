@@ -1,27 +1,28 @@
-package lookwords.FindBiggestWordStrategies;
+package lookwords.FindWord_TODO;
 
+import io.reactivex.rxjava3.core.Observable;
 import org.javaync.io.AsyncFiles;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
 
 import java.nio.file.Path;
-import java.util.Map;
 
-import static reactor.core.publisher.Flux.fromArray;
+import static io.reactivex.rxjava3.core.Observable.fromArray;
 
-public class FindWordRxIoInFlux {
+/**
+ * Using the org.javasync.rxio library and its AsyncFiles utility class
+ * built on top of java AsynchronousFileChannel to read a file.
+ * Then the resulting Publisher is processed through a RxJava pipeline.
+ */
+public class FindWordRxIoInObservable {
     Object mon = new Object();
-
-    protected Flux<String> lines(Path file, Containner<String> cont) {
+    protected  Observable<String> lines(Path file , Containner<String> cont) {
         Publisher<String> lines = AsyncFiles.lines(file);
-        return Flux
-            .from(lines)
+        return Observable
+            .fromPublisher(lines)
             .filter(line -> !line.isEmpty())                   // Skip empty lines
             .skip(14)                                          // Skip gutenberg header
             .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
-            .flatMap(line -> fromArray(line.split(" "))) // Next is in alternative
-            // This scales but does not improve throughput !!!
-            // .flatMap(line -> fromArray(line.split(" ")), Integer.MAX_VALUE, Integer.MAX_VALUE)
+            .flatMap(line -> fromArray(line.split(" ")))
             .doOnNext(w -> {
                 synchronized (mon) {
                     if (cont.value.length() < w.length()) {

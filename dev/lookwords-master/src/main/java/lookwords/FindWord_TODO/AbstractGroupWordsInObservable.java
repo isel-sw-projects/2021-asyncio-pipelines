@@ -1,7 +1,6 @@
-package lookwords.FindBiggestWordStrategies;
+package lookwords.FindWord_TODO;
 
-
-import reactor.core.publisher.Flux;
+import io.reactivex.rxjava3.core.Observable;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -13,25 +12,26 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 
-public abstract class AbstractGroupWordsInFlux implements FindBiggestBiggestWord {
+public abstract class AbstractGroupWordsInObservable implements FindWord {
 
-    public final Containner<String> findBiggestWord(String folder) {
-        Containner<String> cont = new Containner<>("");
+
+
+    public final Containner<String> words(String folder) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+            Containner<String> cont = new Containner<>("");
 
-            List<Flux<String>> tasks = paths
+            List<Observable<String>> tasks = paths
                 .filter(Files::isRegularFile)
                 .map(path -> lines(path, cont))
                 .collect(toList());
-            Flux
+            Observable
                 .merge(tasks)
-                .blockLast();
-
+                .blockingSubscribe();
             return cont;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    protected abstract Flux<String> lines(Path file, Containner<String> opt);
+    protected abstract Observable<String> lines(Path file, Containner<String> opt);
 }

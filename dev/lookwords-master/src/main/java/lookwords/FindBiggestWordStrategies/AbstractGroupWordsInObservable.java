@@ -7,15 +7,12 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 
-public abstract class AbstractGroupWordsInObservable implements FindBiggestWord {
+public abstract class AbstractGroupWordsInObservable implements FindBiggestBiggestWord {
 
 
 

@@ -1,4 +1,4 @@
-package lookwords.FindBiggestWordStrategies;
+package lookwords.FindWord_TODO;
 
 import org.javaync.io.AsyncFiles;
 import org.jayield.AsyncQuery;
@@ -7,15 +7,13 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 
-public class FindWordsRxIoInAsyncQuery implements FindBiggestWord {
+public class FindWordsRxIoInAsyncQuery implements FindWord {
 
 
     @Override
