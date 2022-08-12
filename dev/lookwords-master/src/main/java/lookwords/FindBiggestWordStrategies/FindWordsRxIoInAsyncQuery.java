@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -15,10 +15,13 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 
-public class FindWordsRxIoInAsyncQuery implements FindWords {
-    public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
+public class FindWordsRxIoInAsyncQuery implements FindBiggestWord {
+
+
+    @Override
+    public final Containner<String> findBiggestWord(String folder) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
-            ConcurrentHashMap<String, Integer> words = new ConcurrentHashMap<>();
+            Containner<String> cont = new Containner<>("");
             paths
                 .filter(Files::isRegularFile)
                 .map(path -> AsyncFiles
@@ -27,14 +30,23 @@ public class FindWordsRxIoInAsyncQuery implements FindWords {
                     .skip(14)                                          // Skip gutenberg header
                     .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
                     .flatMapMerge(line -> AsyncQuery.of(line.split(" ")))
-                    .filter(word -> word.length() > minLength && word.length() < maxLength)
-                    .subscribe((w, err) -> words.merge(w, 1, Integer::sum))
+                    .subscribe((w, err) ->
+                            {
+                                synchronized (this) {
+                                    if(cont.value.length() < w.length()) {
+                                        cont.value = w;
+                                    }
+                                }
+                            })
                 )
                 .collect(toList())
                 .forEach(CompletableFuture::join);
-            return words;
+
+            return cont;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
+
+
 }

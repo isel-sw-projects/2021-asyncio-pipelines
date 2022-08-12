@@ -9,6 +9,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -17,24 +18,24 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 
-public class FindWordsRxIo implements FindWords {
+public class FindWordsRxIo implements FindBiggestWord {
+    Containner<String> cont = new Containner<>("");
+    Object mon = new Object();
+    public final Containner<String> findBiggestWord(String folder) {
 
-    public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
-            ConcurrentHashMap<String, Integer> words = new ConcurrentHashMap<>();
             paths
                 .filter(Files::isRegularFile)
-                .map(path -> readInto(path, minLength, maxLength, words))
+                .map(path -> readInto(path))
                 .collect(toList())
-                .stream()
                 .forEach(CompletableFuture::join);
-            return words;
+            return cont;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    private final CompletableFuture<Void> readInto(Path file, int minLength, int maxLength, Map<String, Integer> words) {
+    private final CompletableFuture<Void> readInto(Path file) {
         CompletableFuture<Void> cf = new CompletableFuture<>();
         class GutenbergLinesParser {
             int count = 0;
@@ -53,9 +54,13 @@ public class FindWordsRxIo implements FindWords {
                 }
                 if(!line.isEmpty()) {
                     if(count > 14) {
-                        for(String w : line.split(" "))
-                            if(w.length() > minLength && w.length() < maxLength)
-                                words.merge(w, 1, Integer::sum);
+                        for(String w : line.split(" ")) {
+                            synchronized (mon) {
+                                if (w.length() > cont.value.length()) {
+                                    cont.value = w;
+                                }
+                            }
+                        }
                     } else {
                         count++;
                     }

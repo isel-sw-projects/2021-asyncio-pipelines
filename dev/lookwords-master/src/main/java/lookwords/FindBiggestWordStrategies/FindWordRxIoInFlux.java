@@ -9,9 +9,10 @@ import java.util.Map;
 
 import static reactor.core.publisher.Flux.fromArray;
 
-public class FindWordRxIoInFlux extends AbstractGroupWordsInFlux {
-    @Override
-    protected Flux<String> lines(Path file, int minLength, int maxLength, Map<String, Integer> words) {
+public class FindWordRxIoInFlux {
+    Object mon = new Object();
+
+    protected Flux<String> lines(Path file, Containner<String> cont) {
         Publisher<String> lines = AsyncFiles.lines(file);
         return Flux
             .from(lines)
@@ -21,7 +22,12 @@ public class FindWordRxIoInFlux extends AbstractGroupWordsInFlux {
             .flatMap(line -> fromArray(line.split(" "))) // Next is in alternative
             // This scales but does not improve throughput !!!
             // .flatMap(line -> fromArray(line.split(" ")), Integer.MAX_VALUE, Integer.MAX_VALUE)
-            .filter(word -> word.length() > minLength && word.length() < maxLength)
-            .doOnNext(w -> words.merge(w, 1, Integer::sum));
+            .doOnNext(w -> {
+                synchronized (mon) {
+                    if (cont.value.length() < w.length()) {
+                        cont.value = w;
+                    }
+                }
+            });
     }
 }

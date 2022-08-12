@@ -21,10 +21,10 @@ import static org.reactivestreams.FlowAdapters.toPublisher;
  *
  * !!!!! Yet it is not scaling although it is using a similar Observable pipeline to that one used in RxIo.
  */
-public class FindWordBodyPublisherInObservable extends AbstractGroupWordsInObservable {
+public class FindWordBodyPublisherInObservable {
 
-    @Override
-    protected Observable<String> lines(Path file, int minLength, int maxLength, Map<String, Integer> words) {
+    Object mon = new Object();
+    protected Observable<String> lines(Path file, Containner<String> cont) {
         ByteBufferToLines lines = new ByteBufferToLines();
         return fromPublisher(toPublisher(ofFile(file)))
                     .flatMap(lines::observable) // !!! Not Scale even with: .map(buffer -> new String(buffer.array()))
@@ -32,8 +32,13 @@ public class FindWordBodyPublisherInObservable extends AbstractGroupWordsInObser
                     .skip(14)                                          // Skip gutenberg header
                     .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
                     .flatMap(line -> fromArray(line.split(" ")))
-                    .filter(word -> word.length() > minLength && word.length() < maxLength)
-                    .doOnNext(w -> words.merge(w, 1, Integer::sum));
+                    .doOnNext(w -> {
+                        synchronized (mon) {
+                            if (cont.value.length() < w.length()) {
+                                cont.value = w;
+                            }
+                        }
+                    });
     }
 
     private static Flow.Publisher<ByteBuffer> ofFile(Path file) {

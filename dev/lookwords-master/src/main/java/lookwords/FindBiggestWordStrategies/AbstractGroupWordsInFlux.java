@@ -9,29 +9,32 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 
-public abstract class AbstractGroupWordsInFlux implements FindWords {
+public abstract class AbstractGroupWordsInFlux implements FindBiggestWord {
 
-    public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
+    public final Containner<String> findBiggestWord(String folder) {
+        Containner<String> cont = new Containner<>("");
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
-            ConcurrentHashMap<String, Integer> words = new ConcurrentHashMap<>();
+
             List<Flux<String>> tasks = paths
                 .filter(Files::isRegularFile)
-                .map(path -> lines(path, minLength, maxLength, words))
+                .map(path -> lines(path, cont))
                 .collect(toList());
             Flux
                 .merge(tasks)
                 .blockLast();
-            return words;
+
+            return cont;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    protected abstract Flux<String> lines(Path file, int minLength, int maxLength, Map<String, Integer> words);
+    protected abstract Flux<String> lines(Path file, Containner<String> opt);
 }

@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
@@ -14,7 +16,7 @@ import static lookwords.FileUtils.pathFrom;
 /**
  * Here we are using Blocking IO through java Reader.
  */
-public class FindWordBlockingReaderInStreams implements FindWords {
+public class FindWordBlockingReaderInStreams {
     private final boolean parallel;
 
     public FindWordBlockingReaderInStreams() {
@@ -25,26 +27,24 @@ public class FindWordBlockingReaderInStreams implements FindWords {
         this.parallel = parallel;
     }
 
-    public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
+
+
+    public final Containner<String> words(String folder) {
+        Containner<String> containner = new Containner<>("");
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
-            Stream<Stream<String>> words = paths
+            List<CompletableFuture<Void>> words = paths
                 .filter(Files::isRegularFile)
-                .map(file  -> {
-                    var inner = lines(file, minLength, maxLength);
-                    return parallel ? inner.parallel() : inner;
-                });
-            if(parallel) words = words.parallel();
-            /**
-             * An alternative that does not scale and it is harmful: words.flatMap(identity()).collect(groupingBy(identity(), counting()));
-             * The following one performs better...
-             */
-            return words.collect(
-                ConcurrentHashMap::new,
-                (map, strm) -> strm.forEach(word -> map.merge(word, 1, Integer::sum)),
-                (m1, m2) -> m2.forEach((k, v) -> m1.merge(k, v, Integer::sum)));
+                .map(file  -> lines(file, containner)).toList();
+
+           words.wait();
+
+           return containner;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
 }

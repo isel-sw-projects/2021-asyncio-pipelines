@@ -8,25 +8,32 @@ import java.net.http.HttpRequest;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Flow;
 
 import static org.reactivestreams.FlowAdapters.toPublisher;
 import static reactor.core.publisher.Flux.fromArray;
 
-public class FindWordsBodyPublisherInFlux extends AbstractGroupWordsInFlux {
+public class FindWordsBodyPublisherInFlux  {
 
-    @Override
-    protected Flux<String> lines(Path file, int minLength, int maxLength, Map<String, Integer> words) {
-                    ByteBufferToLines lines = new ByteBufferToLines();
-                    return Flux
-                        .from(toPublisher(ofFile(file)))
-                        .flatMap(lines::flux) // !!! Not Scale even with: .map(buffer -> new String(buffer.array()))
-                        .filter(line -> !line.isEmpty())                   // Skip empty lines
-                        .skip(14)                                          // Skip gutenberg header
-                        .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
-                        .flatMap(line -> fromArray(line.split(" ")))
-                        .filter(word -> word.length() > minLength && word.length() < maxLength)
-                        .doOnNext(w -> words.merge(w, 1, Integer::sum));
+
+    protected Flux<String> lines(Path file, Containner<String> cont) {
+        Object mon = new Object();
+        ByteBufferToLines lines = new ByteBufferToLines();
+        return Flux
+            .from(toPublisher(ofFile(file)))
+            .flatMap(lines::flux) // !!! Not Scale even with: .map(buffer -> new String(buffer.array()))
+            .filter(line -> !line.isEmpty())                   // Skip empty lines
+            .skip(14)                                          // Skip gutenberg header
+            .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
+            .flatMap(line -> fromArray(line.split(" ")))
+                .doOnNext(w -> {
+                    synchronized (mon) {
+                        if (cont.value.length() < w.length()) {
+                            cont.value = w;
+                        }
+                    }
+                });
     }
 
     private static class ByteBufferToLines {

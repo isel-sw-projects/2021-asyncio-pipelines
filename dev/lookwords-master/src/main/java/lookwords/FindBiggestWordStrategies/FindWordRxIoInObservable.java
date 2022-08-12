@@ -6,6 +6,7 @@ import org.reactivestreams.Publisher;
 
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 
 import static io.reactivex.rxjava3.core.Observable.fromArray;
 
@@ -14,9 +15,9 @@ import static io.reactivex.rxjava3.core.Observable.fromArray;
  * built on top of java AsynchronousFileChannel to read a file.
  * Then the resulting Publisher is processed through a RxJava pipeline.
  */
-public class FindWordRxIoInObservable extends AbstractGroupWordsInObservable {
-
-    protected  Observable<String> lines(Path file, int minLength, int maxLength, Map<String, Integer> words) {
+public class FindWordRxIoInObservable {
+    Object mon = new Object();
+    protected  Observable<String> lines(Path file , Containner<String> cont) {
         Publisher<String> lines = AsyncFiles.lines(file);
         return Observable
             .fromPublisher(lines)
@@ -24,7 +25,12 @@ public class FindWordRxIoInObservable extends AbstractGroupWordsInObservable {
             .skip(14)                                          // Skip gutenberg header
             .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
             .flatMap(line -> fromArray(line.split(" ")))
-            .filter(word -> word.length() > minLength && word.length() < maxLength)
-            .doOnNext(w -> words.merge(w, 1, Integer::sum));
+            .doOnNext(w -> {
+                synchronized (mon) {
+                    if (cont.value.length() < w.length()) {
+                        cont.value = w;
+                    }
+                }
+            });
     }
 }

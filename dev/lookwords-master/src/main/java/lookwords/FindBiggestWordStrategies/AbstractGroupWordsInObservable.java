@@ -8,29 +8,33 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 
-public abstract class AbstractGroupWordsInObservable implements FindWords {
+public abstract class AbstractGroupWordsInObservable implements FindBiggestWord {
 
-    public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
+
+
+    public final Containner<String> words(String folder) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
-            ConcurrentHashMap<String, Integer> words = new ConcurrentHashMap<>();
+            Containner<String> cont = new Containner<>("");
+
             List<Observable<String>> tasks = paths
                 .filter(Files::isRegularFile)
-                .map(path -> lines(path, minLength, maxLength, words))
+                .map(path -> lines(path, cont))
                 .collect(toList());
             Observable
                 .merge(tasks)
                 .blockingSubscribe();
-            return words;
+            return cont;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    protected abstract Observable<String> lines(Path file, int minLength, int maxLength, Map<String, Integer> words);
+    protected abstract Observable<String> lines(Path file, Containner<String> opt);
 }
