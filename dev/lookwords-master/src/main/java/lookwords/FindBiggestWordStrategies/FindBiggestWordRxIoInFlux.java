@@ -15,9 +15,9 @@ import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 import static reactor.core.publisher.Flux.fromArray;
 
-public class FindBiggestWordRxIoInFlux {
+public class FindBiggestWordRxIoInFlux implements FindBiggestWord {
 
-    public String findBiggestWord(String folder) {
+    public String findBiggestWord(String folder)  {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
 
             return paths

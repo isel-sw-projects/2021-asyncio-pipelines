@@ -3,6 +3,7 @@
  */
 package lookwords;
 
+import lookwords.FindBiggestWordStrategies.*;
 import lookwords.group.GroupWords;
 import lookwords.group.GroupWordsBlockingReaderInMultiThread;
 import lookwords.group.GroupWordsBlockingReaderInStreams;
@@ -25,13 +26,13 @@ import static java.util.Collections.max;
 import static java.util.Comparator.comparingInt;
 
 public class AppTest {
-    static final int ITERATIONS = 5;
+    static final int ITERATIONS = 1;
     static final int MIN = 5;
     static final int MAX = 10;
     private static final String FOLDER = "gutenberg";
     private static final Logger LOGGER = Logger.getLogger(AppTest.class.getPackageName());
 
-    // @Test
+    @Test
     public void testMain() {
         System.setProperty(
             "java.util.logging.SimpleFormatter.format",
@@ -45,18 +46,25 @@ public class AppTest {
         // testGrouping(new GroupWordsBodyPublisherInObservable());
 
         // 3500 ms
-        testGrouping(new GroupWordsBlockingReaderInMultiThread());
-        // 4400 ms
-        testGrouping(new GroupWordsBlockingReaderInStreams(true));
+     // testGrouping(new GroupWordsBlockingReaderInMultiThread());
+     // // 4400 ms
+     // testGrouping(new GroupWordsBlockingReaderInStreams(true));
 
-        // Mix of Miguel RxIo library using Flow.Publisher and enhanced with Jorge Martins insights.
-        // 3400 ms without cancellation
-        // 3700 ms with support for cancellation
-        // [4100, 4800] ms through RxJava
-        testGrouping(new GroupWordsRxIo());
-        testGrouping(new GroupWordsRxIoInObservable());
-        testGrouping(new GroupWordsRxIoInFlux());
-        testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
+     // // Mix of Miguel RxIo library using Flow.Publisher and enhanced with Jorge Martins insights.
+     // // 3400 ms without cancellation
+     // // 3700 ms with support for cancellation
+     // // [4100, 4800] ms through RxJava
+     // testGrouping(new GroupWordsRxIo());
+     // testGrouping(new GroupWordsRxIoInObservable());
+     // testGrouping(new GroupWordsRxIoInFlux());
+     // testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
+
+       testGroupingFindBiggest(new FindBiggestWordRxIoInFlux());
+       testGroupingFindBiggest(new FindBiggestWordBlockingReaderInMultiThread());
+       testGroupingFindBiggest(new FindBiggestWordRxIoInObservable());
+       testGroupingFindBiggest(new FindBiggestWordBlockingReaderInStreams());
+
+
     }
 
     static void testGrouping(GroupWords task) {
@@ -72,6 +80,19 @@ public class AppTest {
             MAX,
             common.getKey(),
             common.getValue().intValue()
+        ));
+    }
+
+    static void testGroupingFindBiggest(FindBiggestWord task) {
+        String word = performFindBiggestJava(task);
+        if(word == null) {
+            LOGGER.log(Level.INFO, "NO results!");
+            return;
+        }
+
+        LOGGER.log(Level.INFO, () -> String.format(
+                "The biggest word found is: %s. ",
+                word
         ));
     }
 
@@ -96,5 +117,22 @@ public class AppTest {
         LOGGER.log(Level.INFO, "=====> BEST: {0} ms", minTime);
         return res;
     }
+
+    public static String performFindBiggestJava(FindBiggestWord task) {
+        LOGGER.log(Level.INFO, "############ {0}", task.getClass());
+        String res = null;
+        long minTime = Long.MAX_VALUE;
+        for (int i = 0; i < ITERATIONS; i++) {
+            Instant startTime = Instant.now();
+            res = task.findBiggestWord(FOLDER);
+            long dur = between(startTime);
+            LOGGER.log(Level.INFO, "time: {0} ms", dur);
+            if (dur < minTime) minTime = dur;
+
+        }
+        LOGGER.log(Level.INFO, "=====> BEST: {0} ms", minTime);
+        return res;
+    }
+
 
 }

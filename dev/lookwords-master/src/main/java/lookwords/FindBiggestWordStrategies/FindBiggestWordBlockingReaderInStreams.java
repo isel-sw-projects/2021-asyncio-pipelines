@@ -13,9 +13,9 @@ import static lookwords.FileUtils.*;
 /**
  * Here we are using Blocking IO through java Reader.
  */
-public class FindBiggestWordBlockingReaderInStreams {
+public class FindBiggestWordBlockingReaderInStreams implements FindBiggestWord {
 
-    public final String findBiggestWord(String folder) {
+    public final String findBiggestWord(String folder)  {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
             String word = paths
                 .filter(Files::isRegularFile)

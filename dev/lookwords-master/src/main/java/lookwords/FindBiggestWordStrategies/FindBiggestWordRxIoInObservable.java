@@ -21,7 +21,7 @@ import static lookwords.FileUtils.pathFrom;
  * built on top of java AsynchronousFileChannel to read a file.
  * Then the resulting Publisher is processed through a RxJava pipeline.
  */
-public class FindBiggestWordRxIoInObservable {
+public class FindBiggestWordRxIoInObservable implements FindBiggestWord {
 
     public String findBiggestWord(String folder) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {

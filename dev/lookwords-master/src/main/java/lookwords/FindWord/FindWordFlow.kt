@@ -34,12 +34,12 @@ class FindWordFlow {
             .drop(14) // Skip gutenberg header
             .takeWhile { line: String -> !line.contains("*** END OF ") } // Skip gutenberg footnote
             .flatMapConcat { line: String -> line.split(" ").asFlow() }
-            . { biggest: String, curr: String ->
-                if (curr == null)
-                    ""
+            .filter { item -> item != null }
+            .reduce { biggest: String, curr: String ->
                 if (curr.length > biggest.length)
                     curr
                 else
                     biggest
             }
+        }
     }

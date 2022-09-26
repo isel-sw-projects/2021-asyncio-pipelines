@@ -66,7 +66,8 @@ public class FindBiggestWordBench {
 
     @Benchmark
     public String FindBiggestWordReaderInFlow() {
-        String word = (String) new FindBiggestWordWithFlow().findBiggestWord(folder, null);
+        
+        String word = (String) new FindBiggestWordWithFlow().findBiggestWord(folder);
         return biggestWord(word);
     }
 

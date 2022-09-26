@@ -1,7 +1,5 @@
 package lookwords.FindBiggestWordStrategies
 
-import io.reactivex.rxjava3.core.Maybe
-import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.flow.*
 import lookwords.FileUtils
 import org.javaync.io.AsyncFiles
@@ -9,13 +7,11 @@ import java.io.IOException
 import java.io.UncheckedIOException
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.concurrent.Flow
-import java.util.function.Function
 import java.util.stream.Collectors
 
 class FindBiggestWordWithFlow {
 
-    suspend fun findBiggestWord(folder:String) : String { // flow builder
+      suspend fun findBiggestWord(folder:String) : String { // flow builder
 
         try {
             Files.walk(FileUtils.pathFrom(folder)).use { paths ->
@@ -39,9 +35,8 @@ class FindBiggestWordWithFlow {
             .drop(14) // Skip gutenberg header
             .takeWhile { line: String -> !line.contains("*** END OF ") } // Skip gutenberg footnote
             .flatMapConcat { line: String -> line.split(" ").asFlow() }
+            .filter { word -> word != null }
             .reduce { biggest: String, curr: String ->
-                if (curr == null)
-                    ""
                 if (curr.length > biggest.length)
                     curr
                 else
