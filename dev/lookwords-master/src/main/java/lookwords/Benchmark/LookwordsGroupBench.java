@@ -1,4 +1,4 @@
-package lookwords;
+package lookwords.Benchmark;
 
 import lookwords.group.GroupWordsBlockingReaderInMultiThread;
 import lookwords.group.GroupWordsBlockingReaderInStreams;

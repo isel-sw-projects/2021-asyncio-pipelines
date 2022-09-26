@@ -1,4 +1,4 @@
-package lookwords.FindBiggestWordStrategies;
+package lookwords.FindWord;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,24 +13,21 @@ import static lookwords.FileUtils.*;
 /**
  * Here we are using Blocking IO through java Reader.
  */
-public class FindBiggestWordBlockingReaderInStreams {
+public class FindWordBlockingReaderInStreams {
 
-    public final String findBiggestWord(String folder) {
+    public final boolean findBiggestWord(String folder,String word) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
-            String word = paths
+            return paths
                 .filter(Files::isRegularFile)
-                .flatMap(file  -> findBiggestWordInFile(file))
-                .reduce(  (biggest, curr) -> curr.length() > biggest.length() ? curr : biggest)
-                .get();
+                .map(file -> findWordInFile(file, word))
+                .anyMatch(curr -> curr.equals(word));
 
-
-           return word;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    public static Stream<String> findBiggestWordInFile(Path file) {
+    public static boolean findWordInFile(Path file, String word) {
         BufferedReader reader = bufferedReaderFrom(file);
         return reader
                 .lines()
@@ -38,8 +35,7 @@ public class FindBiggestWordBlockingReaderInStreams {
                 .skip(14)                                          // Skip gutenberg header
                 .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
                 .flatMap(line -> stream(line.replaceAll("[^a-zA-Z ]", "").split(" ")))
-                .reduce((biggest, curr) -> curr.length() > biggest.length() ? curr : biggest)
-                .stream()
-                .onClose(() -> close(reader));
+                .anyMatch( curr -> curr.equals(word));
     }
+
 }

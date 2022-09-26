@@ -3,6 +3,7 @@
  */
 package lookwords;
 
+import lookwords.Benchmark.LookwordsGroupBench;
 import org.junit.Test;
 
 import java.util.Map.Entry;
@@ -16,6 +17,7 @@ public class LookwordsGroupTest {
     static final int MIN_SIZE = 5;
 
     @Test public void testBlockingReaderInMultiThreadForFolderGuty() {
+        long time  = System.currentTimeMillis();
         Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty").blockingReaderInMultiThread();
         assertEquals(38, common.getValue().intValue());
         assertEquals("little", common.getKey());

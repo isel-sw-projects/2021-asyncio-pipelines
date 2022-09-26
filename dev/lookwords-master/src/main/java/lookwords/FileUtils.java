@@ -1,7 +1,5 @@
 package lookwords;
 
-import lookwords.FindBiggestWordStrategies.Containner;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -10,7 +8,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.CompletableFuture;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -30,45 +28,6 @@ public class FileUtils {
     /**
      * Following a lazy approach and trying to avoid intermediate data structures.
      */
-    static Object mon = new Object();
-    public static CompletableFuture<Void> lines(Path file, Containner<String> cont) {
-        BufferedReader reader = bufferedReaderFrom(file);
-        CompletableFuture<Void> cf = new CompletableFuture<>();
-
-        cf.thenRun( () ->
-            reader
-                .lines()
-                .filter(line -> !line.isEmpty())                   // Skip empty lines
-                .skip(14)                                          // Skip gutenberg header
-                .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
-                .flatMap(line -> stream(line.split(" ")))
-                .forEach(w -> {
-                    synchronized (mon) {
-                        if (cont.value.length() < w.length()) {
-                            cont.value = w;
-                        }
-                    }
-                    cf.complete(null);
-                }));
-
-        //reader
-        //        .lines()
-        //        .filter(line -> !line.isEmpty())                   // Skip empty lines
-        //        .skip(14)                                          // Skip gutenberg header
-        //        .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
-        //        .flatMap(line -> stream(line.split(" ")))
-        //        .forEach(w -> {
-        //            synchronized (mon) {
-        //                if (cont.value.length() < w.length()) {
-        //                    cont.value = w;
-        //                }
-        //            }
-        //            cf.complete(null);
-        //        }));
-
-
-        return cf;
-    }
 
     public static Stream<String> lines(Path file, int minLength, int maxLength) {
         BufferedReader reader = bufferedReaderFrom(file);
@@ -81,6 +40,7 @@ public class FileUtils {
                 .filter(word -> word.length() > minLength && word.length() < maxLength)
                 .onClose(() -> close(reader));
     }
+
 
     public static Path pathFrom(String file) {
         try {
