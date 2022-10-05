@@ -1,10 +1,7 @@
 package lookwords
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import lookwords.FindBiggestWordStrategies.FindBiggestWordWithFlow
+import lookwords.FindBiggestWithParallel.FindBiggestWordParallelWithFlow
 import org.junit.Test
 import java.time.Instant
 import java.util.logging.Level
@@ -18,11 +15,11 @@ class KotlinAppTest {
     fun testMain()
     {
         runBlocking {
-            testGroupingFindBiggestFlow(FindBiggestWordWithFlow())
+            testGroupingFindBiggestFlow(FindBiggestWordParallelWithFlow())
         }
     }
 
-   suspend fun performFindBiggestKotlin(task: FindBiggestWordWithFlow): String? {
+   suspend fun performFindBiggestKotlin(task: FindBiggestWordParallelWithFlow): String? {
         LOGGER.log(Level.INFO, "############ {0}", task.javaClass)
         var res: String? = null
         var minTime = Long.MAX_VALUE
@@ -37,7 +34,7 @@ class KotlinAppTest {
         return res
     }
 
-    suspend fun testGroupingFindBiggestFlow(task: FindBiggestWordWithFlow?) {
+    suspend fun testGroupingFindBiggestFlow(task: FindBiggestWordParallelWithFlow?) {
         val word = performFindBiggestKotlin(task!!)
         if (word == null) {
             LOGGER.log(Level.INFO, "NO results!")

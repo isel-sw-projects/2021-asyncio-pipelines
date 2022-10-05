@@ -3,16 +3,12 @@
  */
 package lookwords;
 
-import lookwords.FindBiggestWordStrategies.*;
-import lookwords.group.GroupWords;
-import lookwords.group.GroupWordsBlockingReaderInMultiThread;
-import lookwords.group.GroupWordsBlockingReaderInStreams;
-import lookwords.group.GroupWordsBodyPublisherInFlux;
-import lookwords.group.GroupWordsBodyPublisherInObservable;
-import lookwords.group.GroupWordsRxIo;
-import lookwords.group.GroupWordsRxIoInAsyncQuery;
-import lookwords.group.GroupWordsRxIoInFlux;
-import lookwords.group.GroupWordsRxIoInObservable;
+import lookwords.FindBiggestWithParallel.*;
+import lookwords.FindBiggestWordStrategies.FindBiggestWordBlockingReaderInMultiThread;
+import lookwords.FindBiggestWordStrategies.FindBiggestWordBlockingReaderInStreams;
+import lookwords.FindBiggestWordStrategies.FindBiggestWordRxIoInFlux;
+import lookwords.FindBiggestWordStrategies.FindBiggestWordRxIoInObservable;
+import lookwords.group.*;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -54,15 +50,20 @@ public class AppTest {
      // // 3400 ms without cancellation
      // // 3700 ms with support for cancellation
      // // [4100, 4800] ms through RxJava
-     // testGrouping(new GroupWordsRxIo());
-     // testGrouping(new GroupWordsRxIoInObservable());
-     // testGrouping(new GroupWordsRxIoInFlux());
-     // testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
+
+        testGrouping(new GroupWordsRxIo());
+        testGrouping(new GroupWordsRxIoInObservable());
+        testGrouping(new GroupWordsRxIoInFlux());
+        testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
 
        testGroupingFindBiggest(new FindBiggestWordRxIoInFlux());
-       testGroupingFindBiggest(new FindBiggestWordBlockingReaderInMultiThread());
        testGroupingFindBiggest(new FindBiggestWordRxIoInObservable());
        testGroupingFindBiggest(new FindBiggestWordBlockingReaderInStreams());
+       testGroupingFindBiggest(new FindBiggestWordBlockingReaderInMultiThread());
+
+       testGroupingFindBiggest(new FindBiggestWordParallelRxIoInFlux());
+       testGroupingFindBiggest(new FindBiggestWordParallelRxIoInObservable());
+       testGroupingFindBiggest(new FindBiggestWordParallelBlockingReaderInStreams());
 
 
     }
@@ -83,7 +84,7 @@ public class AppTest {
         ));
     }
 
-    static void testGroupingFindBiggest(FindBiggestWord task) {
+    static void testGroupingFindBiggest(FindBiggestWordParallel task) {
         String word = performFindBiggestJava(task);
         if(word == null) {
             LOGGER.log(Level.INFO, "NO results!");
@@ -118,7 +119,7 @@ public class AppTest {
         return res;
     }
 
-    public static String performFindBiggestJava(FindBiggestWord task) {
+    public static String performFindBiggestJava(FindBiggestWordParallel task) {
         LOGGER.log(Level.INFO, "############ {0}", task.getClass());
         String res = null;
         long minTime = Long.MAX_VALUE;

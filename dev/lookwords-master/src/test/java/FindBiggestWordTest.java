@@ -1,4 +1,5 @@
 import lookwords.Benchmark.FindBiggestWordBench;
+import lookwords.Benchmark.FindBiggestWordParallelBench;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -34,9 +35,31 @@ public class FindBiggestWordTest {
     }
 
     @Test
-    public void testFindBiggestWordInFolderqutyUsingKtFlow() {
-        String word = new FindBiggestWordBench("guty").FindBiggestWordReaderInFlow();
+    public void testFindBiggestWordInFolderqutyUsingParallelObservale() {
+        String word = new FindBiggestWordParallelBench("guty").FindBiggestWordParallelRxIoInObservable();
         assertEquals(53, word.length());
         assertEquals("amaiorpalavraalgumavezfeitahooomasesperaistoeumafrase", word);
     }
+
+
+    @Test
+    public void testFindBiggestWordInFolderqutyUsingParallelFlux() {
+        String word = new FindBiggestWordParallelBench("guty").FindBiggestWordParallelRxIoInFlux();
+        assertEquals(53, word.length());
+        assertEquals("amaiorpalavraalgumavezfeitahooomasesperaistoeumafrase", word);
+    }
+
+    public void testFindBiggestParallelWordInFolderqutyUsingParallelStream() {
+        String word = new FindBiggestWordParallelBench("guty").FindBiggestWordParallelRxIoInStream();
+        assertEquals(53, word.length());
+        assertEquals("amaiorpalavraalgumavezfeitahooomasesperaistoeumafrase", word);
+    }
+
+
+    // @Test
+   // public void testFindBiggestWordInFolderqutyUsingKtFlow() {
+   //     String word = new FindBiggestWordBench("guty").FindBiggestWordReaderInFlow();
+   //     assertEquals(53, word.length());
+   //     assertEquals("amaiorpalavraalgumavezfeitahooomasesperaistoeumafrase", word);
+   // }
 }

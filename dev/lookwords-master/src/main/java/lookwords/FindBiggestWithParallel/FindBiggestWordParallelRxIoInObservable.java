@@ -1,8 +1,7 @@
-package lookwords.FindBiggestWordStrategies;
+package lookwords.FindBiggestWithParallel;
 
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
-import lookwords.FindBiggestWithParallel.FindBiggestWordParallel;
 import org.javaync.io.AsyncFiles;
 import org.reactivestreams.Publisher;
 
@@ -22,7 +21,7 @@ import static lookwords.FileUtils.pathFrom;
  * built on top of java AsynchronousFileChannel to read a file.
  * Then the resulting Publisher is processed through a RxJava pipeline.
  */
-public class FindBiggestWordRxIoInObservable implements FindBiggestWordParallel {
+public class FindBiggestWordParallelRxIoInObservable implements FindBiggestWordParallel {
 
     public String findBiggestWord(String folder) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {

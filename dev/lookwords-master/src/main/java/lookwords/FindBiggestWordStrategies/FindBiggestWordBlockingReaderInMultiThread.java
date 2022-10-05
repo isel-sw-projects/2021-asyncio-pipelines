@@ -1,8 +1,6 @@
 package lookwords.FindBiggestWordStrategies;
 
-import kotlin.coroutines.Continuation;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import lookwords.FindBiggestWithParallel.FindBiggestWordParallel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +18,7 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.*;
 
-public class FindBiggestWordBlockingReaderInMultiThread implements FindBiggestWord {
+public class FindBiggestWordBlockingReaderInMultiThread implements FindBiggestWordParallel {
 
      public final String findBiggestWord(String folder) {
          final int THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
