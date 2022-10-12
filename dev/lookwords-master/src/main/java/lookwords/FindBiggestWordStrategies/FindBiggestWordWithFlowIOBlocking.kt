@@ -1,8 +1,7 @@
-package lookwords.FindBiggestWithParallel
+package lookwords.FindBiggestWordStrategies
 
 import kotlinx.coroutines.flow.*
 import lookwords.FileUtils
-import lookwords.FindBiggestWordStrategies.IFindBiggestWordWithFlow
 import org.javaync.io.AsyncFiles
 import java.io.IOException
 import java.io.UncheckedIOException
@@ -10,9 +9,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
 
-class FindBiggestWordParallelWithFlow : IFindBiggestWordWithFlow {
-
-      override suspend fun findBiggestWord(folder:String) : String { // flow builder
+class FindBiggestWordWithFlowIOBlocking : IFindBiggestWordWithFlow {
+    override suspend fun findBiggestWord(folder:String) : String { // flow builder
 
         try {
             Files.walk(FileUtils.pathFrom(folder)).use { paths ->
@@ -20,7 +18,7 @@ class FindBiggestWordParallelWithFlow : IFindBiggestWordWithFlow {
                     .filter { path: Path? -> Files.isRegularFile(path) }
                     .collect(Collectors.toList());
 
-              return  pths.map{ curr -> findWord(curr)}
+                return  pths.map{ curr -> findWord(curr)}
                     .reduce { biggest: String, curr: String -> if (curr.length > biggest.length) curr else biggest }
 
             }
@@ -30,8 +28,7 @@ class FindBiggestWordParallelWithFlow : IFindBiggestWordWithFlow {
     }
 
     suspend fun findWord(file: Path) : String {
-        val flow = AsyncFiles.flow(file)
-        return flow
+        return flow(file)
             .filter { line: String -> !line.isEmpty() } // Skip empty lines
             .drop(14) // Skip gutenberg header
             .takeWhile { line: String -> !line.contains("*** END OF ") } // Skip gutenberg footnote
@@ -44,6 +41,14 @@ class FindBiggestWordParallelWithFlow : IFindBiggestWordWithFlow {
                     biggest
             }
     }
+
+    fun flow(file: Path?): Flow<String> {
+        val source = Files.lines(file).iterator()
+        val flow = flow<String> {
+            while(source.hasNext())
+                emit(source.next())
+        }
+        return flow
+    }
+
 }
-
-
