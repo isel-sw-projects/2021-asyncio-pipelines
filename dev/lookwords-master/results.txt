@@ -1,0 +1,58 @@
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsRxIo
+INFO lookwords.AppTest perform time: 3�074 ms
+INFO lookwords.AppTest perform =====> BEST: 3�074 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116540 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsRxIoInObservable
+INFO lookwords.AppTest perform time: 7�280 ms
+INFO lookwords.AppTest perform =====> BEST: 7�280 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsRxIoInFlux
+INFO lookwords.AppTest perform time: 12�014 ms
+INFO lookwords.AppTest perform =====> BEST: 12�014 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsRxIoInAsyncQuery
+INFO lookwords.AppTest perform time: 2�598 ms
+INFO lookwords.AppTest perform =====> BEST: 2�598 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWordStrategies.FindBiggestWordRxIoInFlux
+INFO lookwords.AppTest performFindBiggestJava time: 2�558 ms
+INFO lookwords.AppTest performFindBiggestJava =====> BEST: 2�558 ms
+
+INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWordStrategies.FindBiggestWordRxIoInObservable
+INFO lookwords.AppTest performFindBiggestJava time: 1�958 ms
+INFO lookwords.AppTest performFindBiggestJava =====> BEST: 1�958 ms
+
+INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWordStrategies.FindBiggestWordBlockingReaderInStreams
+INFO lookwords.AppTest performFindBiggestJava time: 8�568 ms
+INFO lookwords.AppTest performFindBiggestJava =====> BEST: 8�568 ms
+
+INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWordStrategies.FindBiggestWordBlockingReaderInMultiThread
+INFO lookwords.AppTest performFindBiggestJava time: 1�794 ms
+INFO lookwords.AppTest performFindBiggestJava =====> BEST: 1�794 ms
+
+INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWithParallel.FindBiggestWordParallelRxIoInFlux
+INFO lookwords.AppTest performFindBiggestJava time: 2�325 ms
+INFO lookwords.AppTest performFindBiggestJava =====> BEST: 2�325 ms
+
+INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWithParallel.FindBiggestWordParallelRxIoInObservable
+INFO lookwords.AppTest performFindBiggestJava time: 2�154 ms
+INFO lookwords.AppTest performFindBiggestJava =====> BEST: 2�154 ms
+
+INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWithParallel.FindBiggestWordParallelBlockingReaderInStreams
+INFO lookwords.AppTest performFindBiggestJava time: 8�626 ms
+INFO lookwords.AppTest performFindBiggestJava =====> BEST: 8�626 ms
+
+INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
+
+Process finished with exit code 0
+

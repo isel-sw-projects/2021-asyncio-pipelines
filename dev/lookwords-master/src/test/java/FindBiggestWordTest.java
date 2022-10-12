@@ -54,12 +54,4 @@ public class FindBiggestWordTest {
         assertEquals(53, word.length());
         assertEquals("amaiorpalavraalgumavezfeitahooomasesperaistoeumafrase", word);
     }
-
-
-    // @Test
-   // public void testFindBiggestWordInFolderqutyUsingKtFlow() {
-   //     String word = new FindBiggestWordBench("guty").FindBiggestWordReaderInFlow();
-   //     assertEquals(53, word.length());
-   //     assertEquals("amaiorpalavraalgumavezfeitahooomasesperaistoeumafrase", word);
-   // }
 }

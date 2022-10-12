@@ -21,8 +21,7 @@ class FindBiggestWordWithFlow : IFindBiggestWordWithFlow  {
                     .collect(Collectors.toList());
 
               return  pths
-                  .map{AsyncFiles::flow }
-                    .map{ curr -> findWord(curr)}
+                  .map{curr-> findWord(curr) }
                     .reduce { biggest: String, curr: String -> if (curr.length > biggest.length) curr else biggest }
 
             }
@@ -31,7 +30,8 @@ class FindBiggestWordWithFlow : IFindBiggestWordWithFlow  {
         }
     }
 
-    suspend fun findWord(flow: KFunction1<Path, Flow<String>>) : String {
+    suspend fun findWord(file: Path) : String {
+        var flow = AsyncFiles.flow(file)
         return flow
             .filter { line: String -> !line.isEmpty() } // Skip empty lines
             .drop(14) // Skip gutenberg header

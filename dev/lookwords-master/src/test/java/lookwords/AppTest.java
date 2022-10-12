@@ -131,7 +131,7 @@ public class AppTest {
             if (dur < minTime) minTime = dur;
 
         }
-        LOGGER.log(Level.INFO, "=====> BEST: {0} ms", minTime);
+        LOGGER.log(Level.INFO, "=====> BEST: {0} ms\n", minTime);
         return res;
     }
 
