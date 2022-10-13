@@ -1,5 +1,6 @@
 package lookwords.FindBiggestWithParallel
 
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import lookwords.FileUtils
 import lookwords.FindBiggestWordStrategies.IFindBiggestWordWithFlow
@@ -10,9 +11,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
 
-class FindBiggestWordParallelWithFlow : IFindBiggestWordWithFlow {
+class FindBiggestWordConcurrentWithFlow : IFindBiggestWordWithFlow {
 
-      override suspend fun findBiggestWord(folder:String) : String { // flow builder
+      override suspend fun findBiggestWord(folder:String) : String = coroutineScope{ // flow builder
 
         try {
             Files.walk(FileUtils.pathFrom(folder)).use { paths ->
@@ -20,8 +21,10 @@ class FindBiggestWordParallelWithFlow : IFindBiggestWordWithFlow {
                     .filter { path: Path? -> Files.isRegularFile(path) }
                     .collect(Collectors.toList());
 
-              return  pths.map{ curr -> findWord(curr)}
-                    .reduce { biggest: String, curr: String -> if (curr.length > biggest.length) curr else biggest }
+                val word: Deferred<String> = pths
+                    .map { curr -> async(Dispatchers.IO) { findWord(curr) } }
+                    .reduce { biggest, curr -> if (curr.await().length > biggest.await().length) curr else biggest }
+                word.await()
 
             }
         }catch (e: IOException) {

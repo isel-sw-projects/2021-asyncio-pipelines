@@ -1,7 +1,7 @@
 package lookwords
 
 import kotlinx.coroutines.runBlocking
-import lookwords.FindBiggestWithParallel.FindBiggestWordParallelWithFlow
+import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrentWithFlow
 import lookwords.FindBiggestWordStrategies.FindBiggestWordWithFlow
 import lookwords.FindBiggestWordStrategies.FindBiggestWordWithFlowIOBlocking
 import lookwords.FindBiggestWordStrategies.IFindBiggestWordWithFlow
@@ -17,7 +17,7 @@ class KotlinAppTest {
     fun testMain()
     {
         runBlocking {
-            performFindBiggestKotlin(FindBiggestWordParallelWithFlow())
+            performFindBiggestKotlin(FindBiggestWordConcurrentWithFlow())
             performFindBiggestKotlin(FindBiggestWordWithFlow())
             performFindBiggestKotlin(FindBiggestWordWithFlowIOBlocking())
         }
