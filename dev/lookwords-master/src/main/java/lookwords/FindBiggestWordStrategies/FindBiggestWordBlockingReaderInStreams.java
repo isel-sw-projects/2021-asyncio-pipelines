@@ -1,6 +1,6 @@
 package lookwords.FindBiggestWordStrategies;
 
-import lookwords.FindBiggestWithParallel.FindBiggestWordParallel;
+import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import static lookwords.FileUtils.*;
 /**
  * Here we are using Blocking IO through java Reader.
  */
-public class FindBiggestWordBlockingReaderInStreams implements FindBiggestWordParallel {
+public class FindBiggestWordBlockingReaderInStreams implements FindBiggestWordConcurrent {
 
     public final String findBiggestWord(String folder)  {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {

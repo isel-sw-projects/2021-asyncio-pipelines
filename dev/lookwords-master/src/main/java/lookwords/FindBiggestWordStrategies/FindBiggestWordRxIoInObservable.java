@@ -2,7 +2,7 @@ package lookwords.FindBiggestWordStrategies;
 
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
-import lookwords.FindBiggestWithParallel.FindBiggestWordParallel;
+import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrent;
 import org.javaync.io.AsyncFiles;
 import org.reactivestreams.Publisher;
 
@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import static io.reactivex.rxjava3.core.Observable.fromArray;
@@ -22,7 +24,8 @@ import static lookwords.FileUtils.pathFrom;
  * built on top of java AsynchronousFileChannel to read a file.
  * Then the resulting Publisher is processed through a RxJava pipeline.
  */
-public class FindBiggestWordRxIoInObservable implements FindBiggestWordParallel {
+public class FindBiggestWordRxIoInObservable implements FindBiggestWordConcurrent {
+    private static final Logger LOGGER = Logger.getLogger(FindBiggestWordRxIoInObservable.class.getPackageName());
 
     public String findBiggestWord(String folder) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
@@ -44,6 +47,8 @@ public class FindBiggestWordRxIoInObservable implements FindBiggestWordParallel 
 
 
     protected Maybe<String> findWordInFile(Path file) {
+        LOGGER.log(Level.INFO, () -> file.toString()
+        );
         Publisher<String> lines = AsyncFiles.lines(file);
         return Observable
                 .fromPublisher(lines)

@@ -21,7 +21,7 @@ import static lookwords.FileUtils.pathFrom;
  * built on top of java AsynchronousFileChannel to read a file.
  * Then the resulting Publisher is processed through a RxJava pipeline.
  */
-public class FindBiggestWordParallelRxIoInObservable implements FindBiggestWordParallel {
+public class FindBiggestWordConcurrentRxIoInObservable implements FindBiggestWordConcurrent {
 
     public String findBiggestWord(String folder) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
@@ -30,9 +30,9 @@ public class FindBiggestWordParallelRxIoInObservable implements FindBiggestWordP
                     .filter(Files::isRegularFile)
                     .collect(toList())
                     .stream()
-                    .parallel()
                     .map( file -> findWordInFile(file))
                     .map( word -> word.blockingGet())
+                    .parallel()
                     .reduce(  (biggest, curr) -> curr.length() > biggest.length() ? curr : biggest)
                     .get();
 

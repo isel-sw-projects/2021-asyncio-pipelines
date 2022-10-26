@@ -13,7 +13,7 @@ import static lookwords.FileUtils.*;
 /**
  * Here we are using Blocking IO through java Reader.
  */
-public class FindBiggestWordParallelBlockingReaderInStreams implements FindBiggestWordParallel {
+public class FindBiggestWordConcurrentBlockingReaderInStreams implements FindBiggestWordConcurrent {
 
     public final String findBiggestWord(String folder)  {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {

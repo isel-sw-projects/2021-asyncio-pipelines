@@ -38,17 +38,17 @@ INFO lookwords.AppTest performFindBiggestJava time: 1�794 ms
 INFO lookwords.AppTest performFindBiggestJava =====> BEST: 1�794 ms
 
 INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
-INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWithParallel.FindBiggestWordParallelRxIoInFlux
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWithParallel.FindBiggestWordConcurrentRxIoInFlux
 INFO lookwords.AppTest performFindBiggestJava time: 2�325 ms
 INFO lookwords.AppTest performFindBiggestJava =====> BEST: 2�325 ms
 
 INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
-INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWithParallel.FindBiggestWordParallelRxIoInObservable
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWithParallel.FindBiggestWordConcurrentRxIoInObservable
 INFO lookwords.AppTest performFindBiggestJava time: 2�154 ms
 INFO lookwords.AppTest performFindBiggestJava =====> BEST: 2�154 ms
 
 INFO lookwords.AppTest testGroupingFindBiggest The biggest word found is: Personaleinkommensteuerschatzungskommissionsmitgliedsreisekostenrechnungs. 
-INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWithParallel.FindBiggestWordParallelBlockingReaderInStreams
+INFO lookwords.AppTest performFindBiggestJava ############ class lookwords.FindBiggestWithParallel.FindBiggestWordConcurrentBlockingReaderInStreams
 INFO lookwords.AppTest performFindBiggestJava time: 8�626 ms
 INFO lookwords.AppTest performFindBiggestJava =====> BEST: 8�626 ms
 

@@ -1,6 +1,6 @@
 package lookwords.FindBiggestWordStrategies;
 
-import lookwords.FindBiggestWithParallel.FindBiggestWordParallel;
+import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrent;
 import org.javaync.io.AsyncFiles;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 import static reactor.core.publisher.Flux.fromArray;
 
-public class FindBiggestWordRxIoInFlux implements FindBiggestWordParallel {
+public class FindBiggestWordRxIoInFlux implements FindBiggestWordConcurrent {
 
     public String findBiggestWord(String folder)  {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {

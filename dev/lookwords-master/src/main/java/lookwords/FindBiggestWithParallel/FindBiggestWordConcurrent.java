@@ -1,5 +1,5 @@
 package lookwords.FindBiggestWithParallel;
 
-public interface FindBiggestWordParallel {
+public interface FindBiggestWordConcurrent {
     String findBiggestWord(String folder);
 }

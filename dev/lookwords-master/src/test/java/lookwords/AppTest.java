@@ -61,9 +61,9 @@ public class AppTest {
        testGroupingFindBiggest(new FindBiggestWordBlockingReaderInStreams());
        testGroupingFindBiggest(new FindBiggestWordBlockingReaderInMultiThread());
 
-       testGroupingFindBiggest(new FindBiggestWordParallelRxIoInFlux());
-       testGroupingFindBiggest(new FindBiggestWordParallelRxIoInObservable());
-       testGroupingFindBiggest(new FindBiggestWordParallelBlockingReaderInStreams());
+       testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInFlux());
+       testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInObservable());
+       testGroupingFindBiggest(new FindBiggestWordConcurrentBlockingReaderInStreams());
 
 
     }
@@ -84,7 +84,7 @@ public class AppTest {
         ));
     }
 
-    static void testGroupingFindBiggest(FindBiggestWordParallel task) {
+    static void testGroupingFindBiggest(FindBiggestWordConcurrent task) {
         String word = performFindBiggestJava(task);
         if(word == null) {
             LOGGER.log(Level.INFO, "NO results!");
@@ -119,7 +119,7 @@ public class AppTest {
         return res;
     }
 
-    public static String performFindBiggestJava(FindBiggestWordParallel task) {
+    public static String performFindBiggestJava(FindBiggestWordConcurrent task) {
         LOGGER.log(Level.INFO, "############ {0}", task.getClass());
         String res = null;
         long minTime = Long.MAX_VALUE;

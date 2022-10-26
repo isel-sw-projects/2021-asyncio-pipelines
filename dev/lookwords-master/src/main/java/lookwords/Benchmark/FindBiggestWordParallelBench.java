@@ -1,8 +1,8 @@
 package lookwords.Benchmark;
 
-import lookwords.FindBiggestWithParallel.FindBiggestWordParallelBlockingReaderInStreams;
-import lookwords.FindBiggestWithParallel.FindBiggestWordParallelRxIoInFlux;
-import lookwords.FindBiggestWithParallel.FindBiggestWordParallelRxIoInObservable;
+import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrentBlockingReaderInStreams;
+import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrentRxIoInFlux;
+import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrentRxIoInObservable;
 import lookwords.FindBiggestWordStrategies.FindBiggestWordBlockingReaderInMultiThread;
 import org.openjdk.jmh.annotations.*;
 
@@ -43,20 +43,20 @@ public class FindBiggestWordParallelBench {
 
     @Benchmark
     public String FindBiggestWordParallelRxIoInObservable() {
-        String word = new FindBiggestWordParallelRxIoInObservable().findBiggestWord(folder);
+        String word = new FindBiggestWordConcurrentRxIoInObservable().findBiggestWord(folder);
         return biggestWord(word);
     }
 
 
     @Benchmark
     public String FindBiggestWordParallelRxIoInStream() {
-        String word = new FindBiggestWordParallelBlockingReaderInStreams().findBiggestWord(folder);
+        String word = new FindBiggestWordConcurrentBlockingReaderInStreams().findBiggestWord(folder);
         return biggestWord(word);
     }
 
     @Benchmark
     public String FindBiggestWordParallelRxIoInFlux() {
-        String word = new FindBiggestWordParallelRxIoInFlux().findBiggestWord(folder);
+        String word = new FindBiggestWordConcurrentRxIoInFlux().findBiggestWord(folder);
         return biggestWord(word);
     }
     @Benchmark
