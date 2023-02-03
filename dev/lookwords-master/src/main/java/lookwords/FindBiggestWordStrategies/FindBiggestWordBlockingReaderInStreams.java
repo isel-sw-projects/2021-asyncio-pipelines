@@ -22,7 +22,6 @@ public class FindBiggestWordBlockingReaderInStreams implements FindBiggestWordCo
             String word = paths
                 .filter(Files::isRegularFile)
                 .flatMap(file  -> findBiggestWordInFile(file))
-                .parallel()
                 .reduce(  (biggest, curr) -> curr.length() > biggest.length() ? curr : biggest)
                 .get();
 
