@@ -12,38 +12,42 @@ namespace lookwords.noLinqStategies.SyncEnum
 {
     public class BiggestWordNoLinq
     {
-        private string getBiggestWordInFile(string filename)
+        private async Task<string> getBiggestWordInFile(string filename)
         {
-            IEnumerable lines = FileUtils.getLinesSync(filename);
             int count = 0;
             string biggestWord = "";
-            foreach (string line in lines)
+            using (StreamReader reader = new StreamReader(filename))
             {
+                while (!reader.EndOfStream)
+                {
+                    string line = await reader.ReadLineAsync();
 
-                if (count < 14 || line.Length == 0)
-                {
-                    count++;
-                    continue;
-                }
-                if (line.Contains("*** END OF "))
-                {
-                    break;
-                }
-                string[] wordsInLine = Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' ');
 
-                foreach (string word in wordsInLine)
-                {
-                    if (word.Length >= biggestWord.Length)
+                    if (count < 14 || line.Length == 0)
                     {
-                        biggestWord = word;
+                        count++;
+                        continue;
+                    }
+                    if (line.Contains("*** END OF "))
+                    {
+                        break;
+                    }
+                    string[] wordsInLine = Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' ');
+
+                    foreach (string word in wordsInLine)
+                    {
+                        if (word.Length >= biggestWord.Length)
+                        {
+                            biggestWord = word;
+                        }
                     }
                 }
+                return biggestWord;
             }
-            return biggestWord;
         }
 
 
-        public string getBiggestWordInDirectory(string folderName)
+        public string getBiggestWordInDirectoryAsyncBaseline(string folderName)
         {
             string BiggestWord = "";
             //
@@ -53,7 +57,8 @@ namespace lookwords.noLinqStategies.SyncEnum
                      .ToList()
                      .ForEach(file =>
                      {
-                         string curr = getBiggestWordInFile(file);
+                         Task<string> biggestWord_task = getBiggestWordInFile(file);
+                         string curr = biggestWord_task.Result;
                          if (curr.Length > BiggestWord.Length)
                          {
                              BiggestWord = curr;

@@ -48,7 +48,7 @@ namespace lookwords
             int init = Environment.TickCount;
 
             CountWordsWithoutLinqStrategy test = new CountWordsWithoutLinqStrategy();
-            ConcurrentDictionary<string, int> ret = test.countWordsFromFileSync(folderPath, 1, 8);
+            ConcurrentDictionary<string, int> ret = test.countWordsFromFileASyncBaseline(folderPath, 1, 8);
 
 
             int elapsed = Environment.TickCount - init;
