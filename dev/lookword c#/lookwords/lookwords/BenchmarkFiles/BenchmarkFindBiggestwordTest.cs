@@ -52,11 +52,11 @@ namespace lookwords.BenchmarkFiles
        }
 
         [Benchmark]
-        public string RunGetBiggestWordWOLinqSyncTest()
+        public string RunGetBiggestWordBaselineTest()
         {
 
             int init = Environment.TickCount;
-            string ret = new BiggestWordNoLinq().getBiggestWordInDirectoryAsyncBaseline(folderPath);
+            string ret = new GetBiggestWordBaseline().getBiggestWordInDirectoryAsyncBaseline(folderPath);
 
             int elapsed = Environment.TickCount - init;
 

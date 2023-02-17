@@ -12,10 +12,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.Optional;
+import java.util.concurrent.*;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.stream;
@@ -27,46 +25,50 @@ import static reactor.core.publisher.Flux.fromArray;
 public class FindWordBaseLine {
 
 
-    public Boolean findBiggestWord(String folder, String word) {
+    public Optional<String> findBiggestWord(String folder) {
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
 
             return paths
                     .filter(Files::isRegularFile)
                     .collect(toList())
                     .stream()
-                    .map( file -> findWordInFile(file, word))
-                    .map( wrd -> wrd.block())
-                    .anyMatch( curr -> curr.equals(word));
+                    .map(file -> {
+                        try {
+                            return findWordInFile(file);
+                        } catch (ExecutionException e) {
+                            throw new RuntimeException(e);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).reduce(  (biggest, curr) -> curr.length() > biggest.length() ? curr : biggest);
 
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    public Mono<String> findWordInFile(Path file, String word) {
-        AsyncQuery<String> lines = AsyncFiles.asyncQuery(file);
+    public String findWordInFile(Path file) throws ExecutionException, InterruptedException {
+        CompletableFuture<String> allFileCharacters = AsyncFiles.readAll(file);
+        String biggestWord = "";
 
-        return lines
-                .skip(14)
-                .onNext( line -> {
+        allFileCharacters.join();
+        String[] lines = allFileCharacters.get().split("\n");
 
-                    String biggestWord = "";
-                    if (line.contains("*** END OF ")) {
-                        return;
-                    }
+        for (int i = 14; i < lines.length; i++) {
+            String curr = lines[i];
+            if (curr.contains("*** END OF ")) {
+                break;
+            }
 
-                    String[] wordsInLine = line.replaceAll("[^a-zA-Z ]", "").split(" ");
+            String[] wordsInLine = curr.replaceAll("[^a-zA-Z ]", "").split(" ");
 
+            for (int y = 0; y < wordsInLine.length; i++) {
+                if (curr.length() >= biggestWord.length()) {
+                    biggestWord = curr;
+                }
+            }
+        }
 
-                    for(int i = 0; i< wordsInLine.length; i++){
-                        if (word.length() >= biggestWord.length()) {
-                            biggestWord = word;
-                        }
-                    }
-
-                    return biggestWord;
-
-                });
-
+        return biggestWord;
     }
 }

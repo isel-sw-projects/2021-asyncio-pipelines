@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace lookwords
 {
   
-    public class CountWordsWithoutLinqStrategy 
+    public class CountWordsBaseline 
     {
 
         private async Task parseFileDistinctWordsIntoDictionary(string filename, int minWordSize, int maxWordSize, ConcurrentDictionary<string, int> words)
@@ -25,8 +25,10 @@ namespace lookwords
                 {
                     while (!reader.EndOfStream)
                     {
-                        string line = await reader.ReadLineAsync();
-                        
+                        Task<string> lineTask = reader.ReadLineAsync();
+                        lineTask.Wait();
+                        string line = lineTask.Result;
+
                         if (count < 14 || line.Length == 0)
                         {
                             count++;

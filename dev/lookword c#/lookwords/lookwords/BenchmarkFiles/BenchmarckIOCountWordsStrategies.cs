@@ -43,11 +43,11 @@ namespace lookwords
         }
 
         [Benchmark(Baseline = true)]
-        public ConcurrentDictionary<string, int> RunSyncTestWOLinq()
+        public ConcurrentDictionary<string, int> RunCountWordsBaseline()
         {
             int init = Environment.TickCount;
 
-            CountWordsWithoutLinqStrategy test = new CountWordsWithoutLinqStrategy();
+            CountWordsBaseline test = new CountWordsBaseline();
             ConcurrentDictionary<string, int> ret = test.countWordsFromFileASyncBaseline(folderPath, 1, 8);
 
 

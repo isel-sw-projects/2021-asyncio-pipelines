@@ -13,7 +13,7 @@ namespace lookwords.testRunnables
         {
             Console.WriteLine("Tests to BenchmarckIOFindBiggestWordsStrategies initiated: ");
             var test = new BenchmarkFindBiggestwordTest();
-            test.RunGetBiggestWordWOLinqSyncTest();
+            test.RunGetBiggestWordBaselineTest();
             test.RunGetBiggestWordSyncTest();
             test.RunGetBiggestWordAsyncEnumerableTest();
             test.RunGetBiggestWordRxTest();

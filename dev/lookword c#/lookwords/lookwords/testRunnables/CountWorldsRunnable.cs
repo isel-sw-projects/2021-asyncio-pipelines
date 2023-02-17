@@ -12,7 +12,7 @@ namespace lookwords.testRunnables
         {
             Console.WriteLine("Tests to BenchmarckIOCountWordsStrategies initiated: ");
             var test = new BenchmarckIOCountWordsStrategies(folderPath);
-            test.RunSyncTestWOLinq();
+            test.RunCountWordsBaseline();
             test.RunSyncTest();
             test.RunAsyncEnumerableTest();
             test.RunRxTest();

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace lookwords.noLinqStategies.SyncEnum
 {
-    public class BiggestWordNoLinq
+    public class GetBiggestWordBaseline
     {
         private async Task<string> getBiggestWordInFile(string filename)
         {
@@ -20,8 +20,9 @@ namespace lookwords.noLinqStategies.SyncEnum
             {
                 while (!reader.EndOfStream)
                 {
-                    string line = await reader.ReadLineAsync();
-
+                    Task<string> lineTask = reader.ReadLineAsync();
+                    lineTask.Wait();
+                    string line =  lineTask.Result;
 
                     if (count < 14 || line.Length == 0)
                     {

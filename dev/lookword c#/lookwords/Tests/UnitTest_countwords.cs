@@ -237,7 +237,7 @@ namespace Tests
 #pragma warning disable CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
             string folderPath = @Environment.GetEnvironmentVariable("TESE_TESTE_PATH");
 #pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
-            CountWordsWithoutLinqStrategy test = new CountWordsWithoutLinqStrategy();
+            CountWordsBaseline test = new CountWordsBaseline();
             ConcurrentDictionary<string, int> ret = test.countWordsFromFileASyncBaseline(folderPath, 1, 8);
 
             Assert.IsTrue(ret.Count == 15);
@@ -312,7 +312,7 @@ namespace Tests
         {
             string folderPath = @Environment.GetEnvironmentVariable("TESE_TESTE_PATH");
 #pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
-            BiggestWordNoLinq test = new BiggestWordNoLinq();
+            GetBiggestWordBaseline test = new GetBiggestWordBaseline();
             string word = test.getBiggestWordInDirectoryAsyncBaseline(folderPath);
 
             Assert.AreEqual(word, "bigggest33333333333333333333333333333333");
