@@ -47,8 +47,6 @@ public class FindBiggestWordRxIoInObservable implements FindBiggestWordConcurren
 
 
     protected Maybe<String> findWordInFile(Path file) {
-        LOGGER.log(Level.INFO, () -> file.toString()
-        );
         Publisher<String> lines = AsyncFiles.lines(file);
         return Observable
                 .fromPublisher(lines)

@@ -60,7 +60,7 @@ namespace lookwords.BenchmarkFiles
 
             int elapsed = Environment.TickCount - init;
 
-            Console.WriteLine(@"Find the biggest word with RunGetBiggestWordNIOWithoutLinTest took: {0} seconds", elapsed);
+            Console.WriteLine(@"Find the biggest word with RunGetBiggestWordCSHARPBaseline took: {0} seconds", elapsed);
 
 
             return ret;

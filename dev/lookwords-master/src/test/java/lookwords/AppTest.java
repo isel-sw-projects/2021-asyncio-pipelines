@@ -4,10 +4,7 @@
 package lookwords;
 
 import lookwords.FindBiggestWithParallel.*;
-import lookwords.FindBiggestWordStrategies.FindBiggestWordBlockingReaderInMultiThread;
-import lookwords.FindBiggestWordStrategies.FindBiggestWordBlockingReaderInStreams;
-import lookwords.FindBiggestWordStrategies.FindBiggestWordRxIoInFlux;
-import lookwords.FindBiggestWordStrategies.FindBiggestWordRxIoInObservable;
+import lookwords.FindBiggestWordStrategies.*;
 import lookwords.group.*;
 import org.junit.Test;
 
@@ -51,20 +48,19 @@ public class AppTest {
      // // 3700 ms with support for cancellation
      // // [4100, 4800] ms through RxJava
 
-        testGrouping(new GroupWordsRxIo());
-        testGrouping(new GroupWordsRxIoInObservable());
-        testGrouping(new GroupWordsRxIoInFlux());
-        testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
-
+      // testGrouping(new GroupWordsRxIo());
+      // testGrouping(new GroupWordsRxIoInObservable());
+      // testGrouping(new GroupWordsRxIoInFlux());
+      // testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
+        testGroupingFindBiggest(new FindWordBaseLine());
        testGroupingFindBiggest(new FindBiggestWordRxIoInFlux());
        testGroupingFindBiggest(new FindBiggestWordRxIoInObservable());
        testGroupingFindBiggest(new FindBiggestWordBlockingReaderInStreams());
        testGroupingFindBiggest(new FindBiggestWordBlockingReaderInMultiThread());
-
        testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInFlux());
        testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInObservable());
        testGroupingFindBiggest(new FindBiggestWordConcurrentBlockingReaderInStreams());
-
+        testGroupingFindBiggest(new FindWordBaseLine());
 
     }
 
@@ -120,7 +116,7 @@ public class AppTest {
     }
 
     public static String performFindBiggestJava(FindBiggestWordConcurrent task) {
-        LOGGER.log(Level.INFO, "############ {0}", task.getClass());
+        LOGGER.log(Level.INFO, "\n############ {0}", task.getClass());
         String res = null;
         long minTime = Long.MAX_VALUE;
         for (int i = 0; i < ITERATIONS; i++) {
@@ -131,7 +127,7 @@ public class AppTest {
             if (dur < minTime) minTime = dur;
 
         }
-        LOGGER.log(Level.INFO, "=====> BEST: {0} ms\n", minTime);
+        LOGGER.log(Level.INFO, "=====> BEST: {0} ms", minTime);
         return res;
     }
 

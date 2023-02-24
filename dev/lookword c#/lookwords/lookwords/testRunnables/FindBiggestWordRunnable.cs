@@ -17,6 +17,7 @@ namespace lookwords.testRunnables
             test.RunGetBiggestWordSyncTest();
             test.RunGetBiggestWordAsyncEnumerableTest();
             test.RunGetBiggestWordRxTest();
+            test.RunGetBiggestWordBaselineTest();
         }
     }
 }
