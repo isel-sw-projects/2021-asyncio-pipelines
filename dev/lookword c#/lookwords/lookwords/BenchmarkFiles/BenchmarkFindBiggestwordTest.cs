@@ -24,9 +24,9 @@ namespace lookwords.BenchmarkFiles
        {
            int init = Environment.TickCount;
            Task<string> task = new AsyncEnumerableIOBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
-           task.Wait();
-  
-           int elapsed = Environment.TickCount - init;
+            task.Wait();
+            //Console.WriteLine("Biggest word is: {0}", task.Result);
+            int elapsed = Environment.TickCount - init;
   
            Console.WriteLine(@"Find the biggest word with RunGetBiggestWordAsyncEnumerableTest took: {0} seconds", elapsed);
            //
@@ -42,8 +42,9 @@ namespace lookwords.BenchmarkFiles
 
            int init = Environment.TickCount;
            string ret = new EnumerableIOFindBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
-  
-           int elapsed = Environment.TickCount - init;
+
+           // Console.WriteLine("Biggest word is: {0}", ret);
+            int elapsed = Environment.TickCount - init;
   
            Console.WriteLine(@"Find the biggest word with RunGetBiggestWordSyncTest took: {0} seconds", elapsed);
   
@@ -58,6 +59,7 @@ namespace lookwords.BenchmarkFiles
             int init = Environment.TickCount;
             string ret = new GetBiggestWordBaseline().getBiggestWordInDirectoryAsyncBaseline(folderPath);
 
+            //Console.WriteLine("Biggest word is: {0}", ret);
             int elapsed = Environment.TickCount - init;
 
             Console.WriteLine(@"Find the biggest word with RunGetBiggestWordCSHARPBaseline took: {0} seconds", elapsed);

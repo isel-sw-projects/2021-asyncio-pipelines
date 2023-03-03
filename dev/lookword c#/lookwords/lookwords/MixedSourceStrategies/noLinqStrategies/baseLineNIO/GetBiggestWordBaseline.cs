@@ -20,9 +20,8 @@ namespace lookwords.noLinqStategies.SyncEnum
             {
                 while (!reader.EndOfStream)
                 {
-                    Task<string> lineTask = reader.ReadLineAsync();
-                    lineTask.Wait();
-                    string line =  lineTask.Result;
+                    string line = await reader.ReadLineAsync();
+                    
 
                     if (count < 14 || line.Length == 0)
                     {
@@ -53,22 +52,28 @@ namespace lookwords.noLinqStategies.SyncEnum
             string BiggestWord = "";
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!
+            //to do same that is done in java 
             //
-            Directory.GetFiles(folderName, "*.txt", SearchOption.AllDirectories)
+
+
+            List<Task<string>> list = Directory.GetFiles(folderName, "*.txt", SearchOption.AllDirectories)
                      .ToList()
-                     .ForEach(file =>
-                     {
-                         Task<string> biggestWord_task = getBiggestWordInFile(file);
-                         string curr = biggestWord_task.Result;
-                         if (curr.Length > BiggestWord.Length)
-                         {
-                             BiggestWord = curr;
-                         }
-                     });
+                     .Select(file =>getBiggestWordInFile(file))
+                     .ToList();
+
+            for(int i = 0; i < list.Count; i++)
+            {
+                if(list[i].Result.Length > BiggestWord.Length)
+                {
+                    BiggestWord = list[i].Result;
+                }
+            }
+
             //
             // Returns a new task that will complete when all of the Task objects
             // in allTasks collection have completed!
             // 
+            Console.WriteLine("Biggest word is: {0}", BiggestWord);
             return BiggestWord;
         }
     }

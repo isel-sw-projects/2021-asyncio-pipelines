@@ -559,49 +559,42 @@ static async IAsyncEnumerable<int> FetchItems(int delay)
 		\end{lstlisting}
 \end{center}
 
-As we can see in the example, although the operations and the emission of items being asynchronous, thanks to the IAsynEnumerable and the use of the 
-intrinsic keywords, the code seems similar to a synchronous code.
-With the \textit{await foreach} statment, the item emission is constant and non-blocking although existing blockage with the call to \texttt{Task.Delay} statment.
-	
+As we can see in the example, although the operations and the emission of items being asynchronous, thanks to the IAsyncEnumerable and the use of the intrinsic keywords, the code seems similar to synchronous code. With the \textit{await foreach} statement, the item emission is constant and non-blocking despite the blockage with the call to \texttt{Task.Delay} statement.
 
 \subsubsection{Javascript asynchronous enumerables}
 \label{jsae}
-	Node.js tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.
 
-	The mechanism to provide the means to iterate over asynchronous streams, is relativity similar to what we saw in C\#, with the use of the intrinsic keywords \texttt{async...await} and \texttt{for await...of}.
-
-	With the keyword pair \texttt{async...await}, its provided the syntax "sugar" that enables to make asynchronous calls and allowing the syntax to resemble synchronous code. 
-	The \texttt{async} mark is used in an asynchronous function and enables the use of the keyword \texttt{await}. The \texttt{await} keyword is then used in an asynchronous call to another asynchronous function
-
-	On the other side, the keywords \texttt{for await...of}, provides support for iteration over asynchronous enumerables, as we can see in the next example:
-
+Node.js tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.
+The mechanism to provide the means to iterate over asynchronous streams is relatively similar to what we saw in C\#, with the use of the intrinsic keywords \texttt{async...await} and \texttt{for await...of}.
+With the keyword pair \texttt{async...await}, it's provided the syntax "sugar" that enables making asynchronous calls and allowing the syntax to resemble synchronous code. The \texttt{async} mark is used in an asynchronous function and enables the use of the keyword \texttt{await}. The \texttt{await} keyword is then used in an asynchronous call to another asynchronous function.
+On the other side, the keywords \texttt{for await...of} provide support for iteration over asynchronous enumerables, as we can see in the next example:
 
 \begin{center}
-	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-	\centering
-	\begin{lstlisting}[
-		escapeinside={(*}{*)},
-			caption={Mozilla's Javascript Asynchronous Enumerables example},
-			label={lst-top5-js-async-enum}
-	]
+\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+\centering
+\begin{lstlisting}[
+escapeinside={(}{)},
+caption={Mozilla's Javascript Asynchronous Enumerables example},
+label={lst-top5-js-async-enum}
+]
 async function* streamAsyncIterable(stream) {
-	const reader = stream.getReader();
-	try {
-		while (true) {
-		const { done, value } = await reader.read();
-		if (done) {
-			return;
-		}
-		yield value;
-		}
-	} finally {
-		reader.releaseLock();
-	}
+const reader = stream.getReader();
+try {
+while (true) {
+const { done, value } = await reader.read();
+if (done) {
+return;
+}
+yield value;
+}
+} finally {
+reader.releaseLock();
+}
 }
 
 async function getResponseSize(url) {
-	const response = await fetch(url);
-	let responseSize = 0;
+const response = await fetch(url);
+let responseSize = 0;
 	
 	const iterable = streamAsyncIterable(response.body);
 	
@@ -612,8 +605,6 @@ async function getResponseSize(url) {
 }  
 	\end{lstlisting}
 \end{center}
-
-
 
 In this example, the function \texttt{streamAsyncIterable}, provides a data stream that emits data items as they become available.
 

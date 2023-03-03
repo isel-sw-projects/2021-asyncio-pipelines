@@ -6,9 +6,9 @@ import AsyncFile.AsyncFile;
 import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrent;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.Stream;
@@ -17,20 +17,24 @@ import static java.util.stream.Collectors.toList;
 import static lookwords.FileUtils.pathFrom;
 
 public class FindWordBaseLine implements FindBiggestWordConcurrent {
-    String [] word = {""};
 
     public String findBiggestWord(String folder) {
         String biggestWord = "";
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
             List<Path> pathsList = paths.filter(Files::isRegularFile).collect(toList());
 
+            LinkedList<CompletableFuture<String>> allFuturesList = new LinkedList<>();
 
             for (int i = 0; i < pathsList.size(); i++) {
-                String curr = findWordInFile(pathsList.get(i));
-                if(curr.length() > biggestWord.length()) {
-                    biggestWord = curr;
-                }
+                allFuturesList.add(findBiggestWordInFile(pathsList.get(i)));
             }
+
+           for(int y = 0; y < allFuturesList.size(); y++) {
+               String currWord = allFuturesList.get(y).join();
+               if(biggestWord.length() < currWord.length()) {
+                   biggestWord = currWord;
+               }
+           }
 
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
@@ -44,27 +48,34 @@ public class FindWordBaseLine implements FindBiggestWordConcurrent {
     }
 
 
-    public String findWordInFile(Path file) throws ExecutionException, InterruptedException {
+    public CompletableFuture<String> findBiggestWordInFile(Path file) throws ExecutionException, InterruptedException {
 
-        Boolean [] ignoreLine = { false};
-        AsyncFile.readAllLines(file, (line, c) -> {
+        Boolean[] ignoreLine = {false};
+        String[] word = {""};
 
-            if (line.contains("*** END OF ")) {
-                ignoreLine[0] = true;
-            }
-            if(ignoreLine[0]){
-                return;
-            }
+       return CompletableFuture.supplyAsync(() -> {
 
-            String[] wordsInLine = line.replaceAll("[^a-zA-Z ]", "").split(" ");
+            CompletableFuture readAllLines = AsyncFile.readAllLines(file, (line, c) -> {
 
-            for (int y = 0; y < wordsInLine.length; y++) {
-                if (wordsInLine[y].length() > word[0].length()) {
-                    word[0] = wordsInLine[y];
+                if (line.contains("*** END OF ")) {
+                    ignoreLine[0] = true;
                 }
-            }
-        }).join();
+                if (ignoreLine[0]) {
+                    return;
+                }
 
-        return word[0];
+                String[] wordsInLine = line.replaceAll("[^a-zA-Z ]", "").split(" ");
+
+                for (int y = 0; y < wordsInLine.length; y++) {
+                    if (wordsInLine[y].length() > word[0].length()) {
+                        word[0] = wordsInLine[y];
+                    }
+                }
+            });
+
+            readAllLines.join();
+
+            return word[0];
+        });
     }
 }
