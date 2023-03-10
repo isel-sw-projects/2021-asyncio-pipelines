@@ -48,18 +48,20 @@ public class AppTest {
      // // 3700 ms with support for cancellation
      // // [4100, 4800] ms through RxJava
 
-      // testGrouping(new GroupWordsRxIo());
-      // testGrouping(new GroupWordsRxIoInObservable());
-      // testGrouping(new GroupWordsRxIoInFlux());
-      // testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
+       testGrouping(new GroupWordsBaseline());
+       testGrouping(new GroupWordsRxIo());
+       testGrouping(new GroupWordsRxIoInObservable());
+       testGrouping(new GroupWordsRxIoInFlux());
+       testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
+
         testGroupingFindBiggest(new FindWordBaseLine());
-       testGroupingFindBiggest(new FindBiggestWordRxIoInFlux());
-       testGroupingFindBiggest(new FindBiggestWordRxIoInObservable());
-       testGroupingFindBiggest(new FindBiggestWordBlockingReaderInStreams());
-       testGroupingFindBiggest(new FindBiggestWordBlockingReaderInMultiThread());
-       testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInFlux());
-       testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInObservable());
-       testGroupingFindBiggest(new FindBiggestWordConcurrentBlockingReaderInStreams());
+        testGroupingFindBiggest(new FindBiggestWordRxIoInFlux());
+        testGroupingFindBiggest(new FindBiggestWordRxIoInObservable());
+        testGroupingFindBiggest(new FindBiggestWordBlockingReaderInStreams());
+        testGroupingFindBiggest(new FindBiggestWordBlockingReaderInMultiThread());
+        testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInFlux());
+        testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInObservable());
+        testGroupingFindBiggest(new FindBiggestWordConcurrentBlockingReaderInStreams());
         testGroupingFindBiggest(new FindWordBaseLine());
 
     }

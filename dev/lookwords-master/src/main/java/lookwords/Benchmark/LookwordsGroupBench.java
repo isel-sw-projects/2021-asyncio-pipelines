@@ -1,13 +1,6 @@
 package lookwords.Benchmark;
 
-import lookwords.group.GroupWordsBlockingReaderInMultiThread;
-import lookwords.group.GroupWordsBlockingReaderInStreams;
-import lookwords.group.GroupWordsBodyPublisherInFlux;
-import lookwords.group.GroupWordsBodyPublisherInObservable;
-import lookwords.group.GroupWordsRxIo;
-import lookwords.group.GroupWordsRxIoInAsyncQuery;
-import lookwords.group.GroupWordsRxIoInFlux;
-import lookwords.group.GroupWordsRxIoInObservable;
+import lookwords.group.*;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
@@ -114,6 +107,12 @@ public class LookwordsGroupBench {
     @Benchmark
     public Map.Entry<String, Integer> rxIoInAsyncQuery() {
         Map<String, Integer> words = new GroupWordsRxIoInAsyncQuery().words(folder, min, max);
+        return mostCommonWord(words);
+    }
+
+    @Benchmark
+    public Map.Entry<String, Integer> groupWordsBaseLine() {
+        Map<String, Integer> words = new GroupWordsBaseline().words(folder, min, max);
         return mostCommonWord(words);
     }
 }

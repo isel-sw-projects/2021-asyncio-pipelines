@@ -112,4 +112,17 @@ public class LookwordsGroupTest {
         assertEquals(29, common.getValue().intValue());
         assertEquals("little", common.getKey());
     }
+
+
+    @Test public void testBaselineForFolderGuty() {
+        Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty").groupWordsBaseLine();
+        assertEquals(38, common.getValue().intValue());
+        assertEquals("little", common.getKey());
+    }
+
+    @Test public void testBaselineForFolderInner() {
+        Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty/inner").groupWordsBaseLine();
+        assertEquals(29, common.getValue().intValue());
+        assertEquals("little", common.getKey());
+    }
 }
