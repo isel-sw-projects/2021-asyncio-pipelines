@@ -20,7 +20,9 @@ namespace lookwords.noLinqStategies.SyncEnum
             {
                 while (!reader.EndOfStream)
                 {
-                    string line = await reader.ReadLineAsync();
+                    //todo 
+                    string line = await reader.ReadLineAsync().ContinueWith
+                        (t =>
                     
 
                     if (count < 14 || line.Length == 0)

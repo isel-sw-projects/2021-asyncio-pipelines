@@ -52,10 +52,9 @@ public class FindWordBaseLine implements FindBiggestWordConcurrent {
 
         Boolean[] ignoreLine = {false};
         String[] word = {""};
+        Object mon = new Object();
 
-       return CompletableFuture.supplyAsync(() -> {
-
-            CompletableFuture readAllLines = AsyncFile.readAllLines(file, (line, c) -> {
+       return AsyncFile.readAllLines(file, (line, c) -> {
 
                 if (line.contains("*** END OF ")) {
                     ignoreLine[0] = true;
@@ -67,15 +66,14 @@ public class FindWordBaseLine implements FindBiggestWordConcurrent {
                 String[] wordsInLine = line.replaceAll("[^a-zA-Z ]", "").split(" ");
 
                 for (int y = 0; y < wordsInLine.length; y++) {
-                    if (wordsInLine[y].length() > word[0].length()) {
-                        word[0] = wordsInLine[y];
+                    synchronized (mon) {
+                        if (wordsInLine[y].length() > word[0].length()) {
+                            word[0] = wordsInLine[y];
+                        }
                     }
                 }
-            });
+            }).thenApply( param -> word[0]);
 
-            readAllLines.join();
 
-            return word[0];
-        });
     }
 }
