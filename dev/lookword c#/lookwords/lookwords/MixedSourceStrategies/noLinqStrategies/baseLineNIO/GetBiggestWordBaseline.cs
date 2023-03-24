@@ -19,7 +19,7 @@ namespace lookwords.noLinqStategies.SyncEnum
 
                 int count = 0;
                 string biggestWord = "";
-                ConcurrentStack<Task<string>> lineTasksStack = new ConcurrentStack<Task<string>>();
+                List<Task<string>> lineTasksStack = new List<Task<string>>();
 
 
                 using (StreamReader reader = new StreamReader(filename))
@@ -52,14 +52,14 @@ namespace lookwords.noLinqStategies.SyncEnum
 
                         });
 
-                            lineTasksStack.Push(curr);
+                            lineTasksStack.Add(curr);
                     }
                     
                 }
 
                 string biggest = "";
                 bool shouldIgnore = false;
-                for (int i = 0; i < lineTasksStack.Count; i++)
+                for (int i = 0; i < lineTasksStack.Count && !shouldIgnore; i++)
                 {
 
                     string curr = lineTasksStack.ElementAt(i).Result;
@@ -69,7 +69,7 @@ namespace lookwords.noLinqStategies.SyncEnum
                         shouldIgnore = true;
                     }
 
-                    if(curr == null || shouldIgnore)
+                    if(curr == null)
                     {
                         continue;
                     }

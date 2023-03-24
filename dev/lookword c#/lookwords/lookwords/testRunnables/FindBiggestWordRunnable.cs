@@ -13,14 +13,14 @@ namespace lookwords.testRunnables
         {
             Console.WriteLine("Tests to BenchmarckIOFindBiggestWordsStrategies initiated: ");
             var test = new BenchmarkFindBiggestwordTest();
-            //test.RunGetBiggestWordBaselineTest();
-            test.RunGetBiggestWordBaselineTestNoContinueWith();
+            test.RunGetBiggestWordBaselineTest();
+           // test.RunGetBiggestWordBaselineTestNoContinueWith();
             //test.RunGetBiggestWordSyncTest();
             //test.RunGetBiggestWordAsyncEnumerableTest();
             //test.RunGetBiggestWordRxTest();
             //test.RunGetBiggestWordBaselineTest();
-            test.RunGetBiggestWordSyncBaselineTest();
-            test.RunGetBiggestWordBaselineTestNoContinueWith();
+            //test.RunGetBiggestWordSyncBaselineTest();
+            //test.RunGetBiggestWordBaselineTestNoContinueWith();
         }
     }
 }
