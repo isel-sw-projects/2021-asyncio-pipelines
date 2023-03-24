@@ -314,6 +314,8 @@
     <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />
     <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
     <Compile Include="BenchmarkFiles\BenchmarckIOCountWordsStrategies.cs" />
+    <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaselineNoContinueWith.cs" />
+    <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordSyncBaseline.cs" />
     <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />
     <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
     <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />

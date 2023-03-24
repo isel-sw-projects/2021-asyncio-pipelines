@@ -1,6 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
 using lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.AsyncEnum;
 using lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.SyncEnum;
+using lookwords.MixedSourceStrategies.noLinqStrategies.baseLineNIO;
+using lookwords.MixedSourceStrategies.noLinqStrategies.baseLineNIO.lookwords.noLinqStategies.SyncEnum;
 using lookwords.noLinqStategies.SyncEnum;
 using lookwords.SyncSourceStrategies.BiggestWordFileReadStrategies.RxNet;
 using System;
@@ -62,7 +64,39 @@ namespace lookwords.BenchmarkFiles
             //Console.WriteLine("Biggest word is: {0}", ret);
             int elapsed = Environment.TickCount - init;
 
-            Console.WriteLine(@"Find the biggest word with RunGetBiggestWordCSHARPBaseline took: {0} seconds", elapsed);
+            Console.WriteLine(@"Find the biggest word with getBiggestWordInDirectoryAsyncBaseline took: {0} seconds", elapsed);
+
+
+            return ret;
+        }
+
+        [Benchmark]
+        public string RunGetBiggestWordBaselineTestNoContinueWith()
+        {
+
+            int init = Environment.TickCount;
+            string ret = new GetBiggestWordBaselineNoContinueWith().getBiggestWordInDirectoryAsyncBaseline(folderPath);
+
+            //Console.WriteLine("Biggest word is: {0}", ret);
+            int elapsed = Environment.TickCount - init;
+
+            Console.WriteLine(@"Find the biggest word with getBiggestWordInDirectoryAsyncBaseline took: {0} seconds", elapsed);
+
+
+            return ret;
+        }
+
+        [Benchmark]
+        public string RunGetBiggestWordSyncBaselineTest()
+        {
+
+            int init = Environment.TickCount;
+            string ret = new GetBiggestWordSyncBaseline().getBiggestWordInDirectorySyncBaseline(folderPath);
+
+            //Console.WriteLine("Biggest word is: {0}", ret);
+            int elapsed = Environment.TickCount - init;
+
+            Console.WriteLine(@"Find the biggest word with getBiggestWordInDirectorySyncBaseline took: {0} seconds", elapsed);
 
 
             return ret;

@@ -12,41 +12,77 @@ namespace lookwords.noLinqStategies.SyncEnum
 {
     public class GetBiggestWordBaseline
     {
-        private async Task<string> getBiggestWordInFile(string filename)
+        private Task<string> getBiggestWordInFile(string filename)
         {
-            int count = 0;
-            string biggestWord = "";
-            using (StreamReader reader = new StreamReader(filename))
+            return Task.Factory.StartNew(() =>
             {
-                while (!reader.EndOfStream)
-                {
-                    //todo 
-                    string line = await reader.ReadLineAsync().ContinueWith
-                        (t =>
-                    
 
-                    if (count < 14 || line.Length == 0)
+                int count = 0;
+                string biggestWord = "";
+                ConcurrentStack<Task<string>> lineTasksStack = new ConcurrentStack<Task<string>>();
+
+
+                using (StreamReader reader = new StreamReader(filename))
+                {
+                    while (!reader.EndOfStream)
                     {
-                        count++;
+                       
+                        Task<string> curr = reader.ReadLineAsync().ContinueWith(tsk =>
+                        {
+                            string line;
+
+                            line = tsk.Result;
+
+                            if (count < 14 || line.Length == 0)
+                            {
+                                count++;
+                                return null;
+                            }
+
+                            string[] wordsInLine = Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' ');
+
+                            foreach (string word in wordsInLine)
+                            {
+                                if (word.Length >= biggestWord.Length)
+                                {
+                                    biggestWord = word;
+                                }
+                            }
+                            return biggestWord;
+
+                        });
+
+                            lineTasksStack.Push(curr);
+                    }
+                    
+                }
+
+                string biggest = "";
+                bool shouldIgnore = false;
+                for (int i = 0; i < lineTasksStack.Count; i++)
+                {
+
+                    string curr = lineTasksStack.ElementAt(i).Result;
+
+                    if(curr.Contains("*** END OF "))
+                    {
+                        shouldIgnore = true;
+                    }
+
+                    if(curr == null || shouldIgnore)
+                    {
                         continue;
                     }
-                    if (line.Contains("*** END OF "))
-                    {
-                        break;
-                    }
-                    string[] wordsInLine = Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' ');
 
-                    foreach (string word in wordsInLine)
+                    if (curr.Length > biggest.Length)
                     {
-                        if (word.Length >= biggestWord.Length)
-                        {
-                            biggestWord = word;
-                        }
+                        biggest = curr;
                     }
                 }
-                return biggestWord;
-            }
-        }
+                return biggest;
+            });
+           
+    }
 
 
         public string getBiggestWordInDirectoryAsyncBaseline(string folderName)
