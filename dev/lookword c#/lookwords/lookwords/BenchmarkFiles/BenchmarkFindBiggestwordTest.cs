@@ -4,6 +4,7 @@ using lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.SyncEnum;
 using lookwords.MixedSourceStrategies.noLinqStrategies.baseLineNIO;
 using lookwords.MixedSourceStrategies.noLinqStrategies.baseLineNIO.lookwords.noLinqStategies.SyncEnum;
 using lookwords.noLinqStategies.SyncEnum;
+using lookwords.noLinqStategies.SyncEnum.lookwords.noLinqStategies.SyncEnum;
 using lookwords.SyncSourceStrategies.BiggestWordFileReadStrategies.RxNet;
 using System;
 using System.Collections.Concurrent;
@@ -59,7 +60,7 @@ namespace lookwords.BenchmarkFiles
         {
 
             int init = Environment.TickCount;
-            string ret = new GetBiggestWordBaseline().getBiggestWordInDirectoryAsyncBaseline(folderPath);
+            string ret = new GetBiggestWordBaseline().getBiggestWordInDirectoryAsyncBaseline(folderPath).Result;
 
             //Console.WriteLine("Biggest word is: {0}", ret);
             int elapsed = Environment.TickCount - init;
