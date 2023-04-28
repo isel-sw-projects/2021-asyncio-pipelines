@@ -48,7 +48,7 @@ public class FindBiggestWordBlockingReaderInMultiThread implements FindBiggestWo
                 .filter(line -> !line.isEmpty())                   // Skip empty lines
                 .skip(14)                                          // Skip gutenberg header
                 .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
-                .flatMap(line -> stream(line.replaceAll("[^a-zA-Z ]", "").split(" ")))
+                .flatMap(line -> stream(line.split(" ")))
                 .reduce( (biggest, curr) -> curr.length() > biggest.length() ? curr : biggest)
                 .get();
     }

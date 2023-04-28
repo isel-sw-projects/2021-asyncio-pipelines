@@ -62,8 +62,8 @@ public class FindWordBaseLine implements FindBiggestWordConcurrent {
                 if (ignoreLine[0]) {
                     return;
                 }
-
-                String[] wordsInLine = line.replaceAll("[^a-zA-Z ]", "").split(" ");
+                //to test without this
+                String[] wordsInLine = line.split(" ");
 
                 for (int y = 0; y < wordsInLine.length; y++) {
                     synchronized (mon) {

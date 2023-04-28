@@ -42,7 +42,7 @@ public class FindBiggestWordConcurrentRxIoInFlux implements FindBiggestWordConcu
             .filter(line -> !line.isEmpty())                   // Skip empty lines
             .skip(14)                                          // Skip gutenberg header
             .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
-            .flatMap(line -> fromArray(line.replaceAll("[^a-zA-Z ]", "").split(" ")))
+            .flatMap(line -> fromArray(line.split(" ")))
             .reduce(  (biggest, curr) -> curr.length() > biggest.length() ? curr : biggest);
     }
 }
