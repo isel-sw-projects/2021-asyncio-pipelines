@@ -307,6 +307,7 @@
     <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\RxNet\RXNetIOFindWordStrategy.cs" />
     <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\SyncEnum\EnumerableIOFindWordStrategy.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaseline.cs" />
+    <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaselineAsync.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\CountWordsBaseline.cs" />
     <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategyWithConverter.cs" />
     <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />

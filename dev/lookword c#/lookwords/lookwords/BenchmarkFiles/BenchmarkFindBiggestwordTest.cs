@@ -28,7 +28,7 @@ namespace lookwords.BenchmarkFiles
            int init = Environment.TickCount;
            Task<string> task = new AsyncEnumerableIOBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
             task.Wait();
-            //Console.WriteLine("Biggest word is: {0}", task.Result);
+            Console.WriteLine("Biggest word is: {0}", task.Result);
             int elapsed = Environment.TickCount - init;
   
            Console.WriteLine(@"Find the biggest word with RunGetBiggestWordAsyncEnumerableTest took: {0} seconds", elapsed);
@@ -60,9 +60,25 @@ namespace lookwords.BenchmarkFiles
         {
 
             int init = Environment.TickCount;
-            string ret = new GetBiggestWordBaseline().getBiggestWordInDirectoryAsyncBaseline(folderPath).Result;
+            string ret = new GetBiggestWordBaseline().getBiggestWordInDirectoryBaseline(folderPath).Result;
 
-            //Console.WriteLine("Biggest word is: {0}", ret);
+            Console.WriteLine("Biggest word is: {0}", ret);
+            int elapsed = Environment.TickCount - init;
+
+            Console.WriteLine(@"Find the biggest word with getBiggestWordInDirectorySyncBaseline took: {0} seconds", elapsed);
+
+
+            return ret;
+        }
+
+        [Benchmark]
+        public string RunGetBiggestWordAsyncBaselineTest()
+        {
+
+            int init = Environment.TickCount;
+            string ret = new GetBiggestWordBaselineAsync().getBiggestWordInDirectoryAsyncBaseline(folderPath).Result;
+
+            Console.WriteLine("Biggest word is: {0}", ret);
             int elapsed = Environment.TickCount - init;
 
             Console.WriteLine(@"Find the biggest word with getBiggestWordInDirectoryAsyncBaseline took: {0} seconds", elapsed);
@@ -70,6 +86,7 @@ namespace lookwords.BenchmarkFiles
 
             return ret;
         }
+
 
         [Benchmark]
         public string RunGetBiggestWordBaselineTestNoContinueWith()
@@ -116,7 +133,9 @@ namespace lookwords.BenchmarkFiles
             obsrvable.Subscribe(str => t.TrySetResult(str));
 
             t.Task.Wait();
-            
+
+            Console.WriteLine("Biggest word is: {0}", t.Task.Result);
+
             //
             // Each benchmark should return a value to ensure the VM optimizations
             // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
