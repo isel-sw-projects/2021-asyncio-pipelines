@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace lookwords.MixedSourceStrategies.noLinqStrategies.baseLineNIO
 {
-    internal class GetBiggestWordSyncBaseline
+    public class GetBiggestWordSyncBaseline
     {
          string getBiggestWordInFile(string filename)
         {
@@ -72,7 +72,6 @@ namespace lookwords.MixedSourceStrategies.noLinqStrategies.baseLineNIO
             // Returns a new task that will complete when all of the Task objects
             // in allTasks collection have completed!
             // 
-            Console.WriteLine("Biggest word is: {0}", BiggestWord);
             return BiggestWord;
         }
     }

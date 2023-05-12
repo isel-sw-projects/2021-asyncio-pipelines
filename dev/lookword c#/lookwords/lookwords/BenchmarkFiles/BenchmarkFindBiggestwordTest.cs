@@ -6,6 +6,7 @@ using lookwords.MixedSourceStrategies.noLinqStrategies.baseLineNIO.lookwords.noL
 using lookwords.noLinqStategies.SyncEnum;
 using lookwords.noLinqStategies.SyncEnum.lookwords.noLinqStategies.SyncEnum;
 using lookwords.SyncSourceStrategies.BiggestWordFileReadStrategies.RxNet;
+using lookwords.SyncSourceStrategies.FindBiggestWordFileReadStrategies;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -40,16 +41,16 @@ namespace lookwords.BenchmarkFiles
        }
   
        [Benchmark]
-       public string RunGetBiggestWordSyncTest()
+       public string RunGetBiggestWordLinqSyncTest()
        {
 
            int init = Environment.TickCount;
-           string ret = new EnumerableIOFindBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
+           string ret = new EnumerableLinqFindBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
 
            // Console.WriteLine("Biggest word is: {0}", ret);
             int elapsed = Environment.TickCount - init;
   
-           Console.WriteLine(@"Find the biggest word with RunGetBiggestWordSyncTest took: {0} seconds", elapsed);
+           Console.WriteLine(@"Find the biggest word with RunGetBiggestWordLinqSyncTest took: {0} seconds", elapsed);
   
   
            return ret;
@@ -60,7 +61,7 @@ namespace lookwords.BenchmarkFiles
         {
 
             int init = Environment.TickCount;
-            string ret = new GetBiggestWordBaseline().getBiggestWordInDirectoryBaseline(folderPath).Result;
+            string ret = new GetBiggestWordSyncBaseline().getBiggestWordInDirectorySyncBaseline(folderPath);
 
             Console.WriteLine("Biggest word is: {0}", ret);
             int elapsed = Environment.TickCount - init;
@@ -82,6 +83,38 @@ namespace lookwords.BenchmarkFiles
             int elapsed = Environment.TickCount - init;
 
             Console.WriteLine(@"Find the biggest word with getBiggestWordInDirectoryAsyncBaseline took: {0} seconds", elapsed);
+
+
+            return ret;
+        }
+
+        [Benchmark]
+        public string RunGetBiggestWordBaselineAsyncSingleTask()
+        {
+
+            int init = Environment.TickCount;
+            string ret = new GetBiggestWordBaselineAsyncSingleTask().getBiggestWordInDirectoryAsyncBaseline(folderPath).Result;
+
+            Console.WriteLine("Biggest word is: {0}", ret);
+            int elapsed = Environment.TickCount - init;
+
+            Console.WriteLine(@"Find the biggest word with GetBiggestWordBaselineAsyncSingleTask took: {0} seconds", elapsed);
+
+
+            return ret;
+        }
+
+        [Benchmark]
+        public string RunBiggestWordBaselineAsyncBlockingRead()
+        {
+
+            int init = Environment.TickCount;
+            string ret = new GetBiggestWordBaselineAsyncBlockingRead().getBiggestWordInDirectoryBaseline(folderPath).Result;
+
+            Console.WriteLine("Biggest word is: {0}", ret);
+            int elapsed = Environment.TickCount - init;
+
+            Console.WriteLine(@"Find the biggest word with GetBiggestWordBaselineAsyncBlockingRead took: {0} seconds", elapsed);
 
 
             return ret;
@@ -147,7 +180,33 @@ namespace lookwords.BenchmarkFiles
   
            return t.Task.Result;
        }
-  
+
+        [Benchmark]
+        public string RunGetBiggestWordRxAsyncFileReadTest()
+        {
+
+            int init = Environment.TickCount;
+            IObservable<string> obsrvable = new RXAsyncStrategy().getBiggestWordInDirectoryAsync(folderPath);
+
+            var t = new TaskCompletionSource<string>();
+            obsrvable.Subscribe(str => t.TrySetResult(str));
+
+            t.Task.Wait();
+
+            Console.WriteLine("Biggest word is: {0}", t.Task.Result);
+
+            //
+            // Each benchmark should return a value to ensure the VM optimizations
+            // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
+            //
+            int elapsed = Environment.TickCount - init;
+
+            Console.WriteLine(@"Find the biggest word with RunGetBiggestWordRxAsyncFileReadTest took: {0} seconds", elapsed);
+
+
+            return t.Task.Result;
+        }
+
     }
 
 }

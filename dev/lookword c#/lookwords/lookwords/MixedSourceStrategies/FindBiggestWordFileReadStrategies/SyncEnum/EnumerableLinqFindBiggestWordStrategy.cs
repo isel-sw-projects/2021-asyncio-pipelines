@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.SyncEnum
 {
-    public class EnumerableIOFindBiggestWordStrategy 
+    public class EnumerableLinqFindBiggestWordStrategy 
     {
 
        private string parseFileDistinctWordsIntoDictionary(string filename)

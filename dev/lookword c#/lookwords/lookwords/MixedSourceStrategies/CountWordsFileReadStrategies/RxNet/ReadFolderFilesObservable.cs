@@ -24,12 +24,12 @@ namespace lookwords.MixedSourceStrategies.RxNet
                 observers.Add(observer);
             }
 
-            readFileAsync(observer);
+            readFileSync(observer);
 
             return new Unsubscriber(observers, observer);
         }
 
-        private void readFileAsync( IObserver<string> observer)
+        private void readFileSync( IObserver<string> observer)
         {
             using (StreamReader reader = new StreamReader(file))
             {

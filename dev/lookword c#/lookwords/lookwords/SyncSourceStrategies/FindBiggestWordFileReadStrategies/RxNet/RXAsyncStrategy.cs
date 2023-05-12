@@ -9,19 +9,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.RxNet
+namespace lookwords.SyncSourceStrategies.FindBiggestWordFileReadStrategies
 {
-    public class RXNetIOBiggestWordStrategy
+    public class RXAsyncStrategy
     {
 
-        /// <summary>
-        /// Collects all distinct words of given filePath into words Dictionary, which is shared across concurrent threads.
-        /// ??? Not sure about the concurrent behavior of ForEachAsync ???
-        /// </summary>
         private IObservable<string> findBiggestWordInFile(string filePath)
         {
 
-            return new ReadFolderFilesObservable(filePath)
+            return AsyncFiles.GestObservableReadFileAsync(filePath)
                 .Where(line => line.Length != 0)                           // Skip empty lines
                 .Skip(14)                                                  // Skip gutenberg header
                 .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
@@ -33,7 +29,7 @@ namespace lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.RxNet
         }
 
         //RXNET implementation
-        public IObservable<string> getBiggestWordInDirectory(string folderPath)
+        public IObservable<string> getBiggestWordInDirectoryAsync(string folderPath)
         {
             //
             // Forces to collect all tasks into a List to ensure that all Tasks has started!
@@ -45,5 +41,6 @@ namespace lookwords.MixedSourceStrategies.BiggestWordFileReadStrategies.RxNet
                             .Aggregate("", (biggest, curr) => curr.Length > biggest.Length ? curr : biggest)
                             .LastOrDefaultAsync();
         }
+
     }
 }

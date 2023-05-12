@@ -301,7 +301,7 @@ namespace Tests
         {
             string folderPath = @Environment.GetEnvironmentVariable("TESE_TESTE_PATH");
 #pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
-            EnumerableIOFindBiggestWordStrategy test = new EnumerableIOFindBiggestWordStrategy();
+            EnumerableLinqFindBiggestWordStrategy test = new EnumerableLinqFindBiggestWordStrategy();
             string word = test.getBiggestWordInDirectory(folderPath);
 
             Assert.AreEqual(word, "bigggest33333333333333333333333333333333");
@@ -339,9 +339,9 @@ namespace Tests
 
             string folderPath = @Environment.GetEnvironmentVariable("TESE_TESTE_PATH");
 #pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
-            RXNetIOBiggestWordStrategy test = new RXNetIOBiggestWordStrategy();
+            RXNetAsyncIOReadlineBiggestWordStrategy test = new RXNetAsyncIOReadlineBiggestWordStrategy();
 
-            IObservable<string> obsrvable = new RXNetIOBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
+            IObservable<string> obsrvable = new RXNetAsyncIOReadlineBiggestWordStrategy().getBiggestWordInDirectory(folderPath);
 
             var t = new TaskCompletionSource<object>();
             obsrvable.Subscribe(str => t.TrySetResult(str));

@@ -243,6 +243,9 @@
     <Reference Include="System.Text.Encoding.CodePages, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encoding.CodePages.4.3.0\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
+    <Reference Include="System.Threading.Channels, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Channels.7.0.0\lib\net462\System.Threading.Channels.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -289,15 +292,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncFiles.cs" />
     <Compile Include="BenchmarkFiles\BenchmarckIOCountCharactersStrategies.cs" />
     <Compile Include="BenchmarkFiles\BenchmarkFindBiggestwordTest.cs" />
     <Compile Include="BenchmarkFiles\BenchmarkFindWordStrategies.cs" />
     <Compile Include="BenchmarkFiles\BenchmarkIOStrategiesWithSyncSourceOnly.cs" />
     <Compile Include="BenchmarkFiles\BenchmarkIOStrategiesWSyncAndAsParallel.cs" />
     <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\AsyncEnum\AsyncEnumerableIOBiggestWordStrategy.cs" />
-    <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
-    <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\RXNetIOBiggestWordStrategy.cs" />
-    <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\SyncEnum\EnumerableIOFindBiggestWordStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\RXNetAsyncIOReadlineBiggestWordStrategy.cs" />
+    <Compile Include="MixedSourceStrategies\FindBiggestWordFileReadStrategies\SyncEnum\EnumerableLinqFindBiggestWordStrategy.cs" />
     <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\AsyncEnum\AsyncEnumerableIOCountCharacterStrategy.cs" />
     <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\RxNet\FileTreeTextObservable.cs" />
     <Compile Include="MixedSourceStrategies\CountCharactersFileReadStrategies\RxNet\RXNetIOCountCharacterStrategy.cs" />
@@ -306,7 +309,7 @@
     <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
     <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\RxNet\RXNetIOFindWordStrategy.cs" />
     <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\SyncEnum\EnumerableIOFindWordStrategy.cs" />
-    <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaseline.cs" />
+    <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaselineAsyncSingleTask.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaselineAsync.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\CountWordsBaseline.cs" />
     <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategyWithConverter.cs" />
@@ -315,6 +318,7 @@
     <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />
     <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
     <Compile Include="BenchmarkFiles\BenchmarckIOCountWordsStrategies.cs" />
+    <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaselineAsyncBlockingRead.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaselineNoContinueWith.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordSyncBaseline.cs" />
     <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategy.cs" />
@@ -322,7 +326,6 @@
     <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />
     <Compile Include="ParallelButWSyncSourceStrategies\CountWordsFileReadStrategies\SyncEnum\EnumerableIOFileReadStrategy.cs" />
     <Compile Include="ParallelButWSyncSourceStrategies\FindBiggestWordFileReadStrategies\AsyncEnum\AsyncEnumerableIOBiggestWordStrategy.cs" />
-    <Compile Include="ParallelButWSyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
     <Compile Include="ParallelButWSyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\RXNetIOBiggestWordStrategy.cs" />
     <Compile Include="ParallelButWSyncSourceStrategies\FindBiggestWordFileReadStrategies\SyncEnum\EnumerableIOFindBiggestWordStrategy.cs" />
     <Compile Include="Program.cs" />
@@ -332,6 +335,7 @@
     <Compile Include="SyncSourceStrategies\CountWordsFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
     <Compile Include="SyncSourceStrategies\CountWordsFileReadStrategies\RxNet\RXNetIOFileReadStrategy.cs" />
     <Compile Include="SyncSourceStrategies\FindBiggestWordFileReadStrategies\AsyncEnum\AsyncEnumerableIOBiggestWordStrategy.cs" />
+    <Compile Include="SyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\RXAsyncStrategy.cs" />
     <Compile Include="SyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
     <Compile Include="SyncSourceStrategies\FindBiggestWordFileReadStrategies\RxNet\RXNetIOBiggestWordStrategy.cs" />
     <Compile Include="testRunnables\CountWorldsRunnable.cs" />
