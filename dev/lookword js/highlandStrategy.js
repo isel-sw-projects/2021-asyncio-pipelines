@@ -1,15 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import hl from 'highland';
+import { promises as fsPromises } from 'fs';
+import H from 'highland';
 
-function splitBy(separator) {
-  return hl.flatMap((str) => hl(str.split(separator)));
-}
-
-const readFile = hl.wrapCallback(fs.readFile);
+const { readdir } = fsPromises;
 
 async function* getFilesFromDirectoryGenerator(dir) {
-  const dirents = await fs.promises.readdir(dir, { withFileTypes: true });
+  const dirents = await readdir(dir, { withFileTypes: true });
   for (const dirent of dirents) {
     const filePath = path.resolve(dir, dirent.name);
     if (dirent.isDirectory()) {
@@ -21,36 +18,44 @@ async function* getFilesFromDirectoryGenerator(dir) {
 }
 
 function findBiggestWordInFile(filePath) {
-  return readFile(filePath, 'utf-8')
-    .splitBy('\n')
+  const stream = H(fs.createReadStream(filePath, 'utf-8')).split();
+
+  return stream
     .drop(14)
-    .takeWhile((line) => !line.includes('*** END OF '))
-    .filter((line) => line.length > 0)
-    .flatMap((line) => line.split(' '))
-    .reduce((biggest, curr) => (curr.length > biggest.length ? curr : biggest), '');
+    .filter((line) => !line.includes('*** END OF '))
+    .map((line) => line.split(' '))
+    .flatten()
+    .reduce1((biggest, curr) => (curr.length > biggest.length ? curr : biggest));
 }
 
-async function findBiggestWordInDirectory(directoryPath) {
-    const files = [];
+function findBiggestWordInDirectory(directoryPath) {
+  const fileStream = H(async (push, next) => {
     for await (const filePath of getFilesFromDirectoryGenerator(directoryPath)) {
-      files.push(filePath);
+      push(null, filePath);
     }
-  
-    return hl(files)
-      .flatMap(findBiggestWordInFile)
-      .reduce((biggest, curr) => (curr.length > biggest.length ? curr : biggest), '')
-      .last();
-  }
+    push(null, H.nil);
+  });
+  return fileStream.flatMap(findBiggestWordInFile)
+    .reduce1((biggest, curr) => (curr.length > biggest.length ? curr : biggest));
+}
 
-(async () => {
-  const folderPath = 'C:/Users/e351582/OneDrive - EDP/Desktop/PESSOAL/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg';
+function benchmark() {
+  const folderPath = 'F:/escola/MEIC/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg';
   try {
-    console.log('Starting benchmark:');
+    console.log('Starting benchmark baseline with all file to memory:');
     console.time('Benchmark');
-    const biggestWord = await findBiggestWordInDirectory(folderPath);
-    console.timeEnd('Benchmark');
-    console.log('Biggest word found:', biggestWord);
+    
+    findBiggestWordInDirectory(folderPath)
+      .toArray((biggestWords) => {
+        const biggestWord = biggestWords.reduce((prev, curr) => prev.length > curr.length ? prev : curr, '');
+        console.timeEnd('Benchmark');
+        console.log('Biggest word found:', biggestWord);
+      });
+
   } catch (error) {
     console.error('Error:', error);
   }
-})();
+};
+benchmark()
+
+export default benchmark

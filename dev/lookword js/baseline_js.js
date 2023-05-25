@@ -58,8 +58,8 @@ async function findBiggestWordInDirectory(directoryPath) {
 }
 
 
-(async () => {
-  const folderPath = 'C:/Users/e351582/OneDrive - EDP/Desktop/PESSOAL/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg';
+async function benchmark(){
+  const folderPath = 'F:/escola/MEIC/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg';
   try {
     console.log('Starting benchmark baseline with all file to memory:');
     console.time('Benchmark');
@@ -69,4 +69,7 @@ async function findBiggestWordInDirectory(directoryPath) {
   } catch (error) {
     console.error('Error:', error);
   }
-})();
+};
+benchmark()
+
+export default benchmark
