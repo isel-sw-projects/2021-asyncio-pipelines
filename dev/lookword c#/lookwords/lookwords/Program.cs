@@ -23,7 +23,6 @@ namespace lookwords
             //var summary = BenchmarkRunner.Run<IOTStategiesBenchmark>();
              
              //IOFileReadStrategies.folderWordOccurrencesInSizeRangeSync(folderPath, 2, 12);
-             string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
             
              Dictionary<string, Runnable> dictionary = new Dictionary<string, Runnable>();
              dictionary.Add("1", new CountWorldsRunnable());

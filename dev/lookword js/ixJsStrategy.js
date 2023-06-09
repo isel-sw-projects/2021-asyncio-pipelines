@@ -44,11 +44,12 @@ async function benchmark(){
     console.log('Starting benchmark baseline with all file to memory:');
     console.time('Benchmark');
     const biggestWord =  await findBiggestWordInDirectory(folderPath);
+    console.log(biggestWord)
     console.timeEnd('Benchmark');
     console.log('Biggest word found:', biggestWord);
   } catch (error) {
     console.error('Error:', error);
   }
 };
-
+benchmark()
 export default benchmark

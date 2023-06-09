@@ -1,27 +1,126 @@
-\chapter{ Implementations and results }
+\chapter{Implementations and Results}
 \label{cha:a_short_latex_tutorial_with_examples}
 
-By far, in this document, was described how asynchronous IO data retrieval and proccessing is implemented in different techologies, and how different approaches try to provide the same result, which is: handling complex under the hood issues related with asynchronous IO but with readable code in format of operation pipelining with the maximun performance possible. 
+In this chapter its examined the benchmark results of various implementations
+of various strategies to find the largest word in a set of files, which can be understood as an abstract representation of real-world tasks that involve processing
+large amounts of data asynchronously.
 
-One the things already saw, was that independently of the under the hood implementation in the different frameworks, the end result is code very similar in terms of semantics, for example, an asynchronous stream pipelining in Java and in C\#, are almost indentical although the data retrieving proccess being implemented with different approaches and proccesses. 
+The data used in these tests is a collection of text files from Project Gutenberg, a vast digital library of thousands of free eBooks. Project Gutenberg offers a wide variety of books in different languages, and for this experiment, we used a random sample of hundreds of books, providing a diverse and challenging data set for our implementations.
 
-Taking this in account, in this charpter,the objective will be to show and describe several implementations made in the scope of this thesis and compare them in terms of performance. 
+These books contain a variety of words with differing lengths, which makes the task of finding the largest word non-trivial and interesting from a computational perspective. By utilizing such a substantial data set, we ensure that our performance metrics accurately reflect the effectiveness of each implementation under realistic conditions.
 
-These implementations were made using different programming frameworks. The implementations consists in a program that asynchronously reads files and uses stream pipelining to proccess the data in real-time, enabling to benchmark the performance of the different tecnhologies performing the same task.
+During the implementations, was made a conscious attempt to keep the operation pipelines as similar as possible across the different technologies. This endeavor aimed to create a fair and representative evaluation of the behaviors of each technology. By maintaining consistency in pipeline operations, we can more accurately attribute performance differences to the underlying technology, rather than variations in the implemented code. This approach brings us closer to a true comparison of how each technology handles the challenges of asynchronous I/O data retrieval and processing.
 
-Objectively, in this charpter, will be presented several strategies that use different libraries and tecnhologies made in different languages, namely: \nameref{sec:dotnet_implementation}, \nameref{sec:java_implementation} and \nameref{sec:js_implementation}.
+In certain instances, particularly with JAVA, the need to incorporate external libraries for non-blocking asynchronous file retrieval arose. This requirement highlights a significant attribute of working within various programming environments - the availability of native functions or the dependence on third-party solutions. While some environments have inbuilt support for these operations, others lean heavily on libraries provided by the community or vendors. Interestingly, this aspect of the project mirrors the challenges often faced in non-academic, real-world environments, where the necessity to adapt and find suitable solutions is a common part of the development process.
 
-In the end, will be possible to compare the results and take conclusions, for example, the behaviour of the same strategy or tecnhology performance in different programming frameworks.
+The implementations differ in the specific programming languages, libraries, and technologies they use. This allows us to evaluate the relative strengths and weaknesses of each approach and provides valuable insights into how these factors can affect performance.
 
+After presenting and discussing each implementation and its results, we will be able to compare them directly. This will enable us to draw meaningful conclusions about the performance of various strategies and technologies when applied to the same task under the same conditions. Specifically, we are interested in how the performance of a given strategy or technology can vary across different programming frameworks.
 
-\section{.NET} % (fold)
+\section{.NET Implementation}
 \label{sec:dotnet_implementation}
-As already explained, .NET framework provide a 
+As previously discussed, the .NET framework provides...
 
-
-\section{JAVA/kotlin} % (fold)
+\section{Java/Kotlin Implementation}
 \label{sec:java_implementation}
 
-\section{javascript} % (fold)
+In this section, we will present the different strategies utilized in Java and Kotlin implementations for file processing and compare their performances.
+In the case of Java, asynchronous file reading isn't directly supported by the standard libraries. To overcome this limitation and maintain parity with the other implementations, we made use of a library named \texttt{AsyncFiles}. This library was developed by Professor Jorge Martins of the Lisbon Engineering Superior Institute. It provides an efficient and straightforward way to perform asynchronous file reading operations in Java.
+
+It's important to note that by utilizing the \texttt{AsyncFiles} library, which provides a \texttt{Publisher}, we can ensure the preservation of the core pipeline semantics across different implementations. This is facilitated by the fact that a \texttt{Publisher} can serve as a data source in both RxJava and Reactor Flux implementations. Additionally, the \texttt{AsyncFiles} library offers a method that returns a Flow, thereby making the library compatible with Kotlin implementations as well.
+The table below summarizes the strategies and their respective processing times:
+
+\subsection{Strategies}
+\label{subsec:strategies}
+
+\subsubsection{Kotlin Flow}
+\label{subsubsec:kotlin_flow}
+The Kotlin Flow strategy is based on the concept of 'flows' in the Kotlin Coroutines library. A Flow is an asynchronous data stream that sequentially emits values and completes normally or with an exception. The concept of a flow is very similar to that of Reactive Streams, which emphasizes data streams and the propagation of change.
+
+\subsubsection{Java Reactor (Flux)}
+\label{subsubsec:java_reactor_flux}
+Reactor is a fourth-generation reactive library, based on the Reactive Streams specification, for building non-blocking applications on the JVM based on Java 8 and later. This strategy uses the Flux class, a Reactive Streams Publisher with rx operators that emits 0 to N elements, and then completes (successfully or with an error).
+
+\subsubsection{RxJava (Observable)}
+\label{subsubsec:rxjava_observable}
+RxJava is a Java VM implementation of Reactive Extensions: a library for composing asynchronous and event-based programs by using observable sequences. The Observable class, when subscribed, emits items or signals of any kind to the observer. 
+
+\subsubsection{Blocking Reader in Streams}
+\label{subsubsec:blocking_reader_streams}
+This strategy uses the Java's streams interface to read the data in a blocking manner. Due to the blocking nature of the I/O operations, this approach may lead to slower processing times as it has to wait for each I/O operation to complete.
+
+\subsubsection{MultiThread}
+\label{subsubsec:multithread}
+The MultiThread strategy leverages the Java's built-in thread support to process data concurrently. By distributing the work across multiple threads, it often results in improved performance, especially for CPU-bound tasks.
+
+\subsubsection{Concurrency with Kotlin Flow}
+\label{subsubsec:concurrency_kotlin_flow}
+This strategy is an enhancement of the Kotlin Flow approach where data processing is performed concurrently. By using the built-in concurrency support in the Kotlin Coroutines library, it aims to improve the performance of data processing.
+
+\subsubsection{RxJava with Concurrency (Observable)}
+\label{subsubsec:rxjava_concurrency_observable}
+This strategy is a concurrent version of the RxJava Observable approach. It uses the concurrency features in the RxJava library, such as Schedulers, to improve the performance of data processing.
+
+\subsubsection{Blocking Reader in Streams with Concurrency}
+\label{subsubsec:blocking_reader_streams_concurrency}
+This strategy is a concurrent adaptation of the Blocking Reader in Streams strategy. It attempts to mitigate the blocking delays by processing multiple streams concurrently using multiple threads.
+
+\subsubsection{Baseline}
+\label{subsubsec:baseline}
+The Baseline strategy is a straightforward implementation without any pipelining or other overhead. It serves as a reference for comparison. This method may use traditional synchronous I/O operations and sequential processing.
+
+\subsubsection{Sequential Processing with Kotlin Flow}
+\label{subsubsec:sequential_processing_kotlin_flow}
+This is a variant of the Kotlin Flow strategy, but with sequential processing. The idea is to demonstrate the performance difference when the same operations are performed in sequence, rather than concurrently.
+
+\subsubsection{IO Blocking Operations}
+\label{subsubsec:io_blocking_operations}
+This strategy represents a traditional approach to dealing with I/O operations - blocking until each operation is complete. It often results in slower processing times due to the time spent waiting for I/O tasks.
+
+
+\subsection{Results}
+\label{subsubsec:results}
+
+
+\begin{table}[h!]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Strategy} & \textbf{Processing Time Average (ms)} \\
+\hline
+NIO Reactor Flux & 1148 \\
+\hline
+NIO Reactor Flux with Concurrency (use of \texttt{parallel()}) & 1002 \\
+\hline
+NIO Observable RXJava & 945 \\
+\hline
+NIO Observable with Concurrency (use of \texttt{parallel()})& 841 \\
+\hline
+Blocking Reader in Streams & 3897 \\
+\hline
+Blocking Reader MultiThread  & 691 \\
+\hline
+Blocking Reader Streams with Concurrency & 3011 \\
+\hline
+NIO Baseline & 912 \\
+\hline
+Concurrent Processing with Kotlin Flow & 2435 \\
+\hline
+Sequential Processing with Kotlin Flow & 5050 \\
+\hline
+Kotlin Flow IO Blocking Operations & 5216 \\
+\hline
+\end{tabular}%
+}
+\caption{Processing times for different Java/Kotlin strategies.}
+\label{tab:strategies_times}
+\end{table}
+    
+DRAW TO BE REVIEWED:    
+As observed in the results, the choice of strategy and its implementation can significantly impact the performance of file processing. Generally, the concurrent and multi-threaded strategies tend to outperform the sequential and IO-blocking operations.% However, it's important to consider that each approach may have its unique benefits and potential drawbacks, depending on the specific context and requirements of the task at hand.
+
+\section{JavaScript Implementation}
 \label{sec:js_implementation}
+In the context of JavaScript...
 

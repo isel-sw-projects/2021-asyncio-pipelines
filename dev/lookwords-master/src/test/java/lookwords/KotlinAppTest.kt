@@ -31,6 +31,7 @@ class KotlinAppTest {
             val startTime = Instant.now()
             res = task.findBiggestWord(FOLDER)
             val dur = AppTest.between(startTime)
+            println("Biggest word is: $res")
             LOGGER.log(Level.INFO, "time: {0} ms", dur)
             if (dur < minTime) minTime = dur
         }
