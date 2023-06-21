@@ -249,5 +249,10 @@
             <version>${jmh.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.akarnokd</groupId>
+            <artifactId>rxjava3-interop</artifactId>
+            <version>3.0.1</version>
+        </dependency>
     </dependencies>
 </project>

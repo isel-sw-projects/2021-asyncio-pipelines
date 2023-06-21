@@ -48,21 +48,23 @@ public class AppTest {
      // // 3700 ms with support for cancellation
      // // [4100, 4800] ms through RxJava
 
-      //testGrouping(new GroupWordsBaseline());
-      //testGrouping(new GroupWordsRxIo());
-      //testGrouping(new GroupWordsRxIoInObservable());
-      //testGrouping(new GroupWordsRxIoInFlux());
-      //testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
+      testGrouping(new GroupWordsBaseline());
+      testGrouping(new GroupWordsRXJava());
+      testGrouping(new GroupWordsInRectorCoreFlux());
+      testGrouping(new GroupWordsBlockingReaderInMultiThread());
+      testGrouping(new GroupWordsBlockingReaderInStreams());
 
-        testGroupingFindBiggest(new FindWordBaseLine());
-        testGroupingFindBiggest(new FindBiggestWordRxIoInFlux());
-        testGroupingFindBiggest(new FindBiggestWordRxIoInObservable());
-        testGroupingFindBiggest(new FindBiggestWordBlockingReaderInStreams());
-        testGroupingFindBiggest(new FindBiggestWordBlockingReaderInMultiThread());
-        testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInFlux());
-        testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInObservable());
-        testGroupingFindBiggest(new FindBiggestWordConcurrentBlockingReaderInStreams());
-        testGroupingFindBiggest(new FindWordBaseLine());
+     // testGrouping(new GroupWordsRxIoInAsyncQuery()); // 4200 ms sometimes 3800
+
+      // testGroupingFindBiggest(new FindWordBaseLine());
+      // testGroupingFindBiggest(new FindBiggestWordRxIoInFlux());
+      // testGroupingFindBiggest(new FindBiggestWordRxIoInObservable());
+      // testGroupingFindBiggest(new FindBiggestWordBlockingReaderInStreams());
+      // testGroupingFindBiggest(new FindBiggestWordBlockingReaderInMultiThread());
+      // testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInFlux());
+      // testGroupingFindBiggest(new FindBiggestWordConcurrentRxIoInObservable());
+      // testGroupingFindBiggest(new FindBiggestWordConcurrentBlockingReaderInStreams());
+      // testGroupingFindBiggest(new FindWordBaseLine());
 
     }
 
@@ -104,16 +106,26 @@ public class AppTest {
     public static Map<String, ? extends Number> perform(GroupWords task) {
         LOGGER.log(Level.INFO, "############ {0}", task.getClass());
         Map<String, ? extends Number> res = null;
-        long minTime = Long.MAX_VALUE;
-        for (int i = 0; i < ITERATIONS; i++) {
+
+        // Add variables to store sum and count for averaging
+        long sumTime = 0;
+        int count = 0;
+
+        for (int i = 0; i < 4; i++) { // Change to 4 iterations
             Instant startTime = Instant.now();
             res = task.words(FOLDER, MIN, MAX);
             long dur = between(startTime);
             LOGGER.log(Level.INFO, "time: {0} ms", dur);
-            if (dur < minTime) minTime = dur;
 
+            if (i > 0) { // Skip first iteration for averaging
+                sumTime += dur;
+                count++;
+            }
         }
-        LOGGER.log(Level.INFO, "=====> BEST: {0} ms", minTime);
+
+        long averageTime = count > 0 ? sumTime / count : 0; // Compute average
+
+        LOGGER.log(Level.INFO, "=====> AVERAGE: {0} ms", averageTime);
         return res;
     }
 

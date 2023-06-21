@@ -23,7 +23,7 @@ public class FileUtils {
     private FileUtils() {
     }
 
-    private static final Logger LOGGER = Logger.getLogger(FileUtils.class.getPackageName());
+    public static final Logger LOGGER = Logger.getLogger(FileUtils.class.getPackageName());
 
     /**
      * Following a lazy approach and trying to avoid intermediate data structures.

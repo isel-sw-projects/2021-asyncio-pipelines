@@ -13,20 +13,19 @@ import java.util.concurrent.Flow;
 import static org.reactivestreams.FlowAdapters.toPublisher;
 import static reactor.core.publisher.Flux.fromArray;
 
-public class GroupWordsBodyPublisherInFlux extends AbstractGroupWordsInFlux{
+public class GroupWordsWithReactorJavaFlow extends GroupWordsInRectorCoreFlux {
 
-    @Override
     protected Flux<String> lines(Path file, int minLength, int maxLength, Map<String, Integer> words) {
-                    ByteBufferToLines lines = new ByteBufferToLines();
-                    return Flux
-                        .from(toPublisher(ofFile(file)))
-                        .flatMap(lines::flux) // !!! Not Scale even with: .map(buffer -> new String(buffer.array()))
-                        .filter(line -> !line.isEmpty())                   // Skip empty lines
-                        .skip(14)                                          // Skip gutenberg header
-                        .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
-                        .flatMap(line -> fromArray(line.split(" ")))
-                        .filter(word -> word.length() > minLength && word.length() < maxLength)
-                        .doOnNext(w -> words.merge(w, 1, Integer::sum));
+        ByteBufferToLines lines = new ByteBufferToLines();
+        return Flux
+            .from(toPublisher(ofFile(file)))
+            .flatMap(lines::flux) // !!! Not Scale even with: .map(buffer -> new String(buffer.array()))
+            .filter(line -> !line.isEmpty())                   // Skip empty lines
+            .skip(14)                                          // Skip gutenberg header
+            .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
+            .flatMap(line -> fromArray(line.split(" ")))
+            .filter(word -> word.length() > minLength && word.length() < maxLength)
+            .doOnNext(w -> words.merge(w, 1, Integer::sum));
     }
 
     private static class ByteBufferToLines {

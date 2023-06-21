@@ -23,24 +23,21 @@ public class GroupWordsBaseline implements GroupWords{
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
             List<Path> pathsList = paths.filter(Files::isRegularFile).collect(toList());
 
-            LinkedList<CompletableFuture<LinkedList<String>>> allFuturesList = new LinkedList<>();
+            List<CompletableFuture<Void>> allFuturesList = new ArrayList<>();
 
-            for (int i = 0; i < pathsList.size(); i++) {
-
-
-                allFuturesList.add(getFileWordsList(pathsList.get(i), minLength, maxLength, words));
+            for (Path path : pathsList) {
+                CompletableFuture<Void> future = getFileWordsList(path, minLength, maxLength, words);
+                allFuturesList.add(future);
             }
 
-            for(int y = 0; y < allFuturesList.size(); y++) {
-                allFuturesList.get(y).join();
-            }
+            CompletableFuture.allOf(allFuturesList.toArray(new CompletableFuture[0])).join();
 
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         return words;
@@ -48,7 +45,7 @@ public class GroupWordsBaseline implements GroupWords{
 
 
 
-    public CompletableFuture getFileWordsList(Path file, int wordMinLength, int wordMaxLength, ConcurrentHashMap<String, Integer> words) throws ExecutionException, InterruptedException {
+    public CompletableFuture<Void> getFileWordsList(Path file, int wordMinLength, int wordMaxLength, ConcurrentHashMap<String, Integer> words) throws ExecutionException, InterruptedException {
 
         Boolean[] ignoreLine = {false};
 

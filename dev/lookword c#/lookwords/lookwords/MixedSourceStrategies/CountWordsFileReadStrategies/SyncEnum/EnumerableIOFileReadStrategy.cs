@@ -28,7 +28,7 @@ namespace lookwords.MixedSourceStrategies.FileReadStrategies.SyncEnum
                  .Skip(14)                                                  // Skip gutenberg header
                  .TakeWhile(line => !line.Contains("*** END OF "))          // Skip gutenberg footnote
                  .SelectMany(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' '))
-                 .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
+                 .Where(word => word.Length > minWordSize && word.Length < maxWordSize)
                  .ForEach((word) => {
                      //Console.WriteLine(word);
                      words.AddOrUpdate(word, 1, (k, v) => v + 1);

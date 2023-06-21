@@ -1,10 +1,8 @@
 package lookwords
 
 import kotlinx.coroutines.runBlocking
-import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrentWithFlow
-import lookwords.FindBiggestWordStrategies.FindBiggestWordWithFlow
-import lookwords.FindBiggestWordStrategies.FindBiggestWordWithFlowIOBlocking
 import lookwords.FindBiggestWordStrategies.IFindBiggestWordWithFlow
+import lookwords.GroupWordsStrategies.GroupWordsWithFlow
 import org.junit.Test
 import java.time.Instant
 import java.util.logging.Level
@@ -17,9 +15,11 @@ class KotlinAppTest {
     fun testMain()
     {
         runBlocking {
-            performFindBiggestKotlin(FindBiggestWordConcurrentWithFlow())
-            performFindBiggestKotlin(FindBiggestWordWithFlow())
-            performFindBiggestKotlin(FindBiggestWordWithFlowIOBlocking())
+           // performFindBiggestKotlin(FindBiggestWordConcurrentWithFlow())
+           // performFindBiggestKotlin(FindBiggestWordWithFlow())
+          // performFindBiggestKotlin(FindBiggestWordWithFlowIOBlocking())
+
+            testGroupingKotlin(GroupWordsWithFlow())
         }
     }
 
@@ -38,6 +38,53 @@ class KotlinAppTest {
         LOGGER.log(Level.INFO, "=====> BEST: {0} ms", minTime)
         return res
     }
+
+    suspend fun performWordsKotlin(task: GroupWordsWithFlow): Map<String, Int>? {
+        LOGGER.log(Level.INFO, "############ {0}", task.javaClass)
+        var res: Map<String, Int>? = null
+        var sumTime = 0L
+        var count = 0
+
+        for (i in 0 until 4) { // Change to 4 iterations
+            val startTime = Instant.now()
+            res = task.words(FOLDER, AppTest.MIN, AppTest.MAX)
+            System.out.println(res.maxByOrNull { it.value }?.value)
+            val dur = AppTest.between(startTime)
+            LOGGER.log(Level.INFO, "time: {0} ms", dur)
+
+            if (i > 0) { // Skip first iteration for averaging
+                sumTime += dur
+                count++
+            }
+        }
+
+        val averageTime = if (count > 0) sumTime / count else 0 // Compute average
+        LOGGER.log(Level.INFO, "=====> AVERAGE: {0} ms", averageTime)
+        return res
+    }
+
+
+    suspend fun testGroupingKotlin(task: GroupWordsWithFlow) {
+        val words = performWordsKotlin(task)
+        if (words == null) {
+            LOGGER.log(Level.INFO, "NO results!")
+            return
+        }
+
+        val common = words.maxByOrNull { it.value }
+        common?.let {
+            LOGGER.log(Level.INFO) {
+                String.format(
+                    "The most common word with %d to %d chars is: %s. It occurs: %d times.%n",
+                    AppTest.MIN,
+                    AppTest.MAX,
+                    common.key,
+                    common.value
+                )
+            }
+        }
+    }
+
 
     suspend fun testGroupingFindBiggestParallelFlow(task: IFindBiggestWordWithFlow?) {
         val word = performFindBiggestKotlin(task!!)

@@ -14,8 +14,8 @@ namespace lookwords.testRunnables
             var test = new BenchmarckIOCountWordsStrategies(folderPath);
             test.RunCountWordsBaseline();
             test.RunSyncTest();
-            test.RunAsyncEnumerableTest();
-            test.RunRxTest();
+            test.RunAsyncEnumerableTest().Wait();
+            test.RunRxTest().Wait();
         }
     }
 }

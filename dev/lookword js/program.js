@@ -1,7 +1,7 @@
-import baseline_benchmark from './baseline_js.js';
-import ixJsStrategy_benchmark from './ixJsStrategy.js';
-import rxStrategy_benchmark from './rxStrategy.js';
-import highlandStrategy_benchmark from './highlandStrategy.js';
+import baseline_benchmark from './findword/baseline_js.js';
+import ixJsStrategy_benchmark from './findword/ixJsStrategy.js';
+import rxStrategy_benchmark from './findword/rxStrategy.js';
+import highlandStrategy_benchmark from './findword/highlandStrategy.js';
 
 // Array to store the benchmark functions and their names
 const benchmarks = [

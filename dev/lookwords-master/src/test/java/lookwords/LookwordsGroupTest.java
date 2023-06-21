@@ -90,13 +90,13 @@ public class LookwordsGroupTest {
     }
     
     @Test public void testRxIoForInFluxFolderGuty() {
-        Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty").rxIoInFlux();
+        Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty").reactorFlux();
         assertEquals(38, common.getValue().intValue());
         assertEquals("little", common.getKey());
     }
 
     @Test public void testRxIoInFluxForFolderInner() {
-        Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty/inner").rxIoInFlux();
+        Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty/inner").reactorFlux();
         assertEquals(29, common.getValue().intValue());
         assertEquals("little", common.getKey());
     }
@@ -122,6 +122,20 @@ public class LookwordsGroupTest {
 
     @Test public void testBaselineForFolderInner() {
         Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty/inner").groupWordsBaseLine();
+        assertEquals(29, common.getValue().intValue());
+        assertEquals("little", common.getKey());
+    }
+
+    @Test
+    public void testFlowForFolderGuty() {
+        Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty").groupWordsWithFlow();
+        assertEquals(38, common.getValue().intValue());
+        assertEquals("little", common.getKey());
+    }
+
+    @Test
+    public void testFlowForFolderInner() {
+        Entry<String, Integer> common = new LookwordsGroupBench(MIN_SIZE, MAX_SIZE, "guty/inner").groupWordsWithFlow();
         assertEquals(29, common.getValue().intValue());
         assertEquals("little", common.getKey());
     }

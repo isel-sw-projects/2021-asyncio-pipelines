@@ -1,5 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -13,118 +12,160 @@ using lookwords.MixedSourceStrategies.FileReadStrategies.RxNet;
 
 namespace lookwords
 {
-    [MemoryDiagnoser]
     public class BenchmarckIOCountWordsStrategies
     {
         private string folderPath = @Environment.GetEnvironmentVariable("TESE_BOOKS_FOLDER_PATH");
-        static int minWordSize = 1;
-        static int maxWordSize = 8;
+        static int minWordSize = 5;
+        static int maxWordSize = 10;
 
-       public BenchmarckIOCountWordsStrategies(string folderPath = null)
-       {
-           if(folderPath != null)
-           {
-               this.folderPath = folderPath;
-           }
-       }
-
-
-        [Benchmark(Baseline = true)]
-        public ConcurrentDictionary<string, int> RunSyncTest()
+        public BenchmarckIOCountWordsStrategies(string folderPath = null)
         {
-            int init = Environment.TickCount;
-            ConcurrentDictionary<string, int> ret = new EnumerableIOFileReadStrategy().countWordsFromFileSync(folderPath, minWordSize, maxWordSize);
-
-            int elapsed = Environment.TickCount - init;
-
-            Console.WriteLine(@"Count all words RunSyncTest took: {0} miliseconds", elapsed);
-
-            return ret;
-        }
-
-        [Benchmark(Baseline = true)]
-        public ConcurrentDictionary<string, int> RunCountWordsBaseline()
-        {
-            int init = Environment.TickCount;
-
-            CountWordsBaseline test = new CountWordsBaseline();
-            ConcurrentDictionary<string, int> ret = test.countWordsFromFileASyncBaseline(folderPath, 1, 8);
-
-
-            int elapsed = Environment.TickCount - init;
-
-            Console.WriteLine(@"Count all words RunSyncTest without linq took: {0} miliseconds", elapsed);
-
-            return ret;
-        }
-
-
-        [Benchmark]
-        public ConcurrentDictionary<string, int> RunAsyncEnumerableTest()
-        {
-            int init = Environment.TickCount;
-            Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
-            task.Wait();
-            //
-            // Each benchmark should return a value to ensure the VM optimizations
-            // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
-            //
-            int elapsed = Environment.TickCount - init;
-
-            Console.WriteLine(@"Count all words RunAsyncEnumerableTest took: {0} miliseconds", elapsed);
-
-           
-
-            return task.Result;
-        }
-
-        [Benchmark]
-        public ConcurrentDictionary<string, int> RunAsyncEnumerableWithToAsyncEnumerableConvertionTest()
-        {
-            int init = Environment.TickCount;
-            Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
-            task.Wait();
-            //
-            // Each benchmark should return a value to ensure the VM optimizations
-            // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
-            //
-            int elapsed = Environment.TickCount - init;
-
-            Console.WriteLine(@"Count all words RunAsyncEnumerableWithToAsyncEnumerableConvertionTest took: {0} miliseconds", elapsed);
-
-           
-
-            return task.Result;
-        }
-
-        [Benchmark]
-        public ConcurrentDictionary<string, int> RunRxTest()
-        {
-            int init = Environment.TickCount;
-            Task<ConcurrentDictionary<string, int>> task = new RXNetIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
-            task.Wait();
-
-            int elapsed = Environment.TickCount - init;
-
-            Console.WriteLine(@"Count all words RxTest took: {0} miliseconds", elapsed);
-            //
-            // Each benchmark should return a value to ensure the VM optimizations
-            // wil not discard the call to our operation, i.e. folderWordOccurrencesInSizeRangeWithRX
-            //
-
-           
-            return task.Result;
-        }
-
-
-        private void printResult(ConcurrentDictionary<string, int> dict)
-        {
-            foreach (var item in dict)
+            if (folderPath != null)
             {
-                {
-                    Console.WriteLine("The word {0} repeated: {1} times", item.Key, item.Value);
-                }
+                this.folderPath = folderPath;
             }
+        }
+
+        public void RunSyncTest()
+        {
+            List<int> times = new List<int>();
+
+            for (int i = 0; i < 4; i++)
+            {
+                int init = Environment.TickCount;
+                ConcurrentDictionary<string, int> result = new EnumerableIOFileReadStrategy().countWordsFromFileSync(folderPath, minWordSize, maxWordSize);
+                int elapsed = Environment.TickCount - init;
+                times.Add(elapsed);
+
+                Console.WriteLine(@"RunSyncTest run {0} took: {1} miliseconds", i + 1, elapsed);
+
+                if (i == 3)
+                    PrintResults(result);
+            }
+
+            times.RemoveAt(0);
+
+            double avg = times.Average();
+
+            Console.WriteLine(@"Average time for RunSyncTest (last 3 runs): {0} miliseconds", avg);
+        }
+
+        public void RunCountWordsBaseline()
+        {
+            List<int> times = new List<int>();
+
+            for (int i = 0; i < 4; i++)
+            {
+                int init = Environment.TickCount;
+
+                CountWordsBaseline test = new CountWordsBaseline();
+                ConcurrentDictionary<string, int> result = test.countWordsFromFileASyncBaseline(folderPath, minWordSize, maxWordSize);
+
+                int elapsed = Environment.TickCount - init;
+                times.Add(elapsed);
+
+                Console.WriteLine(@"RunCountWordsBaseline run {0} took: {1} miliseconds", i + 1, elapsed);
+
+                if (i == 3)
+                    PrintResults(result);
+            }
+
+            times.RemoveAt(0);
+
+            double avg = times.Average();
+
+            Console.WriteLine(@"Average time for RunCountWordsBaseline (last 3 runs): {0} miliseconds", avg);
+        }
+
+        public async Task RunAsyncEnumerableTest()
+        {
+            List<int> times = new List<int>();
+
+            for (int i = 0; i < 4; i++)
+            {
+                int init = Environment.TickCount;
+                Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
+
+                ConcurrentDictionary<string, int> result = await task;
+
+                int elapsed = Environment.TickCount - init;
+                times.Add(elapsed);
+
+                Console.WriteLine(@"RunAsyncEnumerableTest run {0} took: {1} miliseconds", i + 1, elapsed);
+
+                if (i == 3)
+                    PrintResults(result);
+            }
+
+            times.RemoveAt(0);
+
+            double avg = times.Average();
+
+            Console.WriteLine(@"Average time for RunAsyncEnumerableTest (last 3 runs): {0} miliseconds", avg);
+        }
+
+        public async Task RunAsyncEnumerableWithToAsyncEnumerableConvertionTest()
+        {
+            List<int> times = new List<int>();
+
+            for (int i = 0; i < 4; i++)
+            {
+                int init = Environment.TickCount;
+                Task<ConcurrentDictionary<string, int>> task = new AsyncEnumerableIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
+
+                ConcurrentDictionary<string, int> result = await task;
+
+                int elapsed = Environment.TickCount - init;
+                times.Add(elapsed);
+
+                Console.WriteLine(@"RunAsyncEnumerableWithToAsyncEnumerableConvertionTest run {0} took: {1} miliseconds", i + 1, elapsed);
+
+                if (i == 3)
+                    PrintResults(result);
+            }
+
+            times.RemoveAt(0);
+
+            double avg = times.Average();
+
+            Console.WriteLine(@"Average time for RunAsyncEnumerableWithToAsyncEnumerableConvertionTest (last 3 runs): {0} miliseconds", avg);
+        }
+
+        public async Task RunRxTest()
+        {
+            List<int> times = new List<int>();
+
+            for (int i = 0; i < 4; i++)
+            {
+                int init = Environment.TickCount;
+                Task<ConcurrentDictionary<string, int>> task = new RXNetIOFileReadStrategy().countWordsFromFileAsync(folderPath, minWordSize, maxWordSize);
+
+                ConcurrentDictionary<string, int> result = await task;
+
+                int elapsed = Environment.TickCount - init;
+                times.Add(elapsed);
+
+                Console.WriteLine(@"RunRxTest run {0} took: {1} miliseconds", i + 1, elapsed);
+
+                if (i == 3)
+                    PrintResults(result);
+            }
+
+            times.RemoveAt(0);
+
+            double avg = times.Average();
+
+            Console.WriteLine(@"Average time for RunRxTest (last 3 runs): {0} miliseconds", avg);
+        }
+
+        private void PrintResults(ConcurrentDictionary<string, int> results)
+        {
+            Console.WriteLine("\n\nResults:");
+            foreach (var pair in results.OrderByDescending(pair => pair.Value).Take(10))
+            {
+                Console.WriteLine("Word: {0}, Count: {1}", pair.Key, pair.Value);
+            }
+            Console.WriteLine("\n\n");
         }
     }
 }

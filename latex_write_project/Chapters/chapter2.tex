@@ -436,7 +436,7 @@ Initially, in Section \ref{reactivex}, we present the multi-language \textit{Rea
 
 In the following section, we focus on \textit{Project Reactor}, a pivotal component of Spring WebFlux's non-blocking web stack. We delve into how \textit{Project Reactor} takes a different approach from \textit{ReactiveX} but still offers similar benefits, enabling developers to work with a composable API for declarative, event-driven programming. This discussion can be found in Section \ref{sec:project_reactor}.
 
-Next, we introduce the .NET \textit{Async Enumerables} in Section \ref{csenums}, discussing how this approach diverges from those implemented in \textit{ReactiveX.io}, JavaScript, and Kotlin's \textit{Kotlin Flow}. Sections \ref{sec:aenums} and \ref{sec:kotlinflow} will present the JavaScript and Kotlin Flow strategies for asynchronous data processing, respectively.
+Next, we introduce the \textit{Async Enumerables} in  this Section \ref{csenums}, is discussed how these approaches are implemented in .NET C\# and in javascript and how it diverges from \textit{ReactiveX.io} or Kotlin's \textit{Kotlin Flow}. Sections \ref{sec:aenums} and \ref{sec:kotlinflow} will present the JavaScript and Kotlin Flow strategies for asynchronous data processing, respectively.
 
 Finally, in Section \ref{sec:tech_compare}, we provide an overview and draw conclusions about the various technologies presented, discussing how each approach can be employed for different problems and objectives. We then make theoretical predictions on how each technology behaves in several known circumstances.
 
@@ -475,20 +475,21 @@ The \textit{Observer} interface offers extra control over stream processing thro
 Given the possible relationship between synchronous and its asynchronous logic counterparts in many languages, we will take Java as an example to demonstrate how these objects can be directly related to their asynchronous counterparts in RxJava. The following table shows how each object type can be mapped:
 
 
-\begin{center}
-\begin{tabular}{ |l|c|c| }
-\hline
-	& Single Item & Multiple Items \\ \hline
-	Java & & \\ 
-& \texttt{T getData()}  & \texttt{Iterable<T> getData()} \\
-	& & \\
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|c|c|}
 	\hline
-	RxJava & & \\ 
-& \texttt{Single<T> getData()} & \texttt{Observable<T> getData()} \\
-	& & \\
+	& Single Item & Multiple Items \\ 
 	\hline
-\end{tabular}
-\end{center}
+	Java & \texttt{T getData()} & \texttt{Iterable<T> getData()} \\ 
+	\hline
+	RxJava & \texttt{Single<T> getData()} & \texttt{Observable<T> getData()} \\ 
+	\hline
+	\end{tabular}
+	\caption{Your caption}
+	\label{tab:my_label}
+	\end{table}
+	
 
 \subsection{Project Reactor}
 \label{sec:project_reactor}

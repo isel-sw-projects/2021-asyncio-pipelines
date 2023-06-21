@@ -1,0 +1,62 @@
+async function runBenchmark(benchmarkObj, runs) {
+  const durations = [];
+  const wordCounts = [];
+
+  // Temporarily override console functions
+  const originalConsoleTime = console.time;
+  const originalConsoleTimeEnd = console.timeEnd;
+  const originalConsoleLog = console.log;
+  const originalConsoleInfo = console.info;
+  const originalConsoleWarn = console.warn;
+  const originalConsoleError = console.error;
+  
+  console.time = () => {};
+  console.timeEnd = () => {};
+  console.log = () => {};
+  console.info = () => {};
+  console.warn = () => {};
+  console.error = () => {};
+
+  for (let i = 0; i < runs; i++) {
+    const start = process.hrtime.bigint();
+    const wordCount = await benchmarkObj.benchmark().catch(e => console.error(`Benchmark error: ${e}`));
+    const end = process.hrtime.bigint();
+
+    // Restore original console functions
+    console.time = originalConsoleTime;
+    console.timeEnd = originalConsoleTimeEnd;
+    console.log = originalConsoleLog;
+    console.info = originalConsoleInfo;
+    console.warn = originalConsoleWarn;
+    console.error = originalConsoleError;
+
+    durations.push(Number(end - start) / 1e6);
+    wordCounts.push(wordCount);
+  }
+
+  // Discard first run and calculate average duration of last 3 runs
+  durations.shift();
+  const avgDuration = durations.reduce((sum, duration) => sum + duration, 0) / (runs - 1);
+
+  // Calculate the most common word between 5 and 10 characters long
+  const allWords = {};
+  for (let wordCount of wordCounts) {
+    Object.assign(allWords, wordCount);
+  }
+
+  const mostCommonWord = Object.entries(allWords)
+    .filter(([word]) => word.length >= 5 && word.length <= 10)
+    .sort((a, b) => b[1] - a[1])[0] || ["", 0]; // Added fallback in case no common word was found
+
+  return { name: benchmarkObj.name, avgDuration, mostCommonWord };
+}
+
+async function runAllBenchmarks() {
+  for (const benchmarkObj of benchmarks) {
+    const { name, avgDuration, mostCommonWord } = await runBenchmark(benchmarkObj, 4);
+    console.log(`Average duration for ${name}: ${avgDuration.toFixed(2)} ms`);
+    console.log(`Most common word for ${name}: ${mostCommonWord[0]} (${mostCommonWord[1]} occurrences)`);
+  }
+}
+
+runAllBenchmarks();

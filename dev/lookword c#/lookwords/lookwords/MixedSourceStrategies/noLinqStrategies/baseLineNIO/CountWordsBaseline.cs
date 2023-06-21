@@ -42,7 +42,7 @@ namespace lookwords
 
                         foreach (string word in wordsInLine)
                         {
-                            if (word.Length >= minWordSize && word.Length <= maxWordSize)
+                            if (word.Length > minWordSize && word.Length < maxWordSize)
                             {
                                 words.AddOrUpdate(word, 1, (k, v) => v + 1);
                             }

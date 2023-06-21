@@ -1,5 +1,6 @@
 package lookwords.Benchmark;
 
+import lookwords.GroupWordsStrategies.GroupWordsWithFlow;
 import lookwords.group.*;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -64,13 +65,13 @@ public class LookwordsGroupBench {
 
     @Benchmark
     public Map.Entry<String, Integer> bodyPublisherInFlux() {
-        Map<String, Integer> words = new GroupWordsBodyPublisherInFlux().words(folder, min, max);
+        Map<String, Integer> words = new GroupWordsWithReactorJavaFlow().words(folder, min, max);
         return mostCommonWord(words);
     }
 
     @Benchmark
     public Map.Entry<String, Integer> bodyPublisherInObservable() {
-        Map<String, Integer> words = new GroupWordsBodyPublisherInObservable().words(folder, min, max);
+        Map<String, Integer> words = new GroupWordsRXJava().words(folder, min, max);
         return mostCommonWord(words);
     }
 
@@ -94,13 +95,13 @@ public class LookwordsGroupBench {
 
     @Benchmark
     public Map.Entry<String, Integer> rxIoInObservable() {
-        Map<String, Integer> words = new GroupWordsRxIoInObservable().words(folder, min, max);
+        Map<String, Integer> words = new GroupWordsRXJava().words(folder, min, max);
         return mostCommonWord(words);
     }
 
     @Benchmark
-    public Map.Entry<String, Integer> rxIoInFlux() {
-        Map<String, Integer> words = new GroupWordsRxIoInFlux().words(folder, min, max);
+    public Map.Entry<String, Integer> reactorFlux() {
+        Map<String, Integer> words = new GroupWordsInRectorCoreFlux().words(folder, min, max);
         return mostCommonWord(words);
     }
 
@@ -115,4 +116,13 @@ public class LookwordsGroupBench {
         Map<String, Integer> words = new GroupWordsBaseline().words(folder, min, max);
         return mostCommonWord(words);
     }
+
+    public Map.Entry<String, Integer> groupWordsWithFlow() {
+        GroupWordsWithFlow wordsStrategy = new GroupWordsWithFlow();
+        Map<String, Integer> words = wordsStrategy.wordsBlocking(folder, min, max);
+        return mostCommonWord(words);
+    }
+
+
+
 }

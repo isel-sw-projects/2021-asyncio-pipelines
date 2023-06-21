@@ -21,7 +21,7 @@ namespace lookwords.MixedSourceStrategies.FileReadStrategies.AsyncEnum
                  .TakeWhile(line => !line.Contains("*** END OF "))    // Skip gutenberg footnote
                  .Select(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled).Split(' ')) //?? to review ?? 
                  .ForEachAsync((arr) => arr
-                    .Where(word => word.Length >= minWordSize && word.Length <= maxWordSize)
+                    .Where(word => word.Length > minWordSize && word.Length < maxWordSize)
                     .Aggregate(words, (prev, word) =>
                     {
                         prev.AddOrUpdate(word, 1, (k, v) => v + 1); // Merge words in dictionary.
