@@ -60,8 +60,6 @@ async function benchmark() {
     console.time('Benchmark');
     const wordCounts = await countWordsInDirectory(folderPath, 5, 10);
     console.timeEnd('Benchmark');
-    console.log('Word counts:', wordCounts);
-    return wordCounts
   } catch (error) {
     console.error('Error:', error);
   }

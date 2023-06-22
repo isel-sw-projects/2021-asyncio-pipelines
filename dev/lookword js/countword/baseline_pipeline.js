@@ -55,8 +55,6 @@ async function benchmark() {
         console.time('Pipeline Benchmark');
         const wordCounts = await countWordsInDirectory(folderPath);
         console.timeEnd('Pipeline Benchmark');
-        console.log('Word counts:', wordCounts);
-        return wordCounts
     } catch (error) {
         console.error('Error:', error);
     }
