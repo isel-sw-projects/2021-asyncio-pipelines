@@ -1,0 +1,48 @@
+C:\Program Files\nodejs\node.exe .\program.js
+Starting benchmark baseline with all file to memory:
+Benchmark: 8104.587890625 ms
+Benchmark: 8.105s
+Biggest word found: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Starting benchmark baseline with all file to memory:
+Benchmark: 8158.47802734375 ms
+Benchmark: 8.159s
+Biggest word found: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Starting benchmark baseline with all file to memory:
+Benchmark: 8188.10009765625 ms
+Benchmark: 8.188s
+Biggest word found: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Starting benchmark baseline with all file to memory:
+Benchmark: 8249.22802734375 ms
+Benchmark: 8.249s
+Biggest word found: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Average duration for baseline_js: 8199.98 ms
+Benchmark: 22978.31298828125 ms
+Benchmark: 22.978s
+The longest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Benchmark: 23210.922119140625 ms
+Benchmark: 23.210s
+The longest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Benchmark: 23393.4140625 ms
+Benchmark: 23.394s
+The longest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Benchmark: 23125.348876953125 ms
+Benchmark: 23.126s
+The longest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Average duration for baseline_stream: 23244.29 ms
+Starting benchmark:
+Benchmark: 13296.615966796875 ms
+Benchmark: 13.297s
+Biggest word found: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Starting benchmark:
+Benchmark: 14029.89013671875 ms
+Benchmark: 14.030s
+Biggest word found: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Starting benchmark:
+Benchmark: 13954.60302734375 ms
+Benchmark: 13.955s
+Biggest word found: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Starting benchmark:
+Benchmark: 13677.283935546875 ms
+Benchmark: 13.677s
+Biggest word found: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Average duration for rxStrategy: 13888.70 ms

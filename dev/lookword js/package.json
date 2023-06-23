@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "@reactivex/ix-esnext-esm": "^5.0.0",
     "@reactivex/rxjs": "^6.6.7",
     "express": "^4.17.3",
     "highland": "^2.13.5",

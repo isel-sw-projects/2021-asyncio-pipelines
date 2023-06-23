@@ -1,12 +1,12 @@
 import baseline_pipeline from './countword/baseline_pipeline.js';
-import ixJsStrategy_benchmark from './countword/ixjs.js';
+//import ixJsStrategy_benchmark from './countword/ixjs.js';
 import rxStrategy_benchmark from './countword/rxjs.js';
 import baseline_benchmark from './countword/baseline.js';
 
 // Array to store the benchmark functions and their names
 const benchmarks = [
   { name: 'baseline_pipeline_js', benchmark: baseline_pipeline },
-  { name: 'ixJsStrategy', benchmark: ixJsStrategy_benchmark },
+ // { name: 'ixJsStrategy', benchmark: ixJsStrategy_benchmark },
   { name: 'rxStrategy', benchmark: rxStrategy_benchmark },
   { name: 'baseline', benchmark: baseline_benchmark },
 ];

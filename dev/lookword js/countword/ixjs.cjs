@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-import { promises as fsPromises } from 'fs';
-import { from } from 'ix/iterable';
-import { filter, map } from 'ix/iterable/operators';
+const fs = require('fs');
+const path = require('path');
+const fsPromises = fs.promises;
+const from = require('ix/iterable').from;
+const { filter, map, reduce,flatMap } = require('ix/iterable/operators');
 
 async function* getFilesFromDirectoryGenerator(dir) {
   const dirents = await fsPromises.readdir(dir, { withFileTypes: true });
@@ -21,29 +21,37 @@ function countWordsInFile(filePath, minLength, maxLength) {
   const lines = fileContent.split('\n');
   let skipLines = 14;
 
-  return Iterable.from(lines)
-    .filter(() => {
-      skipLines--;
-      return skipLines <= 0;
-    })
-    .takeWhile(line => !line.includes('*** END OF '))
-    .flatMap(line => line.split(' '))
-    .filter(word => word.length >= minLength && word.length <= maxLength)
-    .reduce((prev, curr) => {
-      prev[curr] = (prev[curr] || 0) + 1;
-      return prev;
-    }, {});
+  return from(lines)
+    .pipe(
+      filter(() => {
+        skipLines--;
+        return skipLines <= 0;
+      }),
+      takeWhile(line => !line.includes('*** END OF ')),
+      flatMap(line => line.split(' ')),
+      filter(word => word.length >= minLength && word.length <= maxLength),
+      map(word => ({ [word]: 1 })),
+      reduce((prev, curr) => {
+        for (let word in curr) {
+          prev[word] = (prev[word] || 0) + curr[word];
+        }
+        return prev;
+      }, {})
+    );
 }
 
 async function countWordsInDirectory(directoryPath, minLength, maxLength) {
+  let dict
   return from(getFilesFromDirectoryGenerator(directoryPath))
-    .flatMap(filePath => countWordsInFile(filePath, minLength, maxLength))
-    .reduce((prev, curr) => {
-      for (let word in curr) {
-        prev[word] = (prev[word] || 0) + curr[word];
-      }
-      return prev;
-    }, {});
+    .pipe(
+      flatMap(filePath => countWordsInFile(filePath, minLength, maxLength)),
+      reduce((prev, curr) => {
+        for (let word in curr) {
+          prev[word] = (prev[word] || 0) + curr[word];
+        }
+        return prev;
+      }, {})
+    );
 }
 
 async function benchmark() {
@@ -60,4 +68,3 @@ async function benchmark() {
 }
 
 benchmark();
-export default benchmark;

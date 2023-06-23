@@ -18,21 +18,24 @@ async function countWordsInFile(filePath) {
   const fileContent = await fsPromises.readFile(filePath, 'utf-8');
   const lines = fileContent.split('\n');
   let skipLines = 14;
-  
+
+  let longestWord = '';
+
   const words = lines
     .filter((_, index) => index >= skipLines)
     .map(line => line.split(' '))
     .flat()
     .filter(word => word.length)
-    .reduce((wordCounts, word) => {
-      wordCounts[word] = (wordCounts[word] || 0) + 1;
-      return wordCounts;
-    }, {});
-    
+    .forEach(word => {
+      if (word.length > longestWord.length) {
+        longestWord = word;
+      }
+    });
+
   if (lines.find(line => line.includes('*** END OF '))) {
-    return words;
+    return longestWord;
   } else {
-    return {};
+    return '';
   }
 }
 
@@ -42,27 +45,23 @@ async function countWordsInDirectory(directoryPath) {
     files.push(filePath);
   }
 
-  const wordCounts = await Promise.all(files.map(countWordsInFile));
-  return wordCounts.reduce((total, currentCount) => {
-    for (const [word, count] of Object.entries(currentCount)) {
-      total[word] = (total[word] || 0) + count;
-    }
-    return total;
-  }, {});
+  const longestWords = await Promise.all(files.map(countWordsInFile));
+
+  return longestWords.reduce((longestSoFar, currentWord) => {
+    return currentWord.length > longestSoFar.length ? currentWord : longestSoFar;
+  }, '');
 }
 
-// Usage
 async function benchmark() {
   try {
     console.time('Benchmark');
-    const result = await countWordsInDirectory('F:/escola/MEIC/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg');  // replace with your directory path
+    const longestWord = await countWordsInDirectory('F:/escola/MEIC/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg');  // replace with your directory path
     console.timeEnd('Benchmark');
-    console.log(result);
+    console.log(`The longest word is: ${longestWord}`);
   } catch (err) {
     console.error(err);
   }
 }
 
-benchmark();
 
 export default benchmark;
