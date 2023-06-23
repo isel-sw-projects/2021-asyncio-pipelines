@@ -1,37 +1,82 @@
-\chapter{Implementations and Results}
+
+
+\chapter{Benchmarking of Asynchronous Data Processing Algorithms}
 \label{cha:a_short_latex_tutorial_with_examples}
 
-In this chapter its examined the benchmark results of various implementations
-of various strategies to find the largest word in a set of files, which can be understood as an abstract representation of real-world tasks that involve processing
-large amounts of data asynchronously.
+In this chapter, we delve into the benchmark results of two key algorithms applied using various strategies and implementations. These algorithms can be understood as abstract representations of real-world tasks that involve processing large amounts of data asynchronously. The two main algorithms under consideration are:
 
-The data used in these tests is a collection of text files from Project Gutenberg, a vast digital library of thousands of free eBooks. Project Gutenberg offers a wide variety of books in different languages, and for this experiment, we used a random sample of hundreds of books, providing a diverse and challenging data set for our implementations.
+\begin{enumerate}
+\item Finding the largest word in a set of files
+\item Grouping of words based on their sizes, known as the "group words" operation
+\end{enumerate}
 
-These books contain a variety of words with differing lengths, which makes the task of finding the largest word non-trivial and interesting from a computational perspective. By utilizing such a substantial data set, we ensure that our performance metrics accurately reflect the effectiveness of each implementation under realistic conditions.
+The "group word" operation identifies words within a specified size range in a dataset. The algorithm then returns a collection of these words, along with a count of their occurrences, and is particularly designed to output the most recurring words within the specified range. This operation presents an intriguing computational challenge as it requires efficient data retrieval, processing, and frequency analysis.
 
-During the implementations, was made a conscious attempt to keep the operation pipelines as similar as possible across the different technologies. This endeavor aimed to create a fair and representative evaluation of the behaviors of each technology. By maintaining consistency in pipeline operations, we can more accurately attribute performance differences to the underlying technology, rather than variations in the implemented code. This approach brings us closer to a true comparison of how each technology handles the challenges of asynchronous I/O data retrieval and processing.
+Conversely, finding the largest word in a set of files, although seemingly simple, becomes a non-trivial task when considering vast amounts of data.
 
-In certain instances, particularly with JAVA, the need to incorporate external libraries for non-blocking asynchronous file retrieval arose. This requirement highlights a significant attribute of working within various programming environments - the availability of native functions or the dependence on third-party solutions. While some environments have inbuilt support for these operations, others lean heavily on libraries provided by the community or vendors. Interestingly, this aspect of the project mirrors the challenges often faced in non-academic, real-world environments, where the necessity to adapt and find suitable solutions is a common part of the development process.
+The data used in these tests is a collection of text files from Project Gutenberg, a large digital library of thousands of free eBooks. Project Gutenberg offers a wide variety of books in different languages, and for this experiment, we used a random sample of hundreds of books, providing a diverse and challenging dataset for our implementations.
+
+During the implementations, a conscious effort was made to keep the operation pipelines as similar as possible across the different technologies for each algorithm. This endeavor aimed to create a fair and representative evaluation of the behaviors of each technology. By maintaining consistency in pipeline operations, we can more accurately attribute performance differences to the underlying technology, rather than variations in the implemented code. This approach brings us closer to a true comparison of how each technology handles the challenges of asynchronous I/O data retrieval and processing.
+
+In certain instances, particularly with Java, there was a need to incorporate external libraries for non-blocking asynchronous file retrieval. This requirement highlights the varying degrees of native support for these operations across programming environments. Some environments have native functions, while others rely heavily on third-party solutions. This aspect of the project mirrors the challenges often faced in real-world environments, where the necessity to adapt and find suitable solutions is a common part of the development process.
 
 The implementations differ in the specific programming languages, libraries, and technologies they use. This allows us to evaluate the relative strengths and weaknesses of each approach and provides valuable insights into how these factors can affect performance.
 
-After presenting and discussing each implementation and its results, we will be able to compare them directly. This will enable us to draw meaningful conclusions about the performance of various strategies and technologies when applied to the same task under the same conditions. Specifically, we are interested in how the performance of a given strategy or technology can vary across different programming frameworks.
+After presenting and discussing each implementation and its results, we will be able to directly compare them. This will enable us to draw meaningful conclusions about the performance of the strategies and technologies when applied to the same task under the same conditions. Specifically, we are interested in how the performance of a given strategy or technology can vary across different programming frameworks when tasked with finding the largest word and executing the group word operation.
 
 \section{.NET Implementation}
 \label{sec:dotnet_implementation}
-As previously discussed, the .NET framework provides...
+\begin{table}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|c|c|}
+    \hline
+    \textbf{Strategy} & \textbf{Processing Time Average Run 1 (ms)} & \textbf{Processing Time Average Run 2 (ms)} \\ \hline
+    RunCountWordsBaseline & 63765.67 & 49880.33 \\ \hline
+    RunSyncTest & 43921.67 & 36062.67 \\ \hline
+    RunAsyncEnumerableTest & 62422 & 57870 \\ \hline
+    RunRxTest & 46833.33 & 37015.66 \\ \hline
+    \end{tabular}%
+    }
+    \caption{Processing times for different strategies for "Count Words".}
+    \label{tab:strategies_times_count_words}
+\end{table}
+
+\begin{figure}[H]
+    \raggedright
+    \begin{tikzpicture}
+    \begin{axis}[
+        ybar=2*\pgflinewidth,
+        width=1.0\textwidth,
+        height=0.4\textwidth,
+        bar width=15pt,
+        enlargelimits=0.15,
+        legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
+        ylabel={Processing Time Average (ms)},
+        symbolic x coords={RunCountWordsBaseline, RunSyncTest, RunAsyncEnumerableTest, RunRxTest},
+        xtick=data,
+        xticklabel style={rotate=45,anchor=east},
+        nodes near coords,
+        nodes near coords align={vertical},
+        ]
+    \addplot coordinates {(RunCountWordsBaseline, 63765.67) (RunSyncTest, 43921.67) (RunAsyncEnumerableTest, 62422) (RunRxTest, 46833.33)};
+    \addplot coordinates {(RunCountWordsBaseline, 49880.33) (RunSyncTest, 36062.67) (RunAsyncEnumerableTest, 57870) (RunRxTest, 37015.66)};
+    \legend{Run 1, Run 2}
+    \end{axis}
+    \end{tikzpicture}
+    \caption{Processing times for different strategies for "Count Words" for two runs.}
+    \label{fig:count_words_processing_times}
+\end{figure}
+
 
 \section{Java/Kotlin Implementation}
 \label{sec:java_implementation}
 
-In this section, we will present the different strategies utilized in Java and Kotlin implementations for file processing and compare their performances.
-In the case of Java, asynchronous file reading isn't directly supported by the standard libraries. To overcome this limitation and maintain parity with the other implementations, we made use of a library named \texttt{AsyncFiles}. This library was developed by Professor Jorge Martins of the Lisbon Engineering Superior Institute. It provides an efficient and straightforward way to perform asynchronous file reading operations in Java.
-
-It's important to note that by utilizing the \texttt{AsyncFiles} library, which provides a \texttt{Publisher}, we can ensure the preservation of the core pipeline semantics across different implementations. This is facilitated by the fact that a \texttt{Publisher} can serve as a data source in both RxJava and Reactor Flux implementations. Additionally, the \texttt{AsyncFiles} library offers a method that returns a Flow, thereby making the library compatible with Kotlin implementations as well.
-The table below summarizes the strategies and their respective processing times:
+In this section, we will present the different strategies utilized in Java and Kotlin implementations for file processing and compare their performances. In the case of Java, asynchronous file reading isn't directly supported by the standard libraries. To overcome this limitation and maintain parity with the other implementations, we made use of a library named \texttt{AsyncFiles}. This library was developed by Professor Jorge Martins of the Lisbon Engineering Superior Institute. It provides an efficient and straightforward way to perform asynchronous file reading operations in Java.
 
 \subsection{Strategies}
 \label{subsec:strategies}
+
 
 \subsubsection{Kotlin Flow}
 \label{subsubsec:kotlin_flow}
@@ -81,46 +126,159 @@ This strategy represents a traditional approach to dealing with I/O operations -
 \subsection{Results}
 \label{subsubsec:results}
 
+\subsubsection{Biggest Word Results}
+\label{subsubsec:biggest_word_results}
 
 \begin{table}[h!]
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|c|}
-\hline
-\textbf{Strategy} & \textbf{Processing Time Average (ms)} \\
-\hline
-NIO Reactor Flux & 1148 \\
-\hline
-NIO Reactor Flux with Concurrency (use of \texttt{parallel()}) & 1002 \\
-\hline
-NIO Observable RXJava & 945 \\
-\hline
-NIO Observable with Concurrency (use of \texttt{parallel()})& 841 \\
-\hline
-Blocking Reader in Streams & 3897 \\
-\hline
-Blocking Reader MultiThread  & 691 \\
-\hline
-Blocking Reader Streams with Concurrency & 3011 \\
-\hline
-NIO Baseline & 912 \\
-\hline
-Concurrent Processing with Kotlin Flow & 2435 \\
-\hline
-Sequential Processing with Kotlin Flow & 5050 \\
-\hline
-Kotlin Flow IO Blocking Operations & 5216 \\
-\hline
-\end{tabular}%
-}
-\caption{Processing times for different Java/Kotlin strategies.}
-\label{tab:strategies_times}
-\end{table}
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Strategy} & \textbf{Processing Time Average (ms)} \\ \hline
+    NIO Reactor Flux & 1148 \\ \hline
+    NIO Reactor Flux with Concurrency (use of \texttt{parallel()}) & 1002 \\ \hline
+    NIO Observable RXJava & 945 \\ \hline
+    NIO Observable with Concurrency (use of \texttt{parallel()})& 841 \\ \hline
+    Blocking Reader in Streams & 3897 \\ \hline
+    Blocking Reader MultiThread  & 691 \\ \hline
+    Blocking Reader Streams with Concurrency & 3011 \\ \hline
+    NIO Baseline & 912 \\ \hline
+    Concurrent Processing with Kotlin Flow & 2435 \\ \hline
+    Sequential Processing with Kotlin Flow & 5050 \\ \hline
+    Kotlin Flow IO Blocking Operations & 5216 \\ \hline
+    \end{tabular}%
+    }
+    \caption{Processing times for different Java/Kotlin strategies for "Biggest Word".}
+    \label{tab:strategies_times_biggest_word}
+    \end{table}
     
-DRAW TO BE REVIEWED:    
-As observed in the results, the choice of strategy and its implementation can significantly impact the performance of file processing. Generally, the concurrent and multi-threaded strategies tend to outperform the sequential and IO-blocking operations.% However, it's important to consider that each approach may have its unique benefits and potential drawbacks, depending on the specific context and requirements of the task at hand.
+   
+    \begin{figure}[H]
+        \raggedright
+        \begin{tikzpicture}
+        \begin{axis}[
+            ybar=2*\pgflinewidth,
+            width=1.0\textwidth,
+            height=0.4\textwidth,
+            bar width=20pt,
+            enlargelimits=0.15,
+            legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
+            ylabel={Processing Time Average (ms)},
+            symbolic x coords={NIO Reactor Flux, NIO Reactor Flux with Concurrency, NIO Observable RXJava, NIO Observable with Concurrency, Blocking Reader in Streams, Blocking Reader MultiThread, Blocking Reader Streams with Concurrency, NIO Baseline, Concurrent Processing with Kotlin Flow, Sequential Processing with Kotlin Flow, Kotlin Flow IO Blocking Operations},
+            xtick=data,
+            xticklabel style={rotate=45,anchor=east},
+            nodes near coords,
+            nodes near coords align={vertical},
+            ]
+        \addplot coordinates {(NIO Reactor Flux, 1148) (NIO Reactor Flux with Concurrency, 1002) (NIO Observable RXJava, 945) (NIO Observable with Concurrency, 841) (Blocking Reader in Streams, 3897) (Blocking Reader MultiThread, 691) (Blocking Reader Streams with Concurrency, 3011) (NIO Baseline, 912) (Concurrent Processing with Kotlin Flow, 2435) (Sequential Processing with Kotlin Flow, 5050) (Kotlin Flow IO Blocking Operations, 5216)};
+        \end{axis}
+        \end{tikzpicture}
+        \caption{Processing times for different Java/Kotlin strategies for "Biggest Word".}
+        \label{fig:biggest_word_processing_times}
+    \end{figure}
+    
+
+    
+    \subsubsection{Group Word Results}
+    \label{subsubsec:group_word_results}
+    
+    \begin{table}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Strategy} & \textbf{Processing Time Average (ms)} \\ \hline
+    GroupWordsBaseline & 4420 \\ \hline
+    GroupWordsRXJava & 7531 \\ \hline
+    GroupWordsInRectorCoreFlux & 9074 \\ \hline
+    GroupWordsBlockingReaderInMultiThread & 7850 \\ \hline
+    GroupWordsBlockingReaderInStreams & 7323 \\ \hline
+    GroupWordsWithFlow (Kotlin) & 15021 \\ \hline
+    \end{tabular}%
+    }
+    \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
+    \label{tab:strategies_times_group_words}
+    \end{table}
+    
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+        \begin{axis}[
+            ybar=2*\pgflinewidth,
+            width=0.8\textwidth,
+            height=0.4\textwidth,
+            bar width=20pt,
+            enlargelimits=0.15,
+            legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
+            ylabel={Processing Time Average (ms)},
+            symbolic x coords={GroupWordsBaseline, GroupWordsRXJava, GroupWordsInRectorCoreFlux, GroupWordsBlockingReaderInMultiThread, GroupWordsBlockingReaderInStreams, GroupWordsWithFlow (Kotlin)},
+            xtick=data,
+            xticklabel style={rotate=45,anchor=east},
+            nodes near coords,
+            nodes near coords align={vertical},
+            ]
+        \addplot coordinates {(GroupWordsBaseline, 4420) (GroupWordsRXJava, 7531) (GroupWordsInRectorCoreFlux, 9074) (GroupWordsBlockingReaderInMultiThread, 7850) (GroupWordsBlockingReaderInStreams, 7323) (GroupWordsWithFlow (Kotlin), 15021)};
+        \end{axis}
+        \end{tikzpicture}
+        \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
+        \label{fig:processing_times}
+        \end{figure}
+
+... 
+% Here you conclude the entire chapter by summarizing your findings and interpretations.
+
 
 \section{JavaScript Implementation}
 \label{sec:js_implementation}
-In the context of JavaScript...
+\begin{table}[h!]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Strategy} & \textbf{Processing Time Average (ms)} \\ \hline
+    Baseline JS & 8199.98 \\ \hline
+    Baseline Stream JS & 23244.29 \\ \hline
+    RxStrategy JS & 13888.70 \\ \hline
+    \end{tabular}%
+    }
+    \caption{Processing times for different JavaScript strategies for "Biggest Word".}
+    \label{tab:strategies_times_biggest_word_js}
+\end{table}
 
+\begin{figure}[H]
+    \raggedright
+    \begin{tikzpicture}
+    \begin{axis}[
+        ybar=2*\pgflinewidth,
+        width=1.0\textwidth,
+        height=0.4\textwidth,
+        bar width=20pt,
+        enlargelimits=0.15,
+        legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
+        ylabel={Processing Time Average (ms)},
+        symbolic x coords={Baseline JS, Baseline Stream JS, RxStrategy JS},
+        xtick=data,
+        xticklabel style={rotate=45,anchor=east},
+        nodes near coords,
+        nodes near coords align={vertical},
+        ]
+    \addplot coordinates {(Baseline JS, 8199.98) (Baseline Stream JS, 23244.29) (RxStrategy JS, 13888.70)};
+    \end{axis}
+    \end{tikzpicture}
+    \caption{Processing times for different JavaScript strategies for "Biggest Word".}
+    \label{fig:biggest_word_processing_times_js}
+\end{figure}
+
+
+
+\subsection{Discussion}
+\label{subsec:discussion}
+
+% Here you discuss the results, as you did in the provided document.
+
+
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\end{document}

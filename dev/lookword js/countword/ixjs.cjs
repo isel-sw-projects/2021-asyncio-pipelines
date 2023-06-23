@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const fsPromises = fs.promises;
 const from = require('ix/iterable').from;
-const { filter, map, reduce,flatMap } = require('ix/iterable/operators');
+const { filter, map, reduce,flatMap, skip } = require('ix/iterable/operators');
 
 async function* getFilesFromDirectoryGenerator(dir) {
   const dirents = await fsPromises.readdir(dir, { withFileTypes: true });
@@ -23,10 +23,7 @@ function countWordsInFile(filePath, minLength, maxLength) {
 
   return from(lines)
     .pipe(
-      filter(() => {
-        skipLines--;
-        return skipLines <= 0;
-      }),
+      skip(14),
       takeWhile(line => !line.includes('*** END OF ')),
       flatMap(line => line.split(' ')),
       filter(word => word.length >= minLength && word.length <= maxLength),
