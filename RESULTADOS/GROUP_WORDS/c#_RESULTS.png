@@ -1,0 +1,114 @@
+
+
+ 1 - Count words in test directory,
+ 2 - Find biggest word in test directory
+ 3 - Run tests with synchronous sources only
+ 4 - Run tests with synchronous sources only but with paralelism
+ 5 - Run Find word tests
+ esc - To leave
+
+
+
+1
+Tests to BenchmarckIOCountWordsStrategies initiated:
+RunCountWordsBaseline run 1 took: 121859 miliseconds
+RunCountWordsBaseline run 2 took: 62625 miliseconds
+RunCountWordsBaseline run 3 took: 67500 miliseconds
+RunCountWordsBaseline run 4 took: 61172 miliseconds
+
+
+Results:
+Word: should, Count: 118266
+Word: little, Count: 114581
+Word: before, Count: 105634
+Word: himself, Count: 88243
+Word: without, Count: 80416
+Word: through, Count: 73955
+Word: people, Count: 72682
+Word: thought, Count: 63306
+Word: against, Count: 59082
+Word: things, Count: 57823
+
+
+
+Average time for RunCountWordsBaseline (last 3 runs): 63765,6666666667 miliseconds
+
+
+RunSyncTest run 1 took: 39969 miliseconds
+RunSyncTest run 2 took: 43140 miliseconds
+RunSyncTest run 3 took: 45235 miliseconds
+RunSyncTest run 4 took: 43390 miliseconds
+
+
+Results:
+Word: should, Count: 118258
+Word: little, Count: 114581
+Word: before, Count: 105629
+Word: himself, Count: 88243
+Word: without, Count: 80323
+Word: through, Count: 73954
+Word: people, Count: 72681
+Word: thought, Count: 63306
+Word: against, Count: 59082
+Word: things, Count: 57823
+
+
+
+Average time for RunSyncTest (last 3 runs): 43921,6666666667 miliseconds
+
+
+RunAsyncEnumerableTest run 1 took: 67578 miliseconds
+RunAsyncEnumerableTest run 2 took: 70109 miliseconds
+RunAsyncEnumerableTest run 3 took: 59391 miliseconds
+RunAsyncEnumerableTest run 4 took: 57766 miliseconds
+
+
+Results:
+Word: should, Count: 118258
+Word: little, Count: 114581
+Word: before, Count: 105629
+Word: himself, Count: 88243
+Word: without, Count: 80323
+Word: through, Count: 73954
+Word: people, Count: 72681
+Word: thought, Count: 63306
+Word: against, Count: 59082
+Word: things, Count: 57823
+
+
+
+Average time for RunAsyncEnumerableTest (last 3 runs): 62422 miliseconds
+
+
+RunRxTest run 1 took: 65734 miliseconds
+RunRxTest run 2 took: 38594 miliseconds
+RunRxTest run 3 took: 53953 miliseconds
+RunRxTest run 4 took: 47953 miliseconds
+
+
+Results:
+Word: should, Count: 118258
+Word: little, Count: 114581
+Word: before, Count: 105629
+Word: himself, Count: 88243
+Word: without, Count: 80323
+Word: through, Count: 73954
+Word: people, Count: 72681
+Word: thought, Count: 63306
+Word: against, Count: 59082
+Word: things, Count: 57823
+
+
+
+Average time for RunRxTest (last 3 runs): 46833,3333333333 miliseconds
+
+
+ 1 - Count words in test directory,
+ 2 - Find biggest word in test directory
+ 3 - Run tests with synchronous sources only
+ 4 - Run tests with synchronous sources only but with paralelism
+ 5 - Run Find word tests
+ esc - To leave
+
+
+

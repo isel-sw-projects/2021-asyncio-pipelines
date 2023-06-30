@@ -61,14 +61,26 @@ async function countWordsInDirectory(directoryPath, minLength, maxLength) {
 async function benchmark() {
     const folderPath = 'F:/escola/MEIC/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg';
     try {
-        console.log('Starting baseline benchmark:');
-        console.time('Baseline Benchmark');
-        const wordCounts = await countWordsInDirectory(folderPath,5,10);
-        console.timeEnd('Baseline Benchmark');
+        console.log('Starting pipeline benchmark:');
+        console.time('Pipeline Benchmark');
+        const wordCounts = await countWordsInDirectory(folderPath);
+        console.timeEnd('Pipeline Benchmark');
+
+        // Find the most recurring word
+        let mostRecurringWord = '';
+        let maxCount = 0;
+        for (const [word, count] of Object.entries(wordCounts)) {
+            if (count > maxCount) {
+                mostRecurringWord = word;
+                maxCount = count;
+            }
+        }
+
+        console.log(`Most recurring word: ${mostRecurringWord}, Number of occurrences: ${maxCount}`);
     } catch (error) {
         console.error('Error:', error);
     }
-};
+}
 
 export default benchmark;
 

@@ -5,6 +5,8 @@
 
 In this chapter, we delve into the benchmark results of two key algorithms applied using various strategies and implementations. These algorithms can be understood as abstract representations of real-world tasks that involve processing large amounts of data asynchronously. The two main algorithms under consideration are:
 
+The main tasks can be broadly divided into two operations:
+
 \begin{enumerate}
 \item Finding the largest word in a set of files
 \item Grouping of words based on their sizes, known as the "group words" operation
@@ -16,6 +18,55 @@ Conversely, finding the largest word in a set of files, although seemingly simpl
 
 The data used in these tests is a collection of text files from Project Gutenberg, a large digital library of thousands of free eBooks. Project Gutenberg offers a wide variety of books in different languages, and for this experiment, we used a random sample of hundreds of books, providing a diverse and challenging dataset for our implementations.
 
+To give a better idea of the operations, we present the pseudocode for each operation:
+
+
+For the "group words" operation:
+
+\begin{verbatim}
+FUNCTION GroupWords(folder, minLength, maxLength)
+    Create an empty map 'wordMap'
+    FOR each file in 'folder' DO
+        Skip the first 14 lines of the file (These are typically metadata in Gutenberg project files)
+        FOR each remaining line in 'file' DO
+            IF the line contains "*** END OF" THEN
+                Break (This is the end of the actual content in Gutenberg project files)
+            END IF
+            FOR each word in 'line' DO
+                IF length of 'word' is between 'minLength' and 'maxLength' THEN
+                    Increment the count of 'word' in 'wordMap'
+                END IF
+            END FOR
+        END FOR
+    END FOR
+    RETURN 'wordMap'
+END FUNCTION
+
+\end{verbatim}
+
+For finding the largest word:
+
+
+\begin{verbatim}
+FUNCTION FindLargestWord(folder)
+    Set 'largestWord' as an empty string
+    FOR each file in 'folder' DO
+        Skip the first 14 lines of the file (These are typically metadata in Gutenberg project files)
+        FOR each remaining line in 'file' DO
+            IF the line contains "*** END OF" THEN
+                Break (This is the end of the actual content in Gutenberg project files)
+            END IF
+            FOR each word in 'line' DO
+                IF length of 'word' is greater than length of 'largestWord' THEN
+                    Set 'largestWord' as 'word'
+                END IF
+            END FOR
+        END FOR
+    END FOR
+    RETURN 'largestWord'
+END FUNCTION
+\end{verbatim}
+
 During the implementations, a conscious effort was made to keep the operation pipelines as similar as possible across the different technologies for each algorithm. This endeavor aimed to create a fair and representative evaluation of the behaviors of each technology. By maintaining consistency in pipeline operations, we can more accurately attribute performance differences to the underlying technology, rather than variations in the implemented code. This approach brings us closer to a true comparison of how each technology handles the challenges of asynchronous I/O data retrieval and processing.
 
 In certain instances, particularly with Java, there was a need to incorporate external libraries for non-blocking asynchronous file retrieval. This requirement highlights the varying degrees of native support for these operations across programming environments. Some environments have native functions, while others rely heavily on third-party solutions. This aspect of the project mirrors the challenges often faced in real-world environments, where the necessity to adapt and find suitable solutions is a common part of the development process.
@@ -24,82 +75,80 @@ The implementations differ in the specific programming languages, libraries, and
 
 After presenting and discussing each implementation and its results, we will be able to directly compare them. This will enable us to draw meaningful conclusions about the performance of the strategies and technologies when applied to the same task under the same conditions. Specifically, we are interested in how the performance of a given strategy or technology can vary across different programming frameworks when tasked with finding the largest word and executing the group word operation.
 
+\clearpage
 
 \section{Strategies}
 \label{subsec:strategies}
 
-The aim of this section is to define various strategies that we will be implementing across different languages and technologies. While some of these strategies can be used universally across all platforms, others are platform-specific due to the constraints of the environment.
+In this work were used various strategies implemented across different languages and technologies, some of those we already discussed in charpter \ref{cha:users_manual}. While some of these strategies can be used universally across all platforms, others are platform-specific due to the constraints of the environment.
+Bellow, you will find a brief enumeration of the strategies used,
 
-\subsubsection{Reactive Extensions (Rx)}
-\label{subsubsec:rx}
-Reactive Extensions (Rx) is a library for composing asynchronous and event-based programs using observable sequences. This model promotes a focus on data streams and the propagation of change. Rx has implementations in several programming languages including .NET (Rx.NET), Java (RxJava), and JavaScript (RxJS).
-
-\subsubsection{Reactor (Flux)}
-\label{subsubsec:reactor_flux}
-Reactor is a fourth-generation reactive library, based on the Reactive Streams specification, for building non-blocking applications on the JVM based on Java 8 and later. The Flux class, a Reactive Streams Publisher with reactive operators, emits 0 to N elements, and then completes (successfully or with an error).
-
-\subsubsection{Blocking Reader in Streams}
-\label{subsubsec:blocking_reader_streams}
-This strategy uses Java's streams interface to read the data in a blocking manner. Due to the blocking nature of the I/O operations, this approach may lead to slower processing times as it has to wait for each I/O operation to complete.
-
-\subsubsection{Multi-threading}
-\label{subsubsec:multithread}
-This strategy leverages multi-threading to process data concurrently. By distributing the work across multiple threads, it often results in improved performance, especially for CPU-bound tasks.
-
-\subsubsection{Kotlin Flow}
-\label{subsubsec:kotlin_flow}
-In Kotlin, the concept of 'flows' is integral to the Coroutines library. A Flow is an asynchronous data stream that sequentially emits values and completes normally or with an exception.
-
-\subsubsection{Concurrency}
-\label{subsubsec:concurrency}
-Concurrency is used in combination with several of the aforementioned strategies such as Kotlin Flow and Rx. Concurrency aims to improve the performance of data processing by executing multiple tasks in parallel.
-
-\subsubsection{Baseline}
+\subsection{Baseline}
 \label{subsubsec:baseline}
 The Baseline strategy is a straightforward implementation without any pipelining or other overhead. It serves as a reference for comparison. This method may use traditional synchronous I/O operations and sequential processing.
 
 These strategies will be applied to our chosen algorithms and implemented in the .NET, Java, and Kotlin environments. It's important to note that the aim is not to find the 'best' strategy but to demonstrate the relative strengths and weaknesses of each approach, how they can affect performance, and how they fit into different programming paradigms.
 
+\subsection{Asynchronous Baseline}
+\label{subsubsec:baseline}
+The "Asynchronous Baseline" strategy refers to a standard implementation of the baseline algorithm but using non-blocking IO operations. E.g. using async/await in C\# IO operation but without the pipeline operations.
+
+\subsection{Reactive Extensions (Rx)}
+\label{subsubsec:rx}
+Reactive Extensions (Rx) as discussed in charpter two. This model promotes a focus on data streams and the propagation of change. In the ambit of this work, were made implementations in several three programming environments, namely: .NET (Rx.NET), Java (RxJava), and JavaScript (RxJS).
+
+\subsection{Reactor (Flux)}
+\label{subsubsec:reactor_flux}
+As explained in charpter two, Reactor is a fourth-generation reactive library, based on the Reactive Streams specification, for building non-blocking applications on the JVM based on Java 8 and later. The Flux class, a Reactive Streams Publisher with reactive operators, emits 0 to N elements, and then completes (successfully or with an error). 
+This strategy will be benchmark using JAVA.
+
+\subsection{Streams}
+\label{subsubsec:blocking_reader_streams}
+This strategy uses Java's streams interface to read the data in a blocking manner. Due to the blocking nature of the I/O operations, this approach may lead to slower processing times as it has to wait for each I/O operation to complete.
+
+\subsection{Multi-threading}
+\label{subsubsec:multithread}
+This strategy leverages multi-threading to process data concurrently. By distributing the work across multiple threads, it often results in improved performance, especially for CPU-bound tasks.
+
+\subsection{Kotlin Flow}
+\label{subsubsec:kotlin_flow}
+Kotlin Flow, will be employed in our Java environment testing.
+
+\subsection{LINQ}
+\label{subsubsec:linq}
+For our .NET environment, among other technologies, we will utilize LINQ (Language Integrated Query), a Microsoft .NET Framework component adding native data querying capabilities to .NET languages.
+
+\subsection{IxJS}
+\label{subsubsec:ixjs}
+As explained in charpter two, in JS one of the technologies used will be IxJS, or Interactive Extensions for JavaScript.
 
 
-\section{.NET Implementation}
+\clearpage
+
+\section{.NET Benchmarking}
 \label{sec:dotnet_implementation}
 
+In this subsection, we focus on the benchmark using different strategies in .NET programming environment.
 
 
-\subsubsection{Approaches Explanation}
 
-\subsection{Sync Baseline}
-
-The Sync Baseline approach is the most straightforward and is synchronous, meaning it processes one task at a time and waits for each operation to complete before moving on to the next. This strategy reads a file line by line and extracts the longest word from each line. It repeats this for each file in the directory.
-
-\subsection{Async Blocking Read}
-
-The Async Blocking Read approach applies asynchronous programming to read file content. This approach reads files in blocks, with each block being processed for its longest word. However, while it does use async/await, it does not truly take full advantage of asynchrony as it still blocks on the read operation to complete before processing the block. 
-
-\subsection{Async Single Task}
-
-The Async Single Task approach is an asynchronous version of the baseline strategy. It uses async and await keywords to allow other tasks to execute when the current one is waiting for I/O operations to complete, improving the overall performance of the program. It reads a file line by line, extracts the longest word from each line, and repeats this for each file in the directory. The processing of each file is wrapped in a separate Task, but the processing of the files is still done sequentially. 
-
-\subsection{Async Baseline}
-
-The Async Baseline approach is similar to the Async Single Task approach but with one major difference: the processing of files is done in parallel, meaning it doesn't wait for a file to be completely processed before starting to process the next file. This strategy allows for better utilization of system resources, especially when dealing with a large number of files. 
-
-\subsection{Linq Sync}
-
-The Linq Sync approach uses LINQ (Language Integrated Query) to process the files. It is a synchronous approach that utilizes the powerful querying capabilities of LINQ to read and process the files. Despite being synchronous, LINQ's declarative nature can lead to more readable and concise code.
-
-\subsection{Async Enumerable}
-
-The Async Enumerable approach uses the IAsyncEnumerable interface to asynchronously stream and process data as it becomes available, instead of waiting for all data to be available as with traditional enumerables. This strategy can provide a performance boost when dealing with large datasets.
-
-\subsection{Rx}
-
-The Rx approach uses the Reactive Extensions (Rx) library for .NET, which provides tools for composing asynchronous and event-based programs using observable sequences and LINQ-style query operators. Like Async Enumerable, it can also stream and process data as it becomes available.
-
-
-\subsubsection{Biggest Word Results}
+\subsection{Find biggest word  results}
 \label{subsubsec:biggest_word_results_cs}
+
+For the find biggest word algorithm, are used the following strategies:
+
+\begin{itemize}
+    \item \textbf{Sync Baseline}: This strategy serves as the basic approach for finding the biggest word and acts as a baseline for comparison.
+    \item \textbf{Async Baseline }: This strategy uses a single asynchronous task to find the biggest word.
+    \item \textbf{Multithread }: A multi-threading approach that uses asynchronous blocking read operations.
+    \item \textbf{Linq Sync}: This strategy uses Language Integrated Query (LINQ) in a synchronous manner.
+    \item \textbf{Async Enumerable}: This approach uses asynchronous programming with enumerable collections.
+    \item \textbf{Rx}: The Reactive Extensions (Rx) library is used to handle data sequences asynchronously and event-based.
+    \item \textbf{Rx Async File Read}: This strategy uses the Reactive Extensions (Rx) library with asynchronous file reading operations.
+\end{itemize}
+
+
+In the following table and graphic, we have the results in seconds for each strategie:
 
 \begin{table}[H]
     \centering
@@ -108,8 +157,8 @@ The Rx approach uses the Reactive Extensions (Rx) library for .NET, which provid
     \hline
     \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
     Sync Baseline & 15.8 \\ \hline
-    Multithread (Async Blocking Read) & 1.6 \\ \hline
-    Async Baseline (Async Single Task) & 2.8 \\ \hline
+    Multithread  & 1.6 \\ \hline
+    Async Baseline & 2.8 \\ \hline
     Linq Sync & 22.2 \\ \hline
     Async Enumerable & 30 \\ \hline
     Rx & 23 \\ \hline
@@ -128,7 +177,7 @@ The Rx approach uses the Reactive Extensions (Rx) library for .NET, which provid
     width=1.0\textwidth,
     height=0.4\textwidth,
     bar width=20pt,
-    enlargelimits=0.15,
+    enlargelimits=0.09,
     legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
     ylabel={Processing Time Average (s)},
     symbolic x coords={Sync Baseline, Multithread, Async Baseline, Linq Sync, Async Enumerable, Rx, Rx Async File Read},
@@ -144,9 +193,20 @@ The Rx approach uses the Reactive Extensions (Rx) library for .NET, which provid
     \label{fig:biggest_word_results_cs_2}
 \end{figure}
 
+\clearpage
 
-\subsubsection{Group Word Results}
+
+\subsection{Group Word Results}
 \label{subsubsec:group_word_processing_times_cs}
+
+In this subsection, we concentrate on the task of grouping words from a file using different strategies. The strategies that we evaluate here include:
+
+\begin{itemize}
+    \item \textbf{RunCountWordsBaseline}: This strategy serves as the basic approach for word grouping and acts as a baseline for comparison.
+    \item \textbf{RunSyncTest}: A synchronous approach that handles tasks in a sequential manner.
+    \item \textbf{RunAsyncEnumerableTest}: This strategy uses an asynchronous approach with enumerable collections.
+    \item \textbf{RunRxTest}: Here, the Reactive Extensions (Rx) library is used to handle data sequences asynchronously and event-based.
+\end{itemize}
 
 
 \begin{table}[H]
@@ -173,7 +233,7 @@ The Rx approach uses the Reactive Extensions (Rx) library for .NET, which provid
         width=1.0\textwidth,
         height=0.4\textwidth,
         bar width=20pt,
-        enlargelimits=0.15,
+        enlargelimits=0.09,
         legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
         ylabel={Processing Time Average (s)},
         symbolic x coords={RunCountWordsBaseline, RunSyncTest, RunAsyncEnumerableTest, RunRxTest},
@@ -190,18 +250,29 @@ The Rx approach uses the Reactive Extensions (Rx) library for .NET, which provid
 \end{figure}
 
 
+\clearpage
 
-\section{Java/Kotlin Implementation}
+\section{Java/Kotlin Benchmarking}
 \label{sec:java_implementation}
 
-In this section, we will present the different strategies utilized in Java and Kotlin implementations for file processing and compare their performances. In the case of Java, asynchronous file reading isn't directly supported by the standard libraries. To overcome this limitation and maintain parity with the other implementations, we made use of a library named \texttt{AsyncFiles}. This library was developed by Professor Jorge Martins of the Lisbon Engineering Superior Institute. It provides an efficient and straightforward way to perform asynchronous file reading operations in Java.
+In this section, we explore and assess diverse strategies applied in Java and Kotlin to process files, and we scrutinize their performances solving the "Find Word" an "Group Word algorithms"
 
 
-\subsection{Results}
-\label{subsubsec:results}
-
-\subsubsection{Biggest Word Results}
+\subsection{Biggest Word Results}
 \label{subsubsec:biggest_word_results}
+
+The strategies used in JAVA are:
+
+\begin{itemize}
+    \item \textbf{NIO Baseline}: This strategy illustrates a basic non-blocking I/O operation, serving as a comparison baseline.
+    \item \textbf{NIO Reactor Flux and NIO Reactor Flux with Concurrency}: These strategies leverage the Reactor Flux model from Java's Project Reactor library. The former follows a standard non-concurrent processing model, while the latter introduces parallelization for improved performance.
+    \item \textbf{NIO Observable RXJava and NIO Observable with Concurrency}: These strategies employ the RXJava library. They replace the Reactor Flux with Observables, with the distinction being made between non-concurrent and concurrent processing.
+    \item \textbf{Blocking Reader in Streams, Blocking Reader MultiThread, and Blocking Reader Streams with Concurrency}: These strategies use Java's Streams API and explore handling of blocking operations under three different conditions: standard usage, with multithreading, and with concurrency within streams.
+    
+\end{itemize}
+
+
+In the following table and graphic, we have the results in seconds for each strategy:
 
 \begin{table}[H]
     \centering
@@ -235,7 +306,7 @@ In this section, we will present the different strategies utilized in Java and K
             width=1.0\textwidth,
             height=0.4\textwidth,
             bar width=20pt,
-            enlargelimits=0.15,
+            enlargelimits=0.09,
             legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
             ylabel={Processing Time Average (s)},
             symbolic x coords={NIO Reactor Flux, NIO Reactor Flux with Concurrency, NIO Observable RXJava, NIO Observable with Concurrency, Blocking Reader in Streams, Blocking Reader MultiThread, Blocking Reader Streams with Concurrency, NIO Baseline, Concurrent Processing with Kotlin Flow, Sequential Processing with Kotlin Flow, Kotlin Flow IO Blocking Operations},
@@ -252,22 +323,36 @@ In this section, we will present the different strategies utilized in Java and K
     \end{figure}
     
 
-    
-    \subsubsection{Group Word Results}
+    \clearpage
+
+    \subsection{Group Word Results}
     \label{subsubsec:group_word_results}
     
+   The strategies discussed here include:
+
+    \begin{itemize}
+        \item \textbf{Baseline}: This strategy serves as a baseline for comparison. It illustrates a basic non-blocking I/O operation without the use of any high-level constructs like Reactor Flux or Observable.
+        \item \textbf{RXJava}: This strategy employs the RXJava library, popular for building asynchronous and event-driven applications.
+        \item \textbf{Reactor Core Flux}: This strategy leverages the Reactor Flux model available in Java's Project Reactor library, providing an efficient approach to handling asynchronous data sequences.
+        \item \textbf{Blocking IO W MultiThread}: This strategy uses Java's Streams API and explores handling of blocking operations with the help of multi-threading.
+        \item \textbf{Streams}: Similar to the previous strategy, this one uses Java's Streams API, but handles blocking operations within streams.
+        \item \textbf{Flow (Kotlin)}: This strategy utilizes Kotlin's Coroutines and Flow API, which are particularly well-suited for handling multiple values that are emitted sequentially.
+    \end{itemize}
+
+    In the following table and graphic, we have the results in seconds for each strategy:
+
     \begin{table}[H]
         \centering
         \resizebox{\textwidth}{!}{%
         \begin{tabular}{|l|c|}
         \hline
         \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
-        GroupWordsBaseline & 1.3 \\ \hline
-        GroupWordsRXJava & 5.8 \\ \hline
-        GroupWordsInRectorCoreFlux & 12.0 \\ \hline
-        GroupWordsBlockingReaderInMultiThread & 1.2 \\ \hline
-        GroupWordsBlockingReaderInStreams & 1.8 \\ \hline
-        GroupWordsWithFlow (Kotlin) & 15.0\\ \hline
+        Baseline & 1.3 \\ \hline
+        RXJava & 5.8 \\ \hline
+        Reactor Core Flux & 12.0 \\ \hline
+        Blocking IO W MultiThread & 1.2 \\ \hline
+        Streams & 1.8 \\ \hline
+        Flow (Kotlin) & 15.0\\ \hline
         \end{tabular}%
         }
         \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
@@ -282,28 +367,46 @@ In this section, we will present the different strategies utilized in Java and K
             width=0.8\textwidth,
             height=0.6\textwidth,
             bar width=20pt,
-            enlargelimits=0.10,
+            enlargelimits=0.09,
             legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
             ylabel={Processing Time Average (s)},
-            symbolic x coords={GroupWordsBaseline, GroupWordsRXJava, GroupWordsInRectorCoreFlux, GroupWordsBlockingReaderInMultiThread, GroupWordsBlockingReaderInStreams, GroupWordsWithFlow (Kotlin)},
+            symbolic x coords={Baseline, RXJava, Reactor Core Flux, Blocking IO W MultiThread, Streams, Flow (Kotlin)},
             xtick=data,
             xticklabel style={rotate=45,anchor=east},
             nodes near coords,
             nodes near coords align={vertical},
             ]
-            \addplot coordinates { (GroupWordsBaseline, 1.3)  (GroupWordsRXJava, 5.8) (GroupWordsInRectorCoreFlux, 12.0) (GroupWordsBlockingReaderInMultiThread, 1.2)  (GroupWordsBlockingReaderInStreams, 1.8) (GroupWordsWithFlow (Kotlin), 15.0)};
+            \addplot coordinates { (Baseline, 1.3) (RXJava, 5.8) (Reactor Core Flux, 12.0) (Blocking IO W MultiThread, 1.2) (Streams, 1.8) (Flow (Kotlin), 15.0)};
         \end{axis}
         \end{tikzpicture}
         \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
         \label{fig:processing_times}
     \end{figure}
+    
 
+    \clearpage
 ... 
 % Here you conclude the entire chapter by summarizing your findings and interpretations.
 
 
-\section{JavaScript Implementation}
+\section{JavaScript Benchmarking}
 \label{sec:js_implementation}
+
+
+\subsection{Finding the Biggest Word}
+\label{subsec:biggest_word_js}
+
+Here, we investigate the following four (to add ixjs) strategies:
+
+\begin{itemize}
+    \item \textbf{Baseline JS}: This strategy serves as the basic JavaScript approach for finding the biggest word, acting as a baseline for comparison.
+    \item \textbf{Baseline Stream JS}: This strategy uses JavaScript streams, which provide a way to handle reading/writing files, network communications, or any kind of end-to-end information exchange in an efficient manner.
+    \item \textbf{RxStrategy JS}: This strategy leverages the Reactive Extensions for JavaScript (RxJS) library, which offers a set of methods for dealing with asynchronous data sequences in an effective way.
+\end{itemize}
+
+
+In the following table and graphic, we have the results in seconds for each strategie:
+
 \begin{table}[H]
     \centering
     \resizebox{\textwidth}{!}{%
@@ -327,7 +430,7 @@ In this section, we will present the different strategies utilized in Java and K
         width=1.0\textwidth,
         height=0.4\textwidth,
         bar width=20pt,
-        enlargelimits=0.15,
+        enlargelimits=0.09,
         legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
         ylabel={Processing Time Average (s)},
         symbolic x coords={Baseline JS, Baseline Stream JS, RxStrategy JS},
@@ -343,9 +446,15 @@ In this section, we will present the different strategies utilized in Java and K
     \label{fig:biggest_word_processing_times_js}
 \end{figure}
 
+\clearpage
 
 
-\subsection{Discussion}
+\subsection{Grouping Words}
+\label{subsec:biggest_word_js}
+
+
+
+\section{Discussion}
 \label{subsec:discussion}
 
 % Here you discuss the results, as you did in the provided document.

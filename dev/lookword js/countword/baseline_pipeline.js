@@ -55,9 +55,22 @@ async function benchmark() {
         console.time('Pipeline Benchmark');
         const wordCounts = await countWordsInDirectory(folderPath);
         console.timeEnd('Pipeline Benchmark');
+
+        // Find the most recurring word
+        let mostRecurringWord = '';
+        let maxCount = 0;
+        for (const [word, count] of Object.entries(wordCounts)) {
+            if (count > maxCount) {
+                mostRecurringWord = word;
+                maxCount = count;
+            }
+        }
+
+        console.log(`Most recurring word: ${mostRecurringWord}, Number of occurrences: ${maxCount}`);
     } catch (error) {
         console.error('Error:', error);
     }
 }
+
 
 export default benchmark;

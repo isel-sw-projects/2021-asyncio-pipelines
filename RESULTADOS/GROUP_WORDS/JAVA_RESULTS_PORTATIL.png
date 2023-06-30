@@ -1,0 +1,62 @@
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsBaseline
+INFO lookwords.AppTest perform time: 5 621 ms
+INFO lookwords.AppTest perform time: 4 476 ms
+INFO lookwords.AppTest perform time: 4 363 ms
+INFO lookwords.AppTest perform time: 4 421 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 4 420 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116732 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsRXJava
+INFO lookwords.AppTest perform time: 17 341 ms
+INFO lookwords.AppTest perform time: 8 058 ms
+INFO lookwords.AppTest perform time: 6 697 ms
+INFO lookwords.AppTest perform time: 7 838 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 7 531 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsInRectorCoreFlux
+INFO lookwords.AppTest perform time: 15 382 ms
+INFO lookwords.AppTest perform time: 7 855 ms
+INFO lookwords.AppTest perform time: 10 693 ms
+INFO lookwords.AppTest perform time: 8 675 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 9 074 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsBlockingReaderInMultiThread
+INFO lookwords.AppTest perform time: 6 205 ms
+INFO lookwords.AppTest perform time: 7 144 ms
+INFO lookwords.AppTest perform time: 8 818 ms
+INFO lookwords.AppTest perform time: 7 588 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 7 850 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsBlockingReaderInStreams
+INFO lookwords.AppTest perform time: 7 810 ms
+INFO lookwords.AppTest perform time: 7 161 ms
+INFO lookwords.AppTest perform time: 7 265 ms
+INFO lookwords.AppTest perform time: 7 543 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 7 323 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+
+jun. 23, 2023 3:57:33 DA TARDE lookwords.KotlinAppTest performWordsKotlin
+INFO: ############ class lookwords.GroupWordsStrategies.GroupWordsWithFlow
+105807
+jun. 23, 2023 3:57:51 DA TARDE lookwords.KotlinAppTest performWordsKotlin
+INFO: time: 17 671 ms
+105713
+jun. 23, 2023 3:58:08 DA TARDE lookwords.KotlinAppTest performWordsKotlin
+INFO: time: 16 650 ms
+105713
+jun. 23, 2023 3:58:21 DA TARDE lookwords.KotlinAppTest performWordsKotlin
+INFO: time: 13 793 ms
+105713
+jun. 23, 2023 3:58:36 DA TARDE lookwords.KotlinAppTest performWordsKotlin
+INFO: time: 14 621 ms
+jun. 23, 2023 3:58:36 DA TARDE lookwords.KotlinAppTest performWordsKotlin
+INFO: =====> AVERAGE: 15 021 ms
+jun. 23, 2023 3:58:36 DA TARDE lookwords.KotlinAppTest testGroupingKotlin
+INFO: The most common word with 5 to 10 chars is: should. It occurs: 105713 times.
+
+
+Process finished with exit code 0

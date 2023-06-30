@@ -16,33 +16,12 @@ async function runBenchmark(benchmarkObj, runs) {
   const durations = [];
   const wordCounts = [];
 
-  // Temporarily override console functions
-  const originalConsoleTime = console.time;
-  const originalConsoleTimeEnd = console.timeEnd;
-  const originalConsoleLog = console.log;
-  const originalConsoleInfo = console.info;
-  const originalConsoleWarn = console.warn;
-  const originalConsoleError = console.error;
-  
-  console.time = () => {};
-  console.timeEnd = () => {};
-  console.log = () => {};
-  console.info = () => {};
-  console.warn = () => {};
-  console.error = () => {};
 
   for (let i = 0; i < runs; i++) {
     const start = process.hrtime.bigint();
     const wordCount = await benchmarkObj.benchmark().catch(e => console.error(`Benchmark error: ${e}`));
     const end = process.hrtime.bigint();
 
-    // Restore original console functions
-    console.time = originalConsoleTime;
-    console.timeEnd = originalConsoleTimeEnd;
-    console.log = originalConsoleLog;
-    console.info = originalConsoleInfo;
-    console.warn = originalConsoleWarn;
-    console.error = originalConsoleError;
 
     durations.push(Number(end - start) / 1e6);
     wordCounts.push(wordCount);
