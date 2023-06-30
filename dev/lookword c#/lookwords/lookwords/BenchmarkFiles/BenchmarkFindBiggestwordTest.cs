@@ -89,23 +89,23 @@ namespace lookwords.BenchmarkFiles
         }
 
         [Benchmark]
-        public string RunGetBiggestWordBaselineAsyncSingleTask()
+        public string RunGetBiggestWordAsyncBaseline()
         {
 
             int init = Environment.TickCount;
-            string ret = new GetBiggestWordBaselineAsyncSingleTask().getBiggestWordInDirectoryAsyncBaseline(folderPath).Result;
+            string ret = new GetBiggestWordBaselin().getBiggestWordAsyncBaseline_1(folderPath).Result;
 
             Console.WriteLine("Biggest word is: {0}", ret);
             int elapsed = Environment.TickCount - init;
 
-            Console.WriteLine(@"Find the biggest word with GetBiggestWordBaselineAsyncSingleTask took: {0} seconds", elapsed);
+            Console.WriteLine(@"Find the biggest word with GetBiggestWordAsyncBaseline took: {0} seconds", elapsed);
 
 
             return ret;
         }
 
         [Benchmark]
-        public string RunBiggestWordBaselineAsyncBlockingRead()
+        public string RunBiggestWordBaselineTaskMultithreadBlockingRead()
         {
 
             int init = Environment.TickCount;
@@ -114,7 +114,7 @@ namespace lookwords.BenchmarkFiles
             Console.WriteLine("Biggest word is: {0}", ret);
             int elapsed = Environment.TickCount - init;
 
-            Console.WriteLine(@"Find the biggest word with GetBiggestWordBaselineAsyncBlockingRead took: {0} seconds", elapsed);
+            Console.WriteLine(@"Find the biggest word with GetBiggestWordBaselineMultithreadBlockingRead took: {0} seconds", elapsed);
 
 
             return ret;

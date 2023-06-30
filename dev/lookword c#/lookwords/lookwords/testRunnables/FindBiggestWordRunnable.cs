@@ -14,9 +14,9 @@ namespace lookwords.testRunnables
             Console.WriteLine("Tests to BenchmarckIOFindBiggestWordsStrategies initiated: ");
             var test = new BenchmarkFindBiggestwordTest();
             test.RunGetBiggestWordBaselineTest();
-            test.RunBiggestWordBaselineAsyncBlockingRead();
-            test.RunGetBiggestWordBaselineAsyncSingleTask();
-            test.RunGetBiggestWordAsyncBaselineTest();
+            test.RunBiggestWordBaselineTaskMultithreadBlockingRead(); //each task per file, block read
+            test.RunGetBiggestWordAsyncBaseline(); // asyncc read use awai async
+           // test.RunGetBiggestWordAsyncBaselineTest();
             test.RunGetBiggestWordBaselineTest();
             // test.RunGetBiggestWordBaselineTestNoContinueWith();
             test.RunGetBiggestWordLinqSyncTest();

@@ -309,7 +309,7 @@
     <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\RxNet\ReadFolderFilesObservable.cs" />
     <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\RxNet\RXNetIOFindWordStrategy.cs" />
     <Compile Include="MixedSourceStrategies\FindWordFileReadStrategies\SyncEnum\EnumerableIOFindWordStrategy.cs" />
-    <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaselineAsyncSingleTask.cs" />
+    <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaselineAsync_1.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\GetBiggestWordBaselineAsync.cs" />
     <Compile Include="MixedSourceStrategies\noLinqStrategies\baseLineNIO\CountWordsBaseline.cs" />
     <Compile Include="MixedSourceStrategies\CountWordsFileReadStrategies\AsyncEnum\AsyncEnumerableIOFileReadStrategyWithConverter.cs" />

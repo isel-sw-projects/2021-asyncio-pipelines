@@ -1,0 +1,42 @@
+C:\Users\Matrix\.jdks\openjdk-18.0.1\bin\java.exe -ea -Didea.test.cyclic.buffer.size=1048576 "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.3.2\lib\idea_rt.jar=59388:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.3.2\bin" -Dfile.encoding=UTF-8 -classpath "C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.3.2\lib\idea_rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.3.2\plugins\junit\lib\junit5-rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.3.2\plugins\junit\lib\junit-rt.jar;F:\escola\MEIC\TESE\2021-asyncio-pipelines\dev\lookwords-master\target\test-classes;F:\escola\MEIC\TESE\2021-asyncio-pipelines\dev\lookwords-master\target\classes;C:\Users\Matrix\.m2\repository\io\reactivex\rxjava-math\1.0.0\rxjava-math-1.0.0.jar;C:\Users\Matrix\.m2\repository\io\reactivex\rxjava\1.0.1\rxjava-1.0.1.jar;C:\Users\Matrix\.m2\repository\app\cash\sqldelight\rxjava3-extensions\2.0.0-alpha03\rxjava3-extensions-2.0.0-alpha03.jar;C:\Users\Matrix\.m2\repository\app\cash\sqldelight\runtime-jvm\2.0.0-alpha03\runtime-jvm-2.0.0-alpha03.jar;C:\Users\Matrix\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-common\1.7.0\kotlin-stdlib-common-1.7.0.jar;C:\Users\Matrix\.m2\repository\io\projectreactor\reactor-core\3.3.5.RELEASE\reactor-core-3.3.5.RELEASE.jar;C:\Users\Matrix\.m2\repository\org\reactivestreams\reactive-streams\1.0.3\reactive-streams-1.0.3.jar;C:\Users\Matrix\.m2\repository\io\reactivex\rxjava3\rxjava\3.0.3\rxjava-3.0.3.jar;C:\Users\Matrix\.m2\repository\junit\junit\4.12\junit-4.12.jar;C:\Users\Matrix\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\Matrix\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-jdk8\1.6.21\kotlin-stdlib-jdk8-1.6.21.jar;C:\Users\Matrix\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib\1.6.21\kotlin-stdlib-1.6.21.jar;C:\Users\Matrix\.m2\repository\org\jetbrains\annotations\13.0\annotations-13.0.jar;C:\Users\Matrix\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-jdk7\1.6.21\kotlin-stdlib-jdk7-1.6.21.jar;C:\Users\Matrix\.m2\repository\org\jetbrains\kotlinx\kotlinx-coroutines-core\1.6.0\kotlinx-coroutines-core-1.6.0.jar;C:\Users\Matrix\.m2\repository\org\jetbrains\kotlinx\kotlinx-coroutines-core-jvm\1.6.0\kotlinx-coroutines-core-jvm-1.6.0.jar;C:\Users\Matrix\.m2\repository\org\jetbrains\kotlin\kotlin-test\1.6.21\kotlin-test-1.6.21.jar;C:\Users\Matrix\.m2\repository\com\github\jayield\jayield\1.3.0\jayield-1.3.0.jar;C:\Users\Matrix\.m2\repository\com\github\javasync\RxIo\1.2.2\RxIo-1.2.2.jar;C:\Users\Matrix\.m2\repository\com\tinyield\jayield\1.5.1\jayield-1.5.1.jar;C:\Users\Matrix\.m2\repository\org\openjdk\jmh\jmh-core\1.24\jmh-core-1.24.jar;C:\Users\Matrix\.m2\repository\net\sf\jopt-simple\jopt-simple\4.6\jopt-simple-4.6.jar;C:\Users\Matrix\.m2\repository\org\apache\commons\commons-math3\3.2\commons-math3-3.2.jar;C:\Users\Matrix\.m2\repository\org\openjdk\jmh\jmh-generator-annprocess\1.24\jmh-generator-annprocess-1.24.jar;C:\Users\Matrix\.m2\repository\com\github\akarnokd\rxjava3-interop\3.0.1\rxjava3-interop-3.0.1.jar" com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit4 lookwords.AppTest,testMain
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsBaseline
+INFO lookwords.AppTest perform time: 1�825 ms
+INFO lookwords.AppTest perform time: 1�325 ms
+INFO lookwords.AppTest perform time: 1�245 ms
+INFO lookwords.AppTest perform time: 1�248 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 1�272 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116732 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsRXJava
+INFO lookwords.AppTest perform time: 8�427 ms
+INFO lookwords.AppTest perform time: 6�387 ms
+INFO lookwords.AppTest perform time: 5�841 ms
+INFO lookwords.AppTest perform time: 5�325 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 5�851 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsInRectorCoreFlux
+INFO lookwords.AppTest perform time: 12�050 ms
+INFO lookwords.AppTest perform time: 11�789 ms
+INFO lookwords.AppTest perform time: 11�486 ms
+INFO lookwords.AppTest perform time: 11�391 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 11�555 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsBlockingReaderInMultiThread
+INFO lookwords.AppTest perform time: 1�348 ms
+INFO lookwords.AppTest perform time: 1�200 ms
+INFO lookwords.AppTest perform time: 1�233 ms
+INFO lookwords.AppTest perform time: 1�248 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 1�227 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+INFO lookwords.AppTest perform ############ class lookwords.group.GroupWordsBlockingReaderInStreams
+INFO lookwords.AppTest perform time: 1�926 ms
+INFO lookwords.AppTest perform time: 1�810 ms
+INFO lookwords.AppTest perform time: 1�780 ms
+INFO lookwords.AppTest perform time: 1�777 ms
+INFO lookwords.AppTest perform =====> AVERAGE: 1�789 ms
+INFO lookwords.AppTest testGrouping The most common word with 5 to 10 chars is: should. It occurs: 116542 times.
+
+28/07/2028

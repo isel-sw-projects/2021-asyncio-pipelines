@@ -33,28 +33,25 @@ public class GroupWordsBlockingReaderInMultiThread implements GroupWords{
     public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
         final int THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
         final ExecutorService EXEC = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+        ConcurrentHashMap<String, Integer> words = new ConcurrentHashMap<>();
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
-            List<Future<Map<String, Integer>>> futures = paths
+            List<Callable<Void>> tasks = paths
                     .filter(Files::isRegularFile)
-                    .map(file -> EXEC.submit(() -> lines(file, minLength, maxLength)
-                            .collect(Collectors.toMap(word -> word, word -> 1, Integer::sum))))
+                    .map(file -> (Callable<Void>) () -> {
+                        lines(file, minLength, maxLength)
+                                .forEach(word -> words.merge(word, 1, Integer::sum));
+                        return null;
+                    })
                     .collect(toList());
-
-            Map<String, Integer> words = new ConcurrentHashMap<>();
-            for (Future<Map<String, Integer>> future : futures) {
-                try {
-                    Map<String, Integer> result = future.get();
-                    result.forEach((word, count) -> words.merge(word, count, Integer::sum));
-                } catch (InterruptedException | ExecutionException e) {
-                    // Handle the exception
-                }
-            }
-            return words;
+            EXEC.invokeAll(tasks);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        } catch (InterruptedException e) {
+            // Handle exception
         } finally {
             EXEC.shutdown();
         }
+        return words;
     }
 
     public static Stream<String> lines(Path file, int minLength, int maxLength) {

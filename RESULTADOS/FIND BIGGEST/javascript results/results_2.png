@@ -1,0 +1,13 @@
+PC1
+Average duration for baseline_js: 17.91 ms
+Average duration for ixJsStrategy: 21576.04 ms
+Average duration for rxStrategy: 22.640 ms
+
+
+
+PC2
+Average duration for baseline_js: 8090.25 ms
+Average duration for ixJsStrategy: 12665 ms
+Average duration for rxStrategy: 12879.45 ms
+Benchmark: 209634 ms
+Benchmark: 3:29.635 (m:ss.mmm)

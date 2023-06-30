@@ -1,0 +1,15 @@
+
+Find the biggest word with getBiggestWordInDirectorySyncBaseline took: 14594 seconds
+
+Find the biggest word with GetBiggestWordBaselineAsyncBlockingRead took: 1750 seconds
+
+Find the biggest word with GetBiggestWordBaselineAsyncSingleTask took: 2515 seconds
+
+Find the biggest word with getBiggestWordInDirectoryAsyncBaseline took: 3891 seconds
+
+Find the biggest word with getBiggestWordInDirectorySyncBaseline took: 14594 seconds
+
+
+Find the biggest word with RunGetBiggestWordLinqSyncTest took: 20719 seconds
+Find the biggest word with RunGetBiggestWordAsyncEnumerableTest took: 30093 seconds
+Find the biggest word with RunGetBiggestWordRxTest took: 21516 seconds

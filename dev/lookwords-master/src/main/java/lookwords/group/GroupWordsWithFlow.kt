@@ -3,6 +3,7 @@ package lookwords.GroupWordsStrategies
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import lookwords.FileUtils
 import org.javaync.io.AsyncFiles
@@ -23,22 +24,19 @@ class GroupWordsWithFlow  {
         }
     }
 
-    suspend fun words(folder: String, minLength: Int, maxLength: Int): Map<String, Int> {
-        val words = mutableMapOf<String, Int>()
 
+
+    suspend fun words(folder: String, minLength: Int, maxLength: Int): Map<String, Int> {
+        val words = ConcurrentHashMap<String, Int>()
         try {
             Files.walk(FileUtils.pathFrom(folder)).use { paths ->
                 val files: List<Path> = paths
                     .filter { path: Path? -> Files.isRegularFile(path) }
-                    .collect(Collectors.toList())
+                    .toList()
+
                 coroutineScope {
-                    val deferreds = files.map { file ->
-                        async { countWords(file, minLength, maxLength) }
-                    }
-                    deferreds.awaitAll().forEach { map ->
-                        map.forEach { (k, v) ->
-                            words.merge(k, v, Integer::sum)
-                        }
+                    files.forEach { file ->
+                        launch { countWords(file, minLength, maxLength, words) }
                     }
                 }
             }
@@ -49,9 +47,7 @@ class GroupWordsWithFlow  {
         return words
     }
 
-    suspend fun countWords(file: Path, minLength: Int, maxLength: Int): Map<String, Int> {
-        val words = mutableMapOf<String, Int>()
-
+    suspend fun countWords(file: Path, minLength: Int, maxLength: Int, words : ConcurrentHashMap<String, Int> ) {
         val flow = AsyncFiles.flow(file)
         flow
             .filter { line: String -> line.isNotEmpty() } // Skip empty lines
@@ -62,8 +58,6 @@ class GroupWordsWithFlow  {
             .collect { word ->
                 words.merge(word, 1, Integer::sum)
             }
-
-        return words
     }
 
 }

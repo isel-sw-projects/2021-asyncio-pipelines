@@ -24,22 +24,145 @@ The implementations differ in the specific programming languages, libraries, and
 
 After presenting and discussing each implementation and its results, we will be able to directly compare them. This will enable us to draw meaningful conclusions about the performance of the strategies and technologies when applied to the same task under the same conditions. Specifically, we are interested in how the performance of a given strategy or technology can vary across different programming frameworks when tasked with finding the largest word and executing the group word operation.
 
+
+\section{Strategies}
+\label{subsec:strategies}
+
+The aim of this section is to define various strategies that we will be implementing across different languages and technologies. While some of these strategies can be used universally across all platforms, others are platform-specific due to the constraints of the environment.
+
+\subsubsection{Reactive Extensions (Rx)}
+\label{subsubsec:rx}
+Reactive Extensions (Rx) is a library for composing asynchronous and event-based programs using observable sequences. This model promotes a focus on data streams and the propagation of change. Rx has implementations in several programming languages including .NET (Rx.NET), Java (RxJava), and JavaScript (RxJS).
+
+\subsubsection{Reactor (Flux)}
+\label{subsubsec:reactor_flux}
+Reactor is a fourth-generation reactive library, based on the Reactive Streams specification, for building non-blocking applications on the JVM based on Java 8 and later. The Flux class, a Reactive Streams Publisher with reactive operators, emits 0 to N elements, and then completes (successfully or with an error).
+
+\subsubsection{Blocking Reader in Streams}
+\label{subsubsec:blocking_reader_streams}
+This strategy uses Java's streams interface to read the data in a blocking manner. Due to the blocking nature of the I/O operations, this approach may lead to slower processing times as it has to wait for each I/O operation to complete.
+
+\subsubsection{Multi-threading}
+\label{subsubsec:multithread}
+This strategy leverages multi-threading to process data concurrently. By distributing the work across multiple threads, it often results in improved performance, especially for CPU-bound tasks.
+
+\subsubsection{Kotlin Flow}
+\label{subsubsec:kotlin_flow}
+In Kotlin, the concept of 'flows' is integral to the Coroutines library. A Flow is an asynchronous data stream that sequentially emits values and completes normally or with an exception.
+
+\subsubsection{Concurrency}
+\label{subsubsec:concurrency}
+Concurrency is used in combination with several of the aforementioned strategies such as Kotlin Flow and Rx. Concurrency aims to improve the performance of data processing by executing multiple tasks in parallel.
+
+\subsubsection{Baseline}
+\label{subsubsec:baseline}
+The Baseline strategy is a straightforward implementation without any pipelining or other overhead. It serves as a reference for comparison. This method may use traditional synchronous I/O operations and sequential processing.
+
+These strategies will be applied to our chosen algorithms and implemented in the .NET, Java, and Kotlin environments. It's important to note that the aim is not to find the 'best' strategy but to demonstrate the relative strengths and weaknesses of each approach, how they can affect performance, and how they fit into different programming paradigms.
+
+
+
 \section{.NET Implementation}
 \label{sec:dotnet_implementation}
-\begin{table}[h!]
+
+
+
+\subsubsection{Approaches Explanation}
+
+\subsection{Sync Baseline}
+
+The Sync Baseline approach is the most straightforward and is synchronous, meaning it processes one task at a time and waits for each operation to complete before moving on to the next. This strategy reads a file line by line and extracts the longest word from each line. It repeats this for each file in the directory.
+
+\subsection{Async Blocking Read}
+
+The Async Blocking Read approach applies asynchronous programming to read file content. This approach reads files in blocks, with each block being processed for its longest word. However, while it does use async/await, it does not truly take full advantage of asynchrony as it still blocks on the read operation to complete before processing the block. 
+
+\subsection{Async Single Task}
+
+The Async Single Task approach is an asynchronous version of the baseline strategy. It uses async and await keywords to allow other tasks to execute when the current one is waiting for I/O operations to complete, improving the overall performance of the program. It reads a file line by line, extracts the longest word from each line, and repeats this for each file in the directory. The processing of each file is wrapped in a separate Task, but the processing of the files is still done sequentially. 
+
+\subsection{Async Baseline}
+
+The Async Baseline approach is similar to the Async Single Task approach but with one major difference: the processing of files is done in parallel, meaning it doesn't wait for a file to be completely processed before starting to process the next file. This strategy allows for better utilization of system resources, especially when dealing with a large number of files. 
+
+\subsection{Linq Sync}
+
+The Linq Sync approach uses LINQ (Language Integrated Query) to process the files. It is a synchronous approach that utilizes the powerful querying capabilities of LINQ to read and process the files. Despite being synchronous, LINQ's declarative nature can lead to more readable and concise code.
+
+\subsection{Async Enumerable}
+
+The Async Enumerable approach uses the IAsyncEnumerable interface to asynchronously stream and process data as it becomes available, instead of waiting for all data to be available as with traditional enumerables. This strategy can provide a performance boost when dealing with large datasets.
+
+\subsection{Rx}
+
+The Rx approach uses the Reactive Extensions (Rx) library for .NET, which provides tools for composing asynchronous and event-based programs using observable sequences and LINQ-style query operators. Like Async Enumerable, it can also stream and process data as it becomes available.
+
+
+\subsubsection{Biggest Word Results}
+\label{subsubsec:biggest_word_results_cs}
+
+\begin{table}[H]
     \centering
     \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|c|c|}
+    \begin{tabular}{|l|c|}
     \hline
-    \textbf{Strategy} & \textbf{Processing Time Average Run 1 (ms)} & \textbf{Processing Time Average Run 2 (ms)} \\ \hline
-    RunCountWordsBaseline & 63765.67 & 49880.33 \\ \hline
-    RunSyncTest & 43921.67 & 36062.67 \\ \hline
-    RunAsyncEnumerableTest & 62422 & 57870 \\ \hline
-    RunRxTest & 46833.33 & 37015.66 \\ \hline
+    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+    Sync Baseline & 15.8 \\ \hline
+    Multithread (Async Blocking Read) & 1.6 \\ \hline
+    Async Baseline (Async Single Task) & 2.8 \\ \hline
+    Linq Sync & 22.2 \\ \hline
+    Async Enumerable & 30 \\ \hline
+    Rx & 23 \\ \hline
+    Rx Async File Read & 15 \\ \hline
+    \end{tabular}%
+    }
+    \caption{Processing times for different strategies for "Find the biggest word".}
+    \label{tab:biggest_word_results_cs_1}
+\end{table}
+    
+\begin{figure}[H]
+    \raggedright
+    \begin{tikzpicture}
+    \begin{axis}[
+    ybar=2*\pgflinewidth,
+    width=1.0\textwidth,
+    height=0.4\textwidth,
+    bar width=20pt,
+    enlargelimits=0.15,
+    legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
+    ylabel={Processing Time Average (s)},
+    symbolic x coords={Sync Baseline, Multithread, Async Baseline, Linq Sync, Async Enumerable, Rx, Rx Async File Read},
+    xtick=data,
+    xticklabel style={rotate=45,anchor=east},
+    nodes near coords,
+    nodes near coords align={vertical},
+    ]
+    \addplot coordinates {(Sync Baseline, 15.8) (Multithread, 1.6) (Async Baseline, 2.8) (Linq Sync, 22.2) (Async Enumerable, 30) (Rx, 23) (Rx Async File Read, 15)};
+    \end{axis}
+    \end{tikzpicture}
+    \caption{Processing times for different strategies for "Find the biggest word".}
+    \label{fig:biggest_word_results_cs_2}
+\end{figure}
+
+
+\subsubsection{Group Word Results}
+\label{subsubsec:group_word_processing_times_cs}
+
+
+\begin{table}[H]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+    RunCountWordsBaseline & 26 \\ \hline
+    RunSyncTest & 22 \\ \hline
+    RunAsyncEnumerableTest & 30 \\ \hline
+    RunRxTest & 22 \\ \hline
     \end{tabular}%
     }
     \caption{Processing times for different strategies for "Count Words".}
-    \label{tab:strategies_times_count_words}
+    \label{tab:group_word_processing_times_cs}
 \end{table}
 
 \begin{figure}[H]
@@ -49,78 +172,29 @@ After presenting and discussing each implementation and its results, we will be 
         ybar=2*\pgflinewidth,
         width=1.0\textwidth,
         height=0.4\textwidth,
-        bar width=15pt,
+        bar width=20pt,
         enlargelimits=0.15,
         legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-        ylabel={Processing Time Average (ms)},
+        ylabel={Processing Time Average (s)},
         symbolic x coords={RunCountWordsBaseline, RunSyncTest, RunAsyncEnumerableTest, RunRxTest},
         xtick=data,
         xticklabel style={rotate=45,anchor=east},
         nodes near coords,
         nodes near coords align={vertical},
         ]
-    \addplot coordinates {(RunCountWordsBaseline, 63765.67) (RunSyncTest, 43921.67) (RunAsyncEnumerableTest, 62422) (RunRxTest, 46833.33)};
-    \addplot coordinates {(RunCountWordsBaseline, 49880.33) (RunSyncTest, 36062.67) (RunAsyncEnumerableTest, 57870) (RunRxTest, 37015.66)};
-    \legend{Run 1, Run 2}
+    \addplot coordinates {(RunCountWordsBaseline, 26.0) (RunSyncTest, 22.2) (RunAsyncEnumerableTest, 30) (RunRxTest, 22.0)};
     \end{axis}
     \end{tikzpicture}
-    \caption{Processing times for different strategies for "Count Words" for two runs.}
-    \label{fig:count_words_processing_times}
+    \caption{Processing times for different strategies for "Count Words".}
+    \label{fig:group_word_processing_times_cs}
 \end{figure}
+
 
 
 \section{Java/Kotlin Implementation}
 \label{sec:java_implementation}
 
 In this section, we will present the different strategies utilized in Java and Kotlin implementations for file processing and compare their performances. In the case of Java, asynchronous file reading isn't directly supported by the standard libraries. To overcome this limitation and maintain parity with the other implementations, we made use of a library named \texttt{AsyncFiles}. This library was developed by Professor Jorge Martins of the Lisbon Engineering Superior Institute. It provides an efficient and straightforward way to perform asynchronous file reading operations in Java.
-
-\subsection{Strategies}
-\label{subsec:strategies}
-
-
-\subsubsection{Kotlin Flow}
-\label{subsubsec:kotlin_flow}
-The Kotlin Flow strategy is based on the concept of 'flows' in the Kotlin Coroutines library. A Flow is an asynchronous data stream that sequentially emits values and completes normally or with an exception. The concept of a flow is very similar to that of Reactive Streams, which emphasizes data streams and the propagation of change.
-
-\subsubsection{Java Reactor (Flux)}
-\label{subsubsec:java_reactor_flux}
-Reactor is a fourth-generation reactive library, based on the Reactive Streams specification, for building non-blocking applications on the JVM based on Java 8 and later. This strategy uses the Flux class, a Reactive Streams Publisher with rx operators that emits 0 to N elements, and then completes (successfully or with an error).
-
-\subsubsection{RxJava (Observable)}
-\label{subsubsec:rxjava_observable}
-RxJava is a Java VM implementation of Reactive Extensions: a library for composing asynchronous and event-based programs by using observable sequences. The Observable class, when subscribed, emits items or signals of any kind to the observer. 
-
-\subsubsection{Blocking Reader in Streams}
-\label{subsubsec:blocking_reader_streams}
-This strategy uses the Java's streams interface to read the data in a blocking manner. Due to the blocking nature of the I/O operations, this approach may lead to slower processing times as it has to wait for each I/O operation to complete.
-
-\subsubsection{MultiThread}
-\label{subsubsec:multithread}
-The MultiThread strategy leverages the Java's built-in thread support to process data concurrently. By distributing the work across multiple threads, it often results in improved performance, especially for CPU-bound tasks.
-
-\subsubsection{Concurrency with Kotlin Flow}
-\label{subsubsec:concurrency_kotlin_flow}
-This strategy is an enhancement of the Kotlin Flow approach where data processing is performed concurrently. By using the built-in concurrency support in the Kotlin Coroutines library, it aims to improve the performance of data processing.
-
-\subsubsection{RxJava with Concurrency (Observable)}
-\label{subsubsec:rxjava_concurrency_observable}
-This strategy is a concurrent version of the RxJava Observable approach. It uses the concurrency features in the RxJava library, such as Schedulers, to improve the performance of data processing.
-
-\subsubsection{Blocking Reader in Streams with Concurrency}
-\label{subsubsec:blocking_reader_streams_concurrency}
-This strategy is a concurrent adaptation of the Blocking Reader in Streams strategy. It attempts to mitigate the blocking delays by processing multiple streams concurrently using multiple threads.
-
-\subsubsection{Baseline}
-\label{subsubsec:baseline}
-The Baseline strategy is a straightforward implementation without any pipelining or other overhead. It serves as a reference for comparison. This method may use traditional synchronous I/O operations and sequential processing.
-
-\subsubsection{Sequential Processing with Kotlin Flow}
-\label{subsubsec:sequential_processing_kotlin_flow}
-This is a variant of the Kotlin Flow strategy, but with sequential processing. The idea is to demonstrate the performance difference when the same operations are performed in sequence, rather than concurrently.
-
-\subsubsection{IO Blocking Operations}
-\label{subsubsec:io_blocking_operations}
-This strategy represents a traditional approach to dealing with I/O operations - blocking until each operation is complete. It often results in slower processing times due to the time spent waiting for I/O tasks.
 
 
 \subsection{Results}
@@ -129,23 +203,23 @@ This strategy represents a traditional approach to dealing with I/O operations -
 \subsubsection{Biggest Word Results}
 \label{subsubsec:biggest_word_results}
 
-\begin{table}[h!]
+\begin{table}[H]
     \centering
     \resizebox{\textwidth}{!}{%
     \begin{tabular}{|l|c|}
     \hline
-    \textbf{Strategy} & \textbf{Processing Time Average (ms)} \\ \hline
-    NIO Reactor Flux & 1148 \\ \hline
-    NIO Reactor Flux with Concurrency (use of \texttt{parallel()}) & 1002 \\ \hline
-    NIO Observable RXJava & 945 \\ \hline
-    NIO Observable with Concurrency (use of \texttt{parallel()})& 841 \\ \hline
-    Blocking Reader in Streams & 3897 \\ \hline
-    Blocking Reader MultiThread  & 691 \\ \hline
-    Blocking Reader Streams with Concurrency & 3011 \\ \hline
-    NIO Baseline & 912 \\ \hline
-    Concurrent Processing with Kotlin Flow & 2435 \\ \hline
-    Sequential Processing with Kotlin Flow & 5050 \\ \hline
-    Kotlin Flow IO Blocking Operations & 5216 \\ \hline
+    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+    NIO Reactor Flux & 1.1\\ \hline
+    NIO Reactor Flux with Concurrency (use of \texttt{parallel()}) & 1.0 \\ \hline
+    NIO Observable RXJava & 0.9 \\ \hline
+    NIO Observable with Concurrency (use of \texttt{parallel()})& 0.8 \\ \hline
+    Blocking Reader in Streams & 3.9 \\ \hline
+    Blocking Reader MultiThread  & 0.7 \\ \hline
+    Blocking Reader Streams with Concurrency & 3.0 \\ \hline
+    NIO Baseline & 0.9 \\ \hline
+    Concurrent Processing with Kotlin Flow & 2.4 \\ \hline
+    Sequential Processing with Kotlin Flow & 5.1 \\ \hline
+    Kotlin Flow IO Blocking Operations & 5.2 \\ \hline
     \end{tabular}%
     }
     \caption{Processing times for different Java/Kotlin strategies for "Biggest Word".}
@@ -163,14 +237,14 @@ This strategy represents a traditional approach to dealing with I/O operations -
             bar width=20pt,
             enlargelimits=0.15,
             legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-            ylabel={Processing Time Average (ms)},
+            ylabel={Processing Time Average (s)},
             symbolic x coords={NIO Reactor Flux, NIO Reactor Flux with Concurrency, NIO Observable RXJava, NIO Observable with Concurrency, Blocking Reader in Streams, Blocking Reader MultiThread, Blocking Reader Streams with Concurrency, NIO Baseline, Concurrent Processing with Kotlin Flow, Sequential Processing with Kotlin Flow, Kotlin Flow IO Blocking Operations},
             xtick=data,
             xticklabel style={rotate=45,anchor=east},
             nodes near coords,
             nodes near coords align={vertical},
             ]
-        \addplot coordinates {(NIO Reactor Flux, 1148) (NIO Reactor Flux with Concurrency, 1002) (NIO Observable RXJava, 945) (NIO Observable with Concurrency, 841) (Blocking Reader in Streams, 3897) (Blocking Reader MultiThread, 691) (Blocking Reader Streams with Concurrency, 3011) (NIO Baseline, 912) (Concurrent Processing with Kotlin Flow, 2435) (Sequential Processing with Kotlin Flow, 5050) (Kotlin Flow IO Blocking Operations, 5216)};
+        \addplot coordinates {(NIO Reactor Flux, 1.1) (NIO Reactor Flux with Concurrency, 1.0) (NIO Observable RXJava, 0.9) (NIO Observable with Concurrency, 0.8) (Blocking Reader in Streams, 3.9) (Blocking Reader MultiThread, 0.7) (Blocking Reader Streams with Concurrency, 3.0) (NIO Baseline, 0.9) (Concurrent Processing with Kotlin Flow, 2.4) (Sequential Processing with Kotlin Flow, 5.1) (Kotlin Flow IO Blocking Operations, 5.2)};
         \end{axis}
         \end{tikzpicture}
         \caption{Processing times for different Java/Kotlin strategies for "Biggest Word".}
@@ -182,47 +256,47 @@ This strategy represents a traditional approach to dealing with I/O operations -
     \subsubsection{Group Word Results}
     \label{subsubsec:group_word_results}
     
-    \begin{table}[h!]
-    \centering
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|c|}
-    \hline
-    \textbf{Strategy} & \textbf{Processing Time Average (ms)} \\ \hline
-    GroupWordsBaseline & 4420 \\ \hline
-    GroupWordsRXJava & 7531 \\ \hline
-    GroupWordsInRectorCoreFlux & 9074 \\ \hline
-    GroupWordsBlockingReaderInMultiThread & 7850 \\ \hline
-    GroupWordsBlockingReaderInStreams & 7323 \\ \hline
-    GroupWordsWithFlow (Kotlin) & 15021 \\ \hline
-    \end{tabular}%
-    }
-    \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
-    \label{tab:strategies_times_group_words}
+    \begin{table}[H]
+        \centering
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|l|c|}
+        \hline
+        \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+        GroupWordsBaseline & 1.3 \\ \hline
+        GroupWordsRXJava & 5.8 \\ \hline
+        GroupWordsInRectorCoreFlux & 12.0 \\ \hline
+        GroupWordsBlockingReaderInMultiThread & 1.2 \\ \hline
+        GroupWordsBlockingReaderInStreams & 1.8 \\ \hline
+        GroupWordsWithFlow (Kotlin) & 15.0\\ \hline
+        \end{tabular}%
+        }
+        \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
+        \label{tab:strategies_times_group_words}
     \end{table}
-    
+        
     \begin{figure}[H]
         \centering
         \begin{tikzpicture}
         \begin{axis}[
             ybar=2*\pgflinewidth,
             width=0.8\textwidth,
-            height=0.4\textwidth,
+            height=0.6\textwidth,
             bar width=20pt,
-            enlargelimits=0.15,
+            enlargelimits=0.10,
             legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-            ylabel={Processing Time Average (ms)},
+            ylabel={Processing Time Average (s)},
             symbolic x coords={GroupWordsBaseline, GroupWordsRXJava, GroupWordsInRectorCoreFlux, GroupWordsBlockingReaderInMultiThread, GroupWordsBlockingReaderInStreams, GroupWordsWithFlow (Kotlin)},
             xtick=data,
             xticklabel style={rotate=45,anchor=east},
             nodes near coords,
             nodes near coords align={vertical},
             ]
-        \addplot coordinates {(GroupWordsBaseline, 4420) (GroupWordsRXJava, 7531) (GroupWordsInRectorCoreFlux, 9074) (GroupWordsBlockingReaderInMultiThread, 7850) (GroupWordsBlockingReaderInStreams, 7323) (GroupWordsWithFlow (Kotlin), 15021)};
+            \addplot coordinates { (GroupWordsBaseline, 1.3)  (GroupWordsRXJava, 5.8) (GroupWordsInRectorCoreFlux, 12.0) (GroupWordsBlockingReaderInMultiThread, 1.2)  (GroupWordsBlockingReaderInStreams, 1.8) (GroupWordsWithFlow (Kotlin), 15.0)};
         \end{axis}
         \end{tikzpicture}
         \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
         \label{fig:processing_times}
-        \end{figure}
+    \end{figure}
 
 ... 
 % Here you conclude the entire chapter by summarizing your findings and interpretations.
@@ -230,15 +304,15 @@ This strategy represents a traditional approach to dealing with I/O operations -
 
 \section{JavaScript Implementation}
 \label{sec:js_implementation}
-\begin{table}[h!]
+\begin{table}[H]
     \centering
     \resizebox{\textwidth}{!}{%
     \begin{tabular}{|l|c|}
     \hline
-    \textbf{Strategy} & \textbf{Processing Time Average (ms)} \\ \hline
-    Baseline JS & 8199.98 \\ \hline
-    Baseline Stream JS & 23244.29 \\ \hline
-    RxStrategy JS & 13888.70 \\ \hline
+    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+    Baseline JS & 8.2 \\ \hline
+    Baseline Stream JS & 23.2 \\ \hline
+    RxStrategy JS & 13.9 \\ \hline
     \end{tabular}%
     }
     \caption{Processing times for different JavaScript strategies for "Biggest Word".}
@@ -255,17 +329,17 @@ This strategy represents a traditional approach to dealing with I/O operations -
         bar width=20pt,
         enlargelimits=0.15,
         legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-        ylabel={Processing Time Average (ms)},
+        ylabel={Processing Time Average (s)},
         symbolic x coords={Baseline JS, Baseline Stream JS, RxStrategy JS},
         xtick=data,
         xticklabel style={rotate=45,anchor=east},
         nodes near coords,
         nodes near coords align={vertical},
         ]
-    \addplot coordinates {(Baseline JS, 8199.98) (Baseline Stream JS, 23244.29) (RxStrategy JS, 13888.70)};
+    \addplot coordinates {(Baseline JS, 8.2) (Baseline Stream JS, 23.2) (RxStrategy JS, 13.9)};
     \end{axis}
     \end{tikzpicture}
-    \caption{Processing times for different JavaScript strategies for "Biggest Word".}
+    \caption{Processing times for different JavaScript strategies for "Biggest Word" Graphic}
     \label{fig:biggest_word_processing_times_js}
 \end{figure}
 

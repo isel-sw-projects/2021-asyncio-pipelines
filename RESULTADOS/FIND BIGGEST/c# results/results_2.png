@@ -1,0 +1,13 @@
+Biggest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Find the biggest word with GetBiggestWordBaselineMultithreadBlockingRead took: 1562 seconds
+Biggest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Find the biggest word with GetBiggestWordAsyncBaseline took: 2750 seconds
+Biggest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Find the biggest word with getBiggestWordInDirectorySyncBaseline took: 15813 seconds
+Find the biggest word with RunGetBiggestWordLinqSyncTest took: 22203 seconds
+Biggest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Find the biggest word with RunGetBiggestWordAsyncEnumerableTest took: 30047 seconds
+Biggest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Find the biggest word with RunGetBiggestWordRxTest took: 22672 seconds
+Biggest word is: emotions--Curiosity--Imitation--Attention--Memory--Imagination--Reason--Progressive
+Find the biggest word with RunGetBiggestWordRxAsyncFileReadTest took: 14891 seconds

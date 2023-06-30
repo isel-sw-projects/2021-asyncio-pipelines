@@ -38,28 +38,25 @@ public class GroupWordsBlockingReaderInStreams implements GroupWords {
         this.parallel = parallel;
     }
 
+
+
     public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
+        ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
             Stream<Stream<String>> words = paths
-                .filter(Files::isRegularFile)
-                .map(file  -> {
-                    var inner = lines(file, minLength, maxLength);
-                    return parallel ? inner.parallel() : inner;
-                });
-            if(parallel) words = words.parallel();
-            /**
-             * An alternative that does not scale and it is harmful: words.flatMap(identity()).collect(groupingBy(identity(), counting()));
-             * The following one performs better...
-             */
-            return words.collect(
-                ConcurrentHashMap::new,
-                (map, strm) -> strm.forEach(word -> map.merge(word, 1, Integer::sum)),
-                (m1, m2) -> m2.forEach((k, v) -> m1.merge(k, v, Integer::sum)));
+                    .filter(Files::isRegularFile)
+                    .map(file -> {
+                        Stream<String> inner = lines(file, minLength, maxLength);
+                        return parallel ? inner.parallel() : inner;
+                    });
+            if (parallel) words = words.parallel();
+
+            words.forEach(wordStream -> wordStream.forEach(word -> map.merge(word, 1, Integer::sum)));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+        return map;
     }
-
 
     public static Stream<String> lines(Path file, int minLength, int maxLength) {
         BufferedReader reader = bufferedReaderFrom(file);
@@ -68,13 +65,13 @@ public class GroupWordsBlockingReaderInStreams implements GroupWords {
                 .filter(line -> !line.isEmpty())                   // Skip empty lines
                 .skip(14)                                          // Skip gutenberg header
                 .takeWhile(line -> !line.contains("*** END OF "))  // Skip gutenberg footnote
-                .flatMap(line -> stream(line.split(" ")))
+                .flatMap(line -> Stream.of(line.split(" ")))
                 .filter(word -> word.length() > minLength && word.length() < maxLength)
                 .onClose(() -> close(reader));
     }
 
 
-    public static Path pathFrom(String file) {
+public static Path pathFrom(String file) {
         try {
             URL url = getSystemResource(file);
             return Paths.get(url.toURI());

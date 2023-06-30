@@ -1,0 +1,85 @@
+Tests to BenchmarckIOCountWordsStrategies initiated:
+RunCountWordsBaseline run 1 took: 25922 miliseconds
+RunCountWordsBaseline run 2 took: 25938 miliseconds
+RunCountWordsBaseline run 3 took: 25922 miliseconds
+RunCountWordsBaseline run 4 took: 25609 miliseconds
+
+
+Results:
+Word: should, Count: 118266
+Word: little, Count: 114581
+Word: before, Count: 105634
+Word: himself, Count: 88243
+Word: without, Count: 80416
+Word: through, Count: 73955
+Word: people, Count: 72682
+Word: thought, Count: 63306
+Word: against, Count: 59082
+Word: things, Count: 57823
+
+
+
+Average time for RunCountWordsBaseline (last 3 runs): 25823 miliseconds
+RunSyncTest run 1 took: 21938 miliseconds
+RunSyncTest run 2 took: 21812 miliseconds
+RunSyncTest run 3 took: 21860 miliseconds
+RunSyncTest run 4 took: 21844 miliseconds
+
+
+Results:
+Word: should, Count: 118258
+Word: little, Count: 114581
+Word: before, Count: 105629
+Word: himself, Count: 88243
+Word: without, Count: 80323
+Word: through, Count: 73954
+Word: people, Count: 72681
+Word: thought, Count: 63306
+Word: against, Count: 59082
+Word: things, Count: 57823
+
+
+
+Average time for RunSyncTest (last 3 runs): 21838,6666666667 miliseconds
+RunAsyncEnumerableTest run 1 took: 30125 miliseconds
+RunAsyncEnumerableTest run 2 took: 29469 miliseconds
+RunAsyncEnumerableTest run 3 took: 29844 miliseconds
+RunAsyncEnumerableTest run 4 took: 30046 miliseconds
+
+
+Results:
+Word: should, Count: 118258
+Word: little, Count: 114581
+Word: before, Count: 105629
+Word: himself, Count: 88243
+Word: without, Count: 80323
+Word: through, Count: 73954
+Word: people, Count: 72681
+Word: thought, Count: 63306
+Word: against, Count: 59082
+Word: things, Count: 57823
+
+
+
+Average time for RunAsyncEnumerableTest (last 3 runs): 29786,3333333333 miliseconds
+RunRxTest run 1 took: 22094 miliseconds
+RunRxTest run 2 took: 21625 miliseconds
+RunRxTest run 3 took: 21953 miliseconds
+RunRxTest run 4 took: 22015 miliseconds
+
+
+Results:
+Word: should, Count: 118258
+Word: little, Count: 114581
+Word: before, Count: 105629
+Word: himself, Count: 88243
+Word: without, Count: 80323
+Word: through, Count: 73954
+Word: people, Count: 72681
+Word: thought, Count: 63306
+Word: against, Count: 59082
+Word: things, Count: 57823
+
+
+
+Average time for RunRxTest (last 3 runs): 21864,3333333333 miliseconds

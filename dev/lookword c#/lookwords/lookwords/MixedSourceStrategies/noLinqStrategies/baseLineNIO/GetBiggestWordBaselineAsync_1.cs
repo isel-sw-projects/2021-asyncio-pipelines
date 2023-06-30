@@ -15,7 +15,7 @@ namespace lookwords.noLinqStategies.SyncEnum
     //file read and file processing are done in the same context (potential lack of performance)
     namespace lookwords.noLinqStategies.SyncEnum
     {
-        public class GetBiggestWordBaselineAsyncSingleTask
+        public class GetBiggestWordBaselin
         {
             private async Task<string> GetBiggestWordInFileAsync(string filename)
             {
@@ -101,7 +101,7 @@ namespace lookwords.noLinqStategies.SyncEnum
                 return biggestWord;
             }
 
-                 public async Task<string> getBiggestWordInDirectoryAsyncBaseline(string folderName)
+                 public async Task<string> getBiggestWordAsyncBaseline_1(string folderName)
                  {
                      string BiggestWord = "";
                      //
