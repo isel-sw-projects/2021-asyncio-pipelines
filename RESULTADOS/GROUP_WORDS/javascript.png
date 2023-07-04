@@ -1,0 +1,55 @@
+C:\Program Files\nodejs\node.exe .\countwords_program.js
+Starting pipeline benchmark:
+Pipeline Benchmark: 29074.7119140625 ms
+Pipeline Benchmark: 29.075s
+Most recurring word: should, Number of occurrences: 116635
+Starting pipeline benchmark:
+Pipeline Benchmark: 29192.113037109375 ms
+Pipeline Benchmark: 29.192s
+Most recurring word: should, Number of occurrences: 116635
+Starting pipeline benchmark:
+Pipeline Benchmark: 29776.9580078125 ms
+Pipeline Benchmark: 29.777s
+Most recurring word: should, Number of occurrences: 116635
+Starting pipeline benchmark:
+Pipeline Benchmark: 29318.7958984375 ms
+Pipeline Benchmark: 29.319s
+Most recurring word: should, Number of occurrences: 116635
+Average duration for baseline_pipeline_js: 30058.59 ms
+Most common word for baseline_pipeline_js:  (0 occurrences)
+Starting pipeline benchmark:
+Pipeline Benchmark: 24421.274169921875 ms
+Pipeline Benchmark: 24.421s
+Most recurring word: should, Number of occurrences: 118413
+Starting pipeline benchmark:
+Pipeline Benchmark: 25923.307861328125 ms
+Pipeline Benchmark: 25.924s
+Most recurring word: should, Number of occurrences: 118413
+Starting pipeline benchmark:
+Pipeline Benchmark: 26143.300048828125 ms
+Pipeline Benchmark: 26.143s
+Most recurring word: should, Number of occurrences: 118413
+Starting pipeline benchmark:
+Pipeline Benchmark: 26233.89501953125 ms
+Pipeline Benchmark: 26.234s
+Most recurring word: should, Number of occurrences: 118413
+Average duration for rxStrategy: 26589.98 ms
+Most common word for rxStrategy:  (0 occurrences)
+Starting pipeline benchmark:
+Pipeline Benchmark: 17032.85498046875 ms
+Pipeline Benchmark: 17.033s
+Most recurring word: should, Number of occurrences: 118413
+Starting pipeline benchmark:
+Pipeline Benchmark: 16917.052001953125 ms
+Pipeline Benchmark: 16.917s
+Most recurring word: should, Number of occurrences: 118413
+Starting pipeline benchmark:
+Pipeline Benchmark: 17140.72802734375 ms
+Pipeline Benchmark: 17.141s
+Most recurring word: should, Number of occurrences: 118413
+Starting pipeline benchmark:
+Pipeline Benchmark: 16611.908203125 ms
+Pipeline Benchmark: 16.612s
+Most recurring word: should, Number of occurrences: 118413
+Average duration for baseline: 17344.81 ms
+Most common word for baseline:  (0 occurrences)

@@ -449,6 +449,7 @@ This project amalgamates several concepts and recognized design patterns to impl
 
 \clearpage
 
+
 \subsubsection{RxJava Architecture}
 \label{rxjava}
 To implement an asynchronous mechanism capable of managing \textit{Hot} and \textit{Cold} data flows with and without back-pressure, the project has adopted the \textit{Observer pattern} combined with the concepts encapsulated in the \textit{Publisher/Subscriber pattern}. 
@@ -489,7 +490,9 @@ Given the possible relationship between synchronous and its asynchronous logic c
 	\caption{Your caption}
 	\label{tab:my_label}
 	\end{table}
-	
+
+	\subsubsection{IxJs Architecture}
+	\label{ixjs}
 
 \subsection{Project Reactor}
 \label{sec:project_reactor}
@@ -526,12 +529,12 @@ Here's a brief comparison of how Reactor relates to the conventional synchronous
 
 By adhering to the Reactive Streams specification and offering a wide array of operators to handle data, Project Reactor serves as a powerful tool for developing reactive, non-blocking applications in Java.
 
+\subsection {.NET framework }
+\label{sec:csharp}
 
-\subsection{Asynchronous Enumerables}
-\label{sec:aenums}
-Asynchronous enumerables bridge the gap between traditional enumerables, which represent collections of data, and asynchronous programming, where data often arrives over time rather than being available instantly. This concept is crucial for efficiently managing data streams from real-time sources.
+\subsubsection{C\# async...await}
+\label{csenums}
 
-In this section, we explore the implementation of asynchronous enumerables in two programming environments: .NET (specifically C\#) and JavaScript.
 
 \subsubsection{.NET Asynchronous Enumerables}
 \label{csenums}
@@ -580,7 +583,7 @@ while(true)
 
 This example demonstrates how asynchronous data sources can be worked with in a similar way as synchronous collections, thanks to the use of \texttt{IAsyncEnumerable<T>} and the \texttt{await foreach} construct.
 
-\subsubsection{Javascript asynchronous enumerables}
+\subsection{Javascript}
 \label{jsae}
 
 Node.js tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.

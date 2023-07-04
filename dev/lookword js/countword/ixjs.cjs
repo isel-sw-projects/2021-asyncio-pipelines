@@ -1,8 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const fsPromises = fs.promises;
-const from = require('ix/iterable').from;
-const { filter, map, reduce,flatMap, skip } = require('ix/iterable/operators');
+const { AsyncIterable } = require('ix');
+const { map, flatMap, filter, skip, takeWhile } = require('ix/asynciterable/operators');
+const { reduce } = require('ix/asynciterable');
+
 
 async function* getFilesFromDirectoryGenerator(dir) {
   const dirents = await fsPromises.readdir(dir, { withFileTypes: true });
@@ -17,48 +19,54 @@ async function* getFilesFromDirectoryGenerator(dir) {
 }
 
 function countWordsInFile(filePath, minLength, maxLength) {
-  const fileContent = fs.readFileSync(filePath, 'utf-8');
-  const lines = fileContent.split('\n');
-  let skipLines = 14;
 
-  return from(lines)
-    .pipe(
-      skip(14),
-      takeWhile(line => !line.includes('*** END OF ')),
-      flatMap(line => line.split(' ')),
-      filter(word => word.length >= minLength && word.length <= maxLength),
-      map(word => ({ [word]: 1 })),
-      reduce((prev, curr) => {
-        for (let word in curr) {
-          prev[word] = (prev[word] || 0) + curr[word];
-        }
-        return prev;
-      }, {})
-    );
+  return AsyncIterable.from(fsPromises.readFile(filePath, 'utf-8'))
+  .pipe(
+    flatMap((fileContent) => fileContent.split('\n')),
+    skip(14),
+    takeWhile((line) => !(line.includes('*** END OF '))),
+    flatMap((line) => line.split(' ')),
+    map(word => word.toLowerCase()),
+    filter(word => word !== '' && word.length >= minLength && word.length <= maxLength)
+  ).reduce((acc, val) => {
+    for (let word in val) {
+      acc[word] = (acc[word] || 0) + val[word];
+    }
+    return acc;
+  }, {})
 }
 
-async function countWordsInDirectory(directoryPath, minLength, maxLength) {
-  let dict
-  return from(getFilesFromDirectoryGenerator(directoryPath))
+function countWordsInDirectory(directoryPath, minLength, maxLength) {
+  return AsyncIterable.from(getFilesFromDirectoryGenerator(directoryPath))
     .pipe(
-      flatMap(filePath => countWordsInFile(filePath, minLength, maxLength)),
-      reduce((prev, curr) => {
-        for (let word in curr) {
-          prev[word] = (prev[word] || 0) + curr[word];
+      flatMap(filePath => countWordsInFile(filePath, minLength, maxLength)))
+      .reduce((acc, val) => {
+        for (let word in val) {
+          acc[word] = (acc[word] || 0) + val[word];
         }
-        return prev;
+        return acc;
       }, {})
-    );
 }
 
 async function benchmark() {
-  const folderPath =
-    'F:/escola/MEIC/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg';
+  const folderPath = 'F:/escola/MEIC/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg';
   try {
-    console.log('Starting ix.js benchmark:');
-    console.time('ix.js Benchmark');
-    await countWordsInDirectory(folderPath, 5, 10);
-    console.timeEnd('ix.js Benchmark');
+    console.log('Starting pipeline benchmark:');
+    console.time('Pipeline Benchmark');
+    const wordCounts = await countWordsInDirectory(folderPath, 4, 9);
+    console.timeEnd('Pipeline Benchmark');
+
+    // Find the most recurring word
+    let mostRecurringWord = '';
+    let maxCount = 0;
+    for (const [word, count] of Object.entries(wordCounts)) {
+      if (count > maxCount) {
+        mostRecurringWord = word;
+        maxCount = count;
+      }
+    }
+
+    console.log(`Most recurring word: ${mostRecurringWord}, Number of occurrences: ${maxCount}`);
   } catch (error) {
     console.error('Error:', error);
   }

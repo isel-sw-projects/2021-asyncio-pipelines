@@ -70,6 +70,4 @@ async function benchmark(){
     console.error('Error:', error);
   }
 };
-benchmark()
-
 export default benchmark

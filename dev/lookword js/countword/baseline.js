@@ -42,19 +42,15 @@ async function countWordsInFile(filePath, minLength, maxLength) {
     return words;
 }
 
-async function countWordsInDirectory(directoryPath, minLength, maxLength) {
-    const files = [];
+async function countWordsInDirectory(directoryPath, minLength=5, maxLength=10) {
+    const wordCounts = {};
     for await (const filePath of getFilesFromDirectoryGenerator(directoryPath)) {
-        files.push(filePath);
-    }
-
-    const wordCounts = await Promise.all(files.map(file => countWordsInFile(file, minLength, maxLength)));
-    return wordCounts.reduce((total, currentCount) => {
-        for (const [word, count] of Object.entries(currentCount)) {
-            total[word] = (total[word] || 0) + count;
+        const fileWordCounts = await countWordsInFile(filePath, minLength, maxLength);
+        for (const [word, count] of Object.entries(fileWordCounts)) {
+            wordCounts[word] = (wordCounts[word] || 0) + count;
         }
-        return total;
-    }, {});
+    }
+    return wordCounts;
 }
 
 
@@ -81,6 +77,7 @@ async function benchmark() {
         console.error('Error:', error);
     }
 }
+
 
 export default benchmark;
 

@@ -4,6 +4,7 @@ import { promisify } from 'util';
 import { from } from 'ix/iterable';
 import { filter, flatMap, map, maxBy, skip, takeWhile } from 'ix/iterable/operators';
 
+const readFile = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
 
 const lineSeparator = '\n';
