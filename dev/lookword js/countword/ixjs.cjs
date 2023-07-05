@@ -21,9 +21,9 @@ async function* getFilesFromDirectoryGenerator(dir) {
 function countWordsInFile(filePath, minLength, maxLength) {
   console.log(filePath)
   const vale = AsyncIterable.from(fsPromises.readFile(filePath, 'utf-8'))
-    .pipe(
+  .pipe(
       flatMap((fileContent) => fileContent.split('\n')),
-      skip(14),
+    skip(14),
       takeWhile((line) => !(line.includes('*** END OF '))),
       flatMap((line) => line.split(' ')),
       map(word => word.toLowerCase()),
