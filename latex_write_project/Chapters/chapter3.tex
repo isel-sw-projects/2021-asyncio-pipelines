@@ -75,52 +75,50 @@ The implementations differ in the specific programming languages, libraries, and
 
 After presenting and discussing each implementation and its results, we will be able to directly compare them. This will enable us to draw meaningful conclusions about the performance of the strategies and technologies when applied to the same task under the same conditions. Specifically, we are interested in how the performance of a given strategy or technology can vary across different programming frameworks when tasked with finding the largest word and executing the group word operation.
 
-\clearpage
-
-\section{Strategies}
-\label{subsec:strategies}
-
-In this work were used various strategies implemented across different languages and technologies, some of those we already discussed in charpter \ref{cha:users_manual}. While some of these strategies can be used universally across all platforms, others are platform-specific due to the constraints of the environment.
-Bellow, you will find a brief enumeration of the strategies used,
-
-\subsection{Baseline}
-\label{subsubsec:baseline}
-The Baseline strategy is a straightforward implementation without any pipelining or other overhead. It serves as a reference for comparison. This method may use traditional synchronous I/O operations and sequential processing.
-
-These strategies will be applied to our chosen algorithms and implemented in the .NET, Java, and Kotlin environments. It's important to note that the aim is not to find the 'best' strategy but to demonstrate the relative strengths and weaknesses of each approach, how they can affect performance, and how they fit into different programming paradigms.
-
-\subsection{Asynchronous Baseline}
-\label{subsubsec:baseline}
-The "Asynchronous Baseline" strategy refers to a standard implementation of the baseline algorithm but using non-blocking IO operations. E.g. using async/await in C\# IO operation but without the pipeline operations.
-
-\subsection{Reactive Extensions (Rx)}
-\label{subsubsec:rx}
-Reactive Extensions (Rx) as discussed in charpter two. This model promotes a focus on data streams and the propagation of change. In the ambit of this work, were made implementations in several three programming environments, namely: .NET (Rx.NET), Java (RxJava), and JavaScript (RxJS).
-
-\subsection{Reactor (Flux)}
-\label{subsubsec:reactor_flux}
-As explained in charpter two, Reactor is a fourth-generation reactive library, based on the Reactive Streams specification, for building non-blocking applications on the JVM based on Java 8 and later. The Flux class, a Reactive Streams Publisher with reactive operators, emits 0 to N elements, and then completes (successfully or with an error). 
-This strategy will be benchmark using JAVA.
-
-\subsection{Streams}
-\label{subsubsec:blocking_reader_streams}
-This strategy uses Java's streams interface to read the data in a blocking manner. Due to the blocking nature of the I/O operations, this approach may lead to slower processing times as it has to wait for each I/O operation to complete.
-
-\subsection{Multi-threading}
-\label{subsubsec:multithread}
-This strategy leverages multi-threading to process data concurrently. By distributing the work across multiple threads, it often results in improved performance, especially for CPU-bound tasks.
-
-\subsection{Kotlin Flow}
-\label{subsubsec:kotlin_flow}
-Kotlin Flow, will be employed in our Java environment testing.
-
-\subsection{LINQ}
-\label{subsubsec:linq}
-For our .NET environment, among other technologies, we will utilize LINQ (Language Integrated Query), a Microsoft .NET Framework component adding native data querying capabilities to .NET languages.
-
-\subsection{IxJS}
-\label{subsubsec:ixjs}
-As explained in charpter two, in JS one of the technologies used will be IxJS, or Interactive Extensions for JavaScript.
+%\section{Strategies}
+%\label{subsec:strategies}
+%
+%In this work were used various strategies implemented across different languages and technologies, some of those we already discussed in charpter \ref{cha:users_manual}. While some of these strategies can be used universally across all platforms, others are platform-specific due to the constraints of the environment.
+%Bellow, you will find a brief enumeration of the strategies used,
+%
+%\subsection{Baseline}
+%\label{subsubsec:baseline}
+%The Baseline strategy is a straightforward implementation without any pipelining or other overhead. It serves as a reference for comparison. This method may use traditional synchronous I/O operations and sequential processing.
+%
+%These strategies will be applied to our chosen algorithms and implemented in the .NET, Java, and Kotlin environments. It's important to note that the aim is not to find the 'best' strategy but to demonstrate the relative strengths and weaknesses of each approach, how they can affect performance, and how they fit into different programming paradigms.
+%
+%\subsection{Asynchronous Baseline}
+%\label{subsubsec:baseline}
+%The "Asynchronous Baseline" strategy refers to a standard implementation of the baseline algorithm but using non-blocking IO operations. E.g. using async/await in C\# IO operation but without the pipeline operations.
+%
+%\subsection{Reactive Extensions (Rx)}
+%\label{subsubsec:rx}
+%Reactive Extensions (Rx) as discussed in charpter two. This model promotes a focus on data streams and the propagation of change. In the ambit of this work, were made implementations in several three programming environments, namely: .NET (Rx.NET), Java (RxJava), and JavaScript (RxJS).
+%
+%\subsection{Reactor (Flux)}
+%\label{subsubsec:reactor_flux}
+%As explained in charpter two, Reactor is a fourth-generation reactive library, based on the Reactive Streams specification, for building non-blocking applications on the JVM based on Java 8 and later. The Flux class, a Reactive Streams Publisher with reactive operators, emits 0 to N elements, and then completes (successfully or with an error). 
+%This strategy will be benchmark using JAVA.
+%
+%\subsection{Streams}
+%\label{subsubsec:blocking_reader_streams}
+%This strategy uses Java's streams interface to read the data in a blocking manner. Due to the blocking nature of the I/O operations, this approach may lead to slower processing times as it has to wait for each I/O operation to complete.
+%
+%\subsection{Multi-threading}
+%\label{subsubsec:multithread}
+%This strategy leverages multi-threading to process data concurrently. By distributing the work across multiple threads, it often results in improved performance, especially for CPU-bound tasks.
+%
+%\subsection{Kotlin Flow}
+%\label{subsubsec:kotlin_flow}
+%Kotlin Flow, will be employed in our Java environment testing.
+%
+%\subsection{LINQ}
+%\label{subsubsec:linq}
+%For our .NET environment, among other technologies, we will utilize LINQ (Language Integrated Query), a Microsoft .NET Framework component adding native data querying capabilities to .NET languages.
+%
+%\subsection{IxJS}
+%\label{subsubsec:ixjs}
+%As explained in charpter two, in JS one of the technologies used will be IxJS, or Interactive Extensions for JavaScript.
 
 
 \clearpage
@@ -306,7 +304,6 @@ In the following table and graphic, we have the results in seconds for each stra
             width=1.0\textwidth,
             height=0.4\textwidth,
             bar width=20pt,
-            enlargelimits=0.09,
             legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
             ylabel={Processing Time Average (s)},
             symbolic x coords={NIO Reactor Flux, NIO Reactor Flux with Concurrency, NIO Observable RXJava, NIO Observable with Concurrency, Blocking Reader in Streams, Blocking Reader MultiThread, Blocking Reader Streams with Concurrency, NIO Baseline, Concurrent Processing with Kotlin Flow, Sequential Processing with Kotlin Flow, Kotlin Flow IO Blocking Operations},
@@ -314,6 +311,7 @@ In the following table and graphic, we have the results in seconds for each stra
             xticklabel style={rotate=45,anchor=east},
             nodes near coords,
             nodes near coords align={vertical},
+            ymin=0, ymax=7,
             ]
         \addplot coordinates {(NIO Reactor Flux, 1.1) (NIO Reactor Flux with Concurrency, 1.0) (NIO Observable RXJava, 0.9) (NIO Observable with Concurrency, 0.8) (Blocking Reader in Streams, 3.9) (Blocking Reader MultiThread, 0.7) (Blocking Reader Streams with Concurrency, 3.0) (NIO Baseline, 0.9) (Concurrent Processing with Kotlin Flow, 2.4) (Sequential Processing with Kotlin Flow, 5.1) (Kotlin Flow IO Blocking Operations, 5.2)};
         \end{axis}
@@ -367,7 +365,6 @@ In the following table and graphic, we have the results in seconds for each stra
             width=0.8\textwidth,
             height=0.6\textwidth,
             bar width=20pt,
-            enlargelimits=0.09,
             legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
             ylabel={Processing Time Average (s)},
             symbolic x coords={Baseline, RXJava, Reactor Core Flux, Blocking IO W MultiThread, Streams, Flow (Kotlin)},
@@ -430,7 +427,6 @@ In the following table and graphic, we have the results in seconds for each stra
         width=1.0\textwidth,
         height=0.4\textwidth,
         bar width=20pt,
-        enlargelimits=0.09,
         legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
         ylabel={Processing Time Average (s)},
         symbolic x coords={Baseline JS, Baseline Stream JS, RxStrategy JS},
@@ -438,6 +434,7 @@ In the following table and graphic, we have the results in seconds for each stra
         xticklabel style={rotate=45,anchor=east},
         nodes near coords,
         nodes near coords align={vertical},
+        ymin=0, ymax=30,
         ]
     \addplot coordinates {(Baseline JS, 8.2) (Baseline Stream JS, 23.2) (RxStrategy JS, 13.9)};
     \end{axis}
@@ -450,7 +447,60 @@ In the following table and graphic, we have the results in seconds for each stra
 
 
 \subsection{Grouping Words}
-\label{subsec:biggest_word_js}
+\label{subsec:grouping_words_js}
+
+In this subsection, we evaluate the following strategies for grouping words:
+
+\begin{itemize}
+    \item \textbf{Baseline JS}: This strategy serves as the basic JavaScript approach for grouping words, acting as a baseline for comparison.
+    \item \textbf{Baseline Stream JS}: This strategy uses JavaScript streams, which provide a way to handle reading/writing files, network communications, or any kind of end-to-end information exchange in an efficient manner.
+    \item \textbf{RxStrategy JS}: This strategy leverages the Reactive Extensions for JavaScript (RxJS) library, which offers a set of methods for dealing with asynchronous data sequences in an effective way.
+\end{itemize}
+
+In the following table and graphic, we present the results in seconds for each strategy:
+
+\begin{table}[H]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+    Baseline JS & 30.1 \\ \hline
+    Baseline Stream JS & 26.6 \\ \hline
+    RxStrategy JS & 17.3 \\ \hline
+    \end{tabular}%
+    }
+    \caption{Processing times for different JavaScript strategies for "Grouping Words".}
+    \label{tab:strategies_times_grouping_words_js}
+\end{table}
+
+\begin{figure}[H]
+    \raggedright
+    \begin{tikzpicture}
+    \begin{axis}[
+        ybar=2*\pgflinewidth,
+        width=1.0\textwidth,
+        height=0.4\textwidth,
+        bar width=20pt,
+        legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
+        ylabel={Processing Time Average (s)},
+        symbolic x coords={Baseline JS, Baseline Stream JS, RxStrategy JS},
+        xtick=data,
+        xticklabel style={rotate=45,anchor=east},
+        nodes near coords,
+        nodes near coords align={vertical},
+        ymin=0, ymax=40,
+        ]
+    \addplot coordinates {(Baseline JS, 30.1) (Baseline Stream JS, 26.6) (RxStrategy JS, 17.3)};
+    \end{axis}
+    \end{tikzpicture}
+    \caption{Processing times for different JavaScript strategies for "Grouping Words" Graphic}
+    \label{fig:grouping_words_processing_times_js}
+\end{figure}
+
+
+
+\clearpage
 
 
 

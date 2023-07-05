@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
 import { from } from 'rxjs';
-import { map, filter, mergeMap, reduce, concatMap } from 'rxjs/operators';
+import { map, filter, mergeMap, reduce, concatMap, skip, takeWhile } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
 
 const readFile = promisify(fs.readFile);
@@ -24,6 +24,8 @@ function countWordsInFile(filePath, minLength, maxLength) {
   return from(readFile(filePath, 'utf-8')).pipe(
     map((fileContent) => fileContent.split('\n')),
     concatMap((lines) => from(lines)),
+    skip(14),
+    takeWhile(line => !line.includes('*** END OF ')),
     filter((line) => line.length > 0),
     concatMap((line) => from(line.split(' '))),
     map(word => word.toLowerCase()),
@@ -35,7 +37,7 @@ function countWordsInFile(filePath, minLength, maxLength) {
   );
 }
 
-async function countWordsInDirectory(directoryPath, minLength, maxLength) {
+async function countWordsInDirectory(directoryPath, minLength=5, maxLength=10) {
   const files = [];
   for await (const filePath of getFilesFromDirectoryGenerator(directoryPath)) {
     files.push(filePath);
@@ -77,6 +79,5 @@ async function benchmark() {
   }
 }
 
-benchmark()
 
 export default benchmark;

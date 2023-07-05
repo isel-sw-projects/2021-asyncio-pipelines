@@ -59,5 +59,4 @@ async function benchmark() {
   }
 };
 
-benchmark()
 export default benchmark
