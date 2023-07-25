@@ -430,42 +430,50 @@ the simple use of a intrisic keyword like \texttt{yield} simplifies the code a l
 \section{State of the Art} % (fold)
 \label{sec:state_of_the_art}
 
-In this section, we will elaborate on various state-of-the-art frameworks used for asynchronous IO pipeline processing across several programming languages.
+In this section, we will delve into various state-of-the-art frameworks designed for asynchronous IO pipeline processing across multiple programming languages.
 
-Initially, in Section \ref{reactivex}, we present the multi-language \textit{ReactiveX.io} project and explain how the \textit{Observer Pattern} is utilized in this approach to implement real-time asynchronous processing with and without back-pressure. In Section \ref{rxjava}, we discuss \textit{RxJava}, which is an implementation of this project in Java.
+Initially, we explore the options available in the Java landscape in Section \ref{sec:java}. Here, we begin with an explanation of the multi-language project \textit{ReactiveX.io} and its Java implementation, \textit{RxJava}. Subsequently, we will discuss the Reactor Project, followed by an examination of non-blocking processing in the JVM, specifically through Kotlin's native \texttt{Flow} implementation.
 
-In the following section, we focus on \textit{Project Reactor}, a pivotal component of Spring WebFlux's non-blocking web stack. We delve into how \textit{Project Reactor} takes a different approach from \textit{ReactiveX} but still offers similar benefits, enabling developers to work with a composable API for declarative, event-driven programming. This discussion can be found in Section \ref{sec:project_reactor}.
+Following Java, we shift our focus to Microsoft's .NET C\# in Section \ref{sec:csharp}. A brief mention of ReactiveX's c\# implementation precedes a deep dive into how C\# natively addresses this challenge, particularly through the implementation of \texttt{AsyncEnumerables}.
 
-Next, we introduce the \textit{Async Enumerables} in  this Section \ref{csenums}, is discussed how these approaches are implemented in .NET C\# and in javascript and how it diverges from \textit{ReactiveX.io} or Kotlin's \textit{Kotlin Flow}. Sections \ref{sec:aenums} and \ref{sec:kotlinflow} will present the JavaScript and Kotlin Flow strategies for asynchronous data processing, respectively.
+Next, we explore JavaScript's native solution to this problem, highlighting the use of asynchronous Iterables through the \textit{intrinsic keywords} \texttt{FOR AWAIT...OF} and Promises. Additionally, we refer to ReactiveX's implementation for JavaScript, RXJS.
 
-Finally, in Section \ref{sec:tech_compare}, we provide an overview and draw conclusions about the various technologies presented, discussing how each approach can be employed for different problems and objectives. We then make theoretical predictions on how each technology behaves in several known circumstances.
+Finally, in Section \ref{sec:tech_compare}, we provide a comprehensive overview and draw conclusions about the various technologies discussed, comparing how each approach can be utilized for different problems and objectives. We also make theoretical predictions about the potential performance of each technology under several known circumstances.
 
-\subsection{ReactiveX.io Project}
-\label{reactivex}
+\subsection{Java}
+\label{sec:java}
 
-Following the historical context explained in Chapter \ref{sec:related_work}, various developer groups have pursued implementing solutions for handling asynchronous data flows. One significant outcome of these endeavors is the \textit{ReactiveX} project.
+In the context of Java, we will explore several libraries and frameworks aimed at simplifying asynchronous data flow handling. 
 
-This project amalgamates several concepts and recognized design patterns to implement an asynchronous data flow mechanism. Notable advantages of this project include its multi-language implementation with an open-source approach, and a design that abstracts the complexity inherent to asynchronous programming from the developer, thus yielding more intuitive and easily understandable code. In this dissertation, we will specifically examine the Java implementation of ReactiveX, namely \textit{RxJava}.
+The first is \textit{RxJava}, which is a Java implementation of the \textit{ReactiveX.io} project. This library uses the \texttt{Observer pattern} to handle real-time asynchronous processing with and without back-pressure. It is important to note that the ReactiveX.io project is a multi-language project, and its Java implementation, RxJava, is among the most widely used.
 
-\clearpage
+Next, we delve into \textit{Project Reactor}, an integral part of Spring WebFlux's non-blocking web stack. Although it uses a different approach from \textit{ReactiveX}, it still provides the same benefits, like allowing developers to work with a composable API for declarative, event-driven programming.
+
+Lastly, we will discuss the \textit{Kotlin Flow} strategy, which is utilized in the Kotlin language but interoperable with Java. This will provide us with a perspective on how coroutine-based asynchronous data processing is implemented in the JVM environment, contrasting with the Observer pattern used by ReactiveX and Project Reactor.
 
 
-\subsubsection{RxJava Architecture}
+\subsubsection{RxJava Library}
 \label{rxjava}
-To implement an asynchronous mechanism capable of managing \textit{Hot} and \textit{Cold} data flows with and without back-pressure, the project has adopted the \textit{Observer pattern} combined with the concepts encapsulated in the \textit{Publisher/Subscriber pattern}. 
 
-The designers justify this choice by arguing that this model enables treating streams of asynchronous events with the same ease as their synchronous counterparts, such as \textit{Collection} and \textit{Iterator}. They further elaborate that using this approach, the code complexity associated with low-level threading, non-blocking IO, thread-safety, and so forth, is effectively abstracted away from the developer.
+Before we delve into the specifics of RxJava, it's important to discuss ReactiveX (Reactive Extensions) — the project that gave birth to it. ReactiveX is a multi-language project focusing on combining the observer pattern, iterator pattern, and functional programming techniques to make the handling of asynchronous streams of data manageable and efficient. ReactiveX libraries exist for a variety of programming languages, including JavaScript, Java, C\#, and others.
 
-In the implementation, the data source/publisher of an asynchronous stream of events is represented by the classes \texttt{Observable} and \texttt{Flowable}. The only difference between \texttt{Observable} and \texttt{Flowable} lies in that \texttt{Flowable} supports back-pressure through different buffering strategies.
+ReactiveX adopts a declarative approach to concurrency, abstracting away the complexities associated with low-level threading, synchronization, thread-safety, concurrent data structures, and non-blocking I/O. Instead, it encourages developers to focus on the composition of asynchronous data streams.
 
-It is worth mentioning that in RxJava, while \texttt{Observable} and \texttt{Flowable} represent a stream of N events, a single event is represented by a class named \texttt{Single}.
+An \textit{observable} sequence in ReactiveX can emit three types of items: "next" notifications (carrying items to observers), "error" notifications (carrying error information), and "complete" notifications (signaling the end of the sequence). Observers subscribe to these observable sequences and react to whatever item they emit. The sequences are lazy; items are not pushed to observers until an observer subscribes.
 
-One of the significant advantages of using this framework is that \texttt{Observable} and \texttt{Flowable} offer fluent APIs that allow operation chaining in pipelines, similar to the provision in synchronous environments like Java's \textit{Stream} fluent API or .NET's Linq framework. These fluent APIs support stream processing operations like \texttt{filter}, \texttt{flatMap}, and \texttt{distinct}, enabling developers to treat these asynchronous event sequences as they would with synchronous streams in fluent APIs.
+Now, let's turn our attention to RxJava, the Java implementation of ReactiveX.
 
-The observers/subscribers are represented by consumers that are attached to \texttt{Observable} via the method \texttt{Observable.subscribe()}. These consumers can either be implementations of the functional interface \texttt{Consumer<T>} or the interface \textit{Observer}.
+RxJava, an open-source project, encapsulates the \textit{Observer pattern}, the \textit{Iterator pattern}, and functional programming techniques to manage asynchronous data flow and control event sequences.
 
-The \textit{Observer} interface offers extra control over stream processing through error handling, a feature that implementations of \texttt{Consumer<T>} lack. The \textit{Observer} can be viewed as the asynchronous representation of the Java util interface \texttt{Iterator}, with the resemblance evident in the \textit{Observer} interface methods:
+The data source/publisher of an asynchronous event stream in RxJava is represented by the \texttt{Observable} and \texttt{Flowable} classes. The key distinction is that \texttt{Flowable} supports back-pressure through various buffering strategies.
 
+In RxJava, \texttt{Observable} and \texttt{Flowable} represent a stream of N events, while a single event is encapsulated by the \texttt{Single} class.
+
+RxJava offers fluent APIs in \texttt{Observable} and \texttt{Flowable}, enabling operation chaining in pipelines — a feature also found in synchronous environments like Java's \textit{Stream} fluent API or .NET's Linq framework. Developers can perform stream processing operations like \texttt{filter}, \texttt{flatMap}, and \texttt{distinct} on these asynchronous event sequences, much as they would on synchronous streams in fluent APIs.
+
+Observers/subscribers in RxJava are consumers subscribing to \texttt{Observable} through the \texttt{Observable.subscribe()} method. These consumers can be implementations of the functional interface \texttt{Consumer<T>} or the \textit{Observer} interface. The latter provides enhanced control over stream processing through error handling capabilities, which \texttt{Consumer<T>} implementations lack.
+
+The \textit{Observer} can be regarded as an asynchronous counterpart to the Java util interface \texttt{Iterator}, as evidenced by the similarity in their interface methods.
 \begin{enumerate}
     \item \texttt{onSubscription()}: This method is called immediately after a subscription is made with an \texttt{Observable}.
     \item \texttt{onNext(T item)}: This method is called when an item is emitted by the asynchronous data source.
@@ -473,7 +481,7 @@ The \textit{Observer} interface offers extra control over stream processing thro
     \item \texttt{onComplete()}: This method is called when the data source closes or the subscription finishes.
 \end{enumerate}
 
-Given the possible relationship between synchronous and its asynchronous logic counterparts in many languages, we will take Java as an example to demonstrate how these objects can be directly related to their asynchronous counterparts in RxJava. The following table shows how each object type can be mapped:
+Given the possible relationship between synchronous and asynchronous programming, Table \ref{tab:comparison} was developed to better visualize the correlation.
 
 
 \begin{table}[h]
@@ -489,27 +497,19 @@ Given the possible relationship between synchronous and its asynchronous logic c
 	\end{tabular}
 	\caption{Your caption}
 	\label{tab:my_label}
-	\end{table}
+\end{table}
 
-	\subsubsection{IxJs Architecture}
-	\label{ixjs}
 
-\subsection{Project Reactor}
-\label{sec:project_reactor}
-
-Similar to the development of \textit{RxJava}, described in Chapter \ref{rxjava}, the increasing demand for non-blocking reactive systems in the Java ecosystem has led to the creation of \textit{Project Reactor}. 
-
-Project Reactor, as a part of the Spring portfolio, provides a fully non-blocking foundation that applies the Reactive Streams specification for Java. By doing this, Reactor offers efficient demand management (back-pressure ready) capabilities, which make it a compelling choice for scenarios that involve handling live streams of data.
-
-\subsubsection{Reactor Architecture}
+\subsubsection{Reactor Library}
 \label{sec:reactor_architecture}
 
-Reactor's design is based on the \textit{Publisher/Subscriber pattern}, just like \textit{RxJava}, enabling the use of \textit{Flux} (a stream of 0 to N items) and \texttt{Mono} (a stream of 0 or 1 item) as representations of asynchronous data streams. The choice to include these representations is because they adhere to the Reactive Streams specification, which makes them interoperable with other implementations following the same specification.
+The \textit{Project Reactor} is another part of the Spring portfolio of projects. It is designed to be a fully non-blocking foundation for Java, compliant with the Reactive Streams specification. It offers efficient demand management (back-pressure) capabilities, making it an ideal choice for scenarios involving live streams of data.
 
-The benefits of using Project Reactor are analogous to the ones seen with \textit{RxJava}, including the abstraction of low-level threading, non-blocking IO, and thread-safety details from the developer. Moreover, it provides a range of operators that can transform, filter, combine, and manipulate data streams. This enables programmers to construct intuitive instruction pipelines, similar to those seen in Java's Stream API, C\#'s LINQ, or Rx.NET.
+The design of Project Reactor is also based on the \textit{Publisher/Subscriber pattern}. However, instead of using \texttt{Observable}, \texttt{Flowable}, and \texttt{Single}, Project Reactor uses \texttt{Flux} and \texttt{Mono} to represent asynchronous data streams. \texttt{Flux} represents a stream of 0 to N items, while \texttt{Mono} represents a stream of 0 or 1 item.
 
-In Project Reactor, developers attach subscribers to publishers using the \texttt{subscribe()} method, similar to what is done in \textit{RxJava}. Here, the subscribers can implement error handling, which allows more precise control over stream processing.
+Similar to RxJava, Project Reactor provides a variety of operators that can be used to transform, filter, combine, and manipulate data streams. This allows developers to construct intuitive instruction pipelines. 
 
+Just like in RxJava, observers/subscribers in Project Reactor are represented by consumers that are attached to \texttt{Flux} and \texttt{Mono} via the \texttt{subscribe()} method. These consumers can either be implementations of the \texttt{Consumer<T>} functional interface or the \texttt{Subscription} interface. 
 Here's a brief comparison of how Reactor relates to the conventional synchronous counterparts in Java:
 
 \begin{center}
@@ -529,112 +529,17 @@ Here's a brief comparison of how Reactor relates to the conventional synchronous
 
 By adhering to the Reactive Streams specification and offering a wide array of operators to handle data, Project Reactor serves as a powerful tool for developing reactive, non-blocking applications in Java.
 
-\subsection {.NET framework }
-\label{sec:csharp}
-
-\subsubsection{C\# async...await}
-\label{csenums}
-
-
-\subsubsection{.NET Asynchronous Enumerables}
-\label{csenums}
-In the .NET framework, the concept of an enumerable is represented through the \texttt{IEnumerable<T>} interface, which defines a method \texttt{GetEnumerator()}. This method returns an \texttt{IEnumerator<T>}, enabling iteration over a collection. To extend this concept to the asynchronous world, .NET introduces the \texttt{IAsyncEnumerable<T>} interface.
-
-Similar to its synchronous counterpart, \texttt{IAsyncEnumerable<T>} returns an \texttt{IAsyncEnumerator<T>}, but with an asynchronous \texttt{MoveNextAsync()} method. This minor but significant modification lets us deal with data sources where data availability is asynchronous, such as real-time feeds, network streams, etc.
-
-Here's a simple example of how asynchronous enumerables can be used in C\#:
-
-\begin{center}
-	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-	\begin{lstlisting}[
-		escapeinside={(*}{*)},
-			caption={Asynchronous Enumerable, C\# example},
-			label={lst-top5-dotnetasenum}
-	]
-static async Task Main(string[] args)
-{
-IAsyncEnumerable<int> enumerable = FetchItems(1000);
-int i = 0;
-await foreach (int item in enumerable)
-{
-	if (i++ == 10){ break;}
-	Console.WriteLine(item);
-}
-}
-
-static async IAsyncEnumerable<int> FetchItems(int delay)
-{
-int count = 0;
-while(true)
-{
-	await Task.Delay(delay);
-	yield return count++;
-}
-}
-//
-//1
-//1 sec delay
-//2
-//1 sec delay
-//3
-//....
-	\end{lstlisting}
-\end{center}
-
-This example demonstrates how asynchronous data sources can be worked with in a similar way as synchronous collections, thanks to the use of \texttt{IAsyncEnumerable<T>} and the \texttt{await foreach} construct.
-
-\subsection{Javascript}
-\label{jsae}
-
-Node.js tries to provide a functional and weakly typed approach to asynchronous flow processing, opposed to what we saw in the C\# solution.
-The mechanism to provide the means to iterate over asynchronous streams is relatively similar to what we saw in C\#, with the use of the intrinsic keywords \texttt{async...await} and \texttt{for await...of}.
-With the keyword pair \texttt{async...await}, it's provided the syntax "sugar" that enables making asynchronous calls and allowing the syntax to resemble synchronous code. The \texttt{async} mark is used in an asynchronous function and enables the use of the keyword \texttt{await}. The \texttt{await} keyword is then used in an asynchronous call to another asynchronous function.
-On the other side, the keywords \texttt{for await...of} provide support for iteration over asynchronous enumerables, as we can see in the next example:
-
-\begin{center}
-\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-\centering
-\begin{lstlisting}[
-escapeinside={(}{)},
-caption={Mozilla's Javascript Asynchronous Enumerables example},
-label={lst-top5-js-async-enum}
-]
-async function* streamAsyncIterable(stream) {
-const reader = stream.getReader();
-try {
-while (true) {
-const { done, value } = await reader.read();
-if (done) {
-return;
-}
-yield value;
-}
-} finally {
-reader.releaseLock();
-}
-}
-
-async function getResponseSize(url) {
-const response = await fetch(url);
-let responseSize = 0;
-	
-	const iterable = streamAsyncIterable(response.body);
-	
-	for await (const chunk of iterable) {
-		responseSize += chunk.length;
-	}
-	return responseSize;
-}  
-	\end{lstlisting}
-\end{center}
-
-This example demonstrates how JavaScript's \texttt{async function*} construct can be used to define asynchronous enumerables. These can then be conveniently iterated over using the \texttt{for await...of} construct, just like you would with regular collections.
-
-Overall, both C\# and JavaScript provide convenient ways to handle asynchronous data flows that simplify coding and make the code more readable and maintainable. These tools help abstract away the complexities of asynchronous programming, such as callbacks, tasks, and completion tokens, making it easier to write and understand asynchronous code.
-
-\subsection{Kotlin Flow}
+\subsubsection{Kotlin Flow}
 \label{sec:kotlinflow}
-Kotlin asynchronous flow implementation is a \cite{ReactiveStreams} compliant solution, inspired in RxReactor and another projects, made with the intent to be simple as possible. Similarly to RxJava, Kotlin strongly typifies a stream of N events, which, in this case, is done through the implementation of the interface \texttt{Flow<T>}.\\
+
+Kotlin, despite being a JVM-based language, differs significantly from Java when it comes to handling asynchronous data flows. Kotlin uses coroutines, a feature natively supported in the language, to simplify asynchronous programming. This feature is used in the implementation of \texttt{Flow<T>}, Kotlin's main interface for handling asynchronous data flows.
+
+In comparison to \texttt{Observable} and \texttt{Flux}, which are based on the Observer pattern, Kotlin's \texttt{Flow<T>} is more aligned with the principles of the \textit{Publisher/Subscriber pattern}. This is evident in how the \texttt{Flow<T>} interface is implemented. The data source implementation for a \texttt{Flow<T>} is done using a builder, and the initiation of the flow sequence is triggered by the \texttt{Flow.collect()} method.
+
+Hot flows in Kotlin are represented by the \texttt{SharedFlow<out T> : Flow<T>} interface. Unlike \texttt{Flow<T>}, which initiates a flow every time \texttt{Flow.collect()} is called, \texttt{SharedFlow.collect()} emits an unpredictable set of items from an external stream of events initiated before the call to \texttt{SharedFlow.collect()}. 
+
+Kotlin's \texttt{Flow<T>} provides a fluent API of intermediate operators that allow data transformation through operation pipelines, similar to what we have already seen in RxJava and Project Reactor. 
+
 A \texttt{Flow<T>} data source implementation is done through a builder, like we can see in the next example:
 
 
@@ -756,6 +661,129 @@ fun main() = runBlocking<Unit> {
 	
 	\end{lstlisting}
 \end{center}
+
+
+\subsection {.NET C sharp}
+\label{sec:csharp}
+
+
+\subsubsection{RxNet}
+\label{rxnet}
+
+RxNet is the .NET implementation of the ReactiveX project, providing the same powerful programming paradigm from ReactiveX to the .NET ecosystem. This implementation allows developers in the .NET framework to effectively manage asynchronous data flow using the Observer pattern and functional programming techniques, as explained in the ReactiveX and RxJava sections.
+
+In the context of C\#, the concepts of Observables and Observers (or Subscribers) are represented by the \texttt{IObservable<T>} and \texttt{IObserver<T>} interfaces. These are analogous to the \texttt{IEnumerable<T>} and \texttt{IEnumerator<T>} interfaces in the synchronous realm, and closely resemble the implementations seen in RxJava.
+
+Therefore, the understanding and application of RxNet would follow the same principles and design patterns as observed in RxJava. The key advantage of RxNet is that it provides .NET developers with an abstracted and simplified approach to asynchronous programming, similar to what the ReactiveX project offers in other languages.
+
+Importantly, RxNet is fully integrated with other .NET asynchronous programming constructs such as Tasks and the async/await pattern, offering a robust and comprehensive toolset for addressing various asynchronous and event-based programming scenarios in the .NET framework.
+
+\subsubsection{Asynchronous Enumerables}
+\label{csenums}
+In the .NET framework, the concept of an enumerable is represented through the \texttt{IEnumerable<T>} interface, which defines a method \texttt{GetEnumerator()}. This method returns an \texttt{IEnumerator<T>}, enabling iteration over a collection. To extend this concept to the asynchronous world, .NET introduces the \texttt{IAsyncEnumerable<T>} interface.
+
+Similar to its synchronous counterpart, \texttt{IAsyncEnumerable<T>} returns an \texttt{IAsyncEnumerator<T>}, but with an asynchronous \texttt{MoveNextAsync()} method. This minor but significant modification lets us deal with data sources where data availability is asynchronous, such as real-time feeds, network streams, etc.
+
+Here's a simple example of how asynchronous enumerables can be used in C\#:
+
+\begin{center}
+	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+	\begin{lstlisting}[
+		escapeinside={(*}{*)},
+			caption={Asynchronous Enumerable, C\# example},
+			label={lst-top5-dotnetasenum}
+	]
+static async Task Main(string[] args)
+{
+IAsyncEnumerable<int> enumerable = FetchItems(1000);
+int i = 0;
+await foreach (int item in enumerable)
+{
+	if (i++ == 10){ break;}
+	Console.WriteLine(item);
+}
+}
+
+static async IAsyncEnumerable<int> FetchItems(int delay)
+{
+int count = 0;
+while(true)
+{
+	await Task.Delay(delay);
+	yield return count++;
+}
+}
+//
+//1
+//1 sec delay
+//2
+//1 sec delay
+//3
+//....
+	\end{lstlisting}
+\end{center}
+
+This example demonstrates how asynchronous data sources can be worked with in a similar way as synchronous collections, thanks to the use of \texttt{IAsyncEnumerable<T>} and the \texttt{await foreach} construct.
+
+\subsection{Javascript}
+\label{jsae}
+
+As a functional and dynamically-typed language, JavaScript provides a distinctive approach to managing asynchronous data flow. Enabled by its asynchronous runtime environment, Node.js, JavaScript employs specific intrinsic keywords and libraries to facilitate asynchronous operations. JavaScript's native constructs, namely the \texttt{async...await} and \texttt{for await...of} keywords, significantly ease the handling of asynchronous tasks. Beyond these built-in facilities, libraries like the Reactive Extensions for JavaScript (RxJS) enhance these capabilities further, enabling more sophisticated operations on asynchronous data streams. This section explores both JavaScript's intrinsic keywords and the RxJS library, emphasizing their respective roles in handling asynchronous flows in JavaScript.
+
+\subsubsection{Javascript Intrinsic Words: async...await and for await...of}
+\label{jsintrin}
+
+The JavaScript runtime environment, Node.js, adopts a functional and weakly-typed approach to asynchronous flow processing. The mechanism to process asynchronous streams is somewhat similar to what we've seen in C\#, but instead uses intrinsic keywords \texttt{async...await} and \texttt{for await...of}.
+
+The keyword pair \texttt{async...await} provides a syntax that closely resembles synchronous code while making asynchronous calls. The \texttt{async} keyword marks a function as asynchronous and enables the use of the \texttt{await} keyword within it. The \texttt{await} keyword is then used before calling an asynchronous function, indicating that the function should pause and wait for the Promise to resolve or reject.
+
+On the other hand, the keywords \texttt{for await...of} provide support for iterating over asynchronous enumerables, as demonstrated in the following example:
+
+\begin{center}
+	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+	\centering
+	\begin{lstlisting}[
+	escapeinside={(}{)},
+	caption={Mozilla's Javascript Asynchronous Enumerables example},
+	label={lst-top5-js-async-enum}
+	]
+	async function* streamAsyncIterable(stream) {
+	const reader = stream.getReader();
+	try {
+	while (true) {
+	const { done, value } = await reader.read();
+	if (done) {
+	return;
+	}
+	yield value;
+	}
+	} finally {
+	reader.releaseLock();
+	}
+	}
+	
+	async function getResponseSize(url) {
+	const response = await fetch(url);
+	let responseSize = 0;
+		
+		const iterable = streamAsyncIterable(response.body);
+		
+		for await (const chunk of iterable) {
+			responseSize += chunk.length;
+		}
+		return responseSize;
+	}  
+		\end{lstlisting}
+	\end{center}
+
+This example demonstrates how JavaScript's \texttt{async function*} construct can be used to define asynchronous enumerables. These can then be conveniently iterated over using the \texttt{for await...of} construct, just like you would with regular collections.
+
+\subsubsection{RxJS}
+\label{rxjs}
+
+RxJS represents the JavaScript adaptation of the ReactiveX project, analogous to RxNet in .NET and RxJava in Java. This library furnishes JavaScript developers with the same robust mechanisms and abstractions for handling asynchronous data streams. 
+
+While RxJS operates under similar principles as its Java and .NET counterparts, it introduces unique approaches that cater specifically to JavaScript's dynamic and functional nature. As such, the core philosophy remains consistent across these libraries: simplifying the management of asynchronous data streams, with specific implementations nuanced to suit the distinct characteristics of their respective languages.
 
 
 %% section how_to_write_using_latex (end)

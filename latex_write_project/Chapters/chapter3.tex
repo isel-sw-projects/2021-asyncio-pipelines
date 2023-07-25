@@ -141,31 +141,31 @@ For the find biggest word algorithm, are used the following strategies:
     \item \textbf{Multithread }: A multi-threading approach that uses asynchronous blocking read operations.
     \item \textbf{Linq Sync}: This strategy uses Language Integrated Query (LINQ) in a synchronous manner.
     \item \textbf{Async Enumerable}: This approach uses asynchronous programming with enumerable collections.
-    \item \textbf{Rx}: The Reactive Extensions (Rx) library is used to handle data sequences asynchronously and event-based.
-    \item \textbf{Rx Async File Read}: This strategy uses the Reactive Extensions (Rx) library with asynchronous file reading operations.
+    \item \textbf{RxNet}: The Reactive Extensions (Rx) library is used to handle data sequences asynchronously and event-based.
+    \item \textbf{RxNet Async File Read}: This strategy uses the Reactive Extensions (Rx) library with asynchronous file reading operations.
 \end{itemize}
 
 
-In the following table and graphic, we have the results in seconds for each strategie:
+In the following graphic, we have the results in seconds for each strategie:
 
-\begin{table}[H]
-    \centering
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|c|}
-    \hline
-    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
-    Sync Baseline & 15.8 \\ \hline
-    Multithread  & 1.6 \\ \hline
-    Async Baseline & 2.8 \\ \hline
-    Linq Sync & 22.2 \\ \hline
-    Async Enumerable & 30 \\ \hline
-    Rx & 23 \\ \hline
-    Rx Async File Read & 15 \\ \hline
-    \end{tabular}%
-    }
-    \caption{Processing times for different strategies for "Find the biggest word".}
-    \label{tab:biggest_word_results_cs_1}
-\end{table}
+%\begin{table}[H]
+%    \centering
+%    \resizebox{\textwidth}{!}{%
+%    \begin{tabular}{|l|c|}
+%    \hline
+%    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+%    Sync Baseline & 15.8 \\ \hline
+%    Multithread  & 1.6 \\ \hline
+%    Async Baseline & 2.8 \\ \hline
+%    Linq Sync & 22.2 \\ \hline
+%    Async Enumerable & 30 \\ \hline
+%    Rx & 23 \\ \hline
+%    Rx Async File Read & 15 \\ \hline
+%    \end{tabular}%
+%    }
+%    \caption{Processing times for different strategies for "Find the biggest word".}
+%    \label{tab:biggest_word_results_cs_1}
+%\end{table}
     
 \begin{figure}[H]
     \raggedright
@@ -200,28 +200,28 @@ In the following table and graphic, we have the results in seconds for each stra
 In this subsection, we concentrate on the task of grouping words from a file using different strategies. The strategies that we evaluate here include:
 
 \begin{itemize}
-    \item \textbf{RunCountWordsBaseline}: This strategy serves as the basic approach for word grouping and acts as a baseline for comparison.
-    \item \textbf{RunSyncTest}: A synchronous approach that handles tasks in a sequential manner.
-    \item \textbf{RunAsyncEnumerableTest}: This strategy uses an asynchronous approach with enumerable collections.
-    \item \textbf{RunRxTest}: Here, the Reactive Extensions (Rx) library is used to handle data sequences asynchronously and event-based.
+    \item \textbf{Baseline}: This strategy serves as the basic approach for word grouping and acts as a baseline for comparison.
+    \item \textbf{Linq}: A synchronous approach that handles tasks in a sequential manner.
+    \item \textbf{AsyncEnumerable}: This strategy uses .NET asyncenumerables to process the asynchronous data .
+    \item \textbf{RxNet}: Here, the Reactive Extensions (Rx) library is used to handle data sequences asynchronously and event-based.
 \end{itemize}
 
 
-\begin{table}[H]
-    \centering
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|c|}
-    \hline
-    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
-    RunCountWordsBaseline & 26 \\ \hline
-    RunSyncTest & 22 \\ \hline
-    RunAsyncEnumerableTest & 30 \\ \hline
-    RunRxTest & 22 \\ \hline
-    \end{tabular}%
-    }
-    \caption{Processing times for different strategies for "Count Words".}
-    \label{tab:group_word_processing_times_cs}
-\end{table}
+%\begin{table}[H]
+%    \centering
+%    \resizebox{\textwidth}{!}{%
+%    \begin{tabular}{|l|c|}
+%    \hline
+%    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+%    Baseline Blocking IO & 26 \\ \hline
+%    Linq & 22 \\ \hline
+%    Async Enumerable & 30 \\ \hline
+%    Rx Net & 22 \\ \hline
+%    \end{tabular}%
+%    }
+%    \caption{Processing times for different strategies for "Count Words".}
+%    \label{tab:group_word_processing_times_cs}
+%\end{table}
 
 \begin{figure}[H]
     \raggedright
@@ -234,13 +234,13 @@ In this subsection, we concentrate on the task of grouping words from a file usi
         enlargelimits=0.09,
         legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
         ylabel={Processing Time Average (s)},
-        symbolic x coords={RunCountWordsBaseline, RunSyncTest, RunAsyncEnumerableTest, RunRxTest},
+        symbolic x coords={Baseline, Linq, Async Enumerable, Rx net},
         xtick=data,
         xticklabel style={rotate=45,anchor=east},
         nodes near coords,
         nodes near coords align={vertical},
         ]
-    \addplot coordinates {(RunCountWordsBaseline, 26.0) (RunSyncTest, 22.2) (RunAsyncEnumerableTest, 30) (RunRxTest, 22.0)};
+    \addplot coordinates {(Baseline, 26.0) (Linq, 22.2) (Async Enumerable, 30) (Rx net, 22.0)};
     \end{axis}
     \end{tikzpicture}
     \caption{Processing times for different strategies for "Count Words".}
@@ -262,38 +262,38 @@ In this section, we explore and assess diverse strategies applied in Java and Ko
 The strategies used in JAVA are:
 
 \begin{itemize}
-    \item \textbf{NIO Baseline}: This strategy illustrates a basic non-blocking I/O operation, serving as a comparison baseline.
-    \item \textbf{NIO Reactor Flux and NIO Reactor Flux with Concurrency}: These strategies leverage the Reactor Flux model from Java's Project Reactor library. The former follows a standard non-concurrent processing model, while the latter introduces parallelization for improved performance.
-    \item \textbf{NIO Observable RXJava and NIO Observable with Concurrency}: These strategies employ the RXJava library. They replace the Reactor Flux with Observables, with the distinction being made between non-concurrent and concurrent processing.
-    \item \textbf{Blocking Reader in Streams, Blocking Reader MultiThread, and Blocking Reader Streams with Concurrency}: These strategies use Java's Streams API and explore handling of blocking operations under three different conditions: standard usage, with multithreading, and with concurrency within streams.
+    \item \textbf{Baseline}: This strategy illustrates a basic non-blocking I/O operation, serving as a comparison baseline.
+    \item \textbf{Flux}: These strategies leverage the Reactor Flux model from Java's Project Reactor library. The former follows a standard non-concurrent processing model, while the latter introduces parallelization for improved performance.
+    \item \textbf{RXJava}: This strategy employ the RXJava library. They replace the Reactor Flux with Observables, with the distinction being made between non-concurrent and concurrent processing.
+    \item \textbf{Streams, MultiThread, and Streams with Paralelism}: These strategies use Java's Streams API and explore handling of blocking operations under three different conditions: standard usage, with multithreading, and with concurrency within streams.
     
 \end{itemize}
 
 
-In the following table and graphic, we have the results in seconds for each strategy:
+In the following graphic, we have the results in seconds for each strategy:
 
-\begin{table}[H]
-    \centering
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|c|}
-    \hline
-    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
-    NIO Reactor Flux & 1.1\\ \hline
-    NIO Reactor Flux with Concurrency (use of \texttt{parallel()}) & 1.0 \\ \hline
-    NIO Observable RXJava & 0.9 \\ \hline
-    NIO Observable with Concurrency (use of \texttt{parallel()})& 0.8 \\ \hline
-    Blocking Reader in Streams & 3.9 \\ \hline
-    Blocking Reader MultiThread  & 0.7 \\ \hline
-    Blocking Reader Streams with Concurrency & 3.0 \\ \hline
-    NIO Baseline & 0.9 \\ \hline
-    Concurrent Processing with Kotlin Flow & 2.4 \\ \hline
-    Sequential Processing with Kotlin Flow & 5.1 \\ \hline
-    Kotlin Flow IO Blocking Operations & 5.2 \\ \hline
-    \end{tabular}%
-    }
-    \caption{Processing times for different Java/Kotlin strategies for "Biggest Word".}
-    \label{tab:strategies_times_biggest_word}
-    \end{table}
+%\begin{table}[H]
+%    \centering
+%    \resizebox{\textwidth}{!}{%
+%    \begin{tabular}{|l|c|}
+%    \hline
+%    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+%    NIO Reactor Flux & 1.1\\ \hline
+%    NIO Reactor Flux with Concurrency (use of \texttt{parallel()}) & 1.0 \\ \hline
+%    NIO Observable RXJava & 0.9 \\ \hline
+%    NIO Observable with Concurrency (use of \texttt{parallel()})& 0.8 \\ \hline
+%    Blocking Reader in Streams & 3.9 \\ \hline
+%    Blocking Reader MultiThread  & 0.7 \\ \hline
+%    Blocking Reader Streams with Concurrency & 3.0 \\ \hline
+%    NIO Baseline & 0.9 \\ \hline
+%    Concurrent Processing with Kotlin Flow & 2.4 \\ \hline
+%    Sequential Processing with Kotlin Flow & 5.1 \\ \hline
+%    Kotlin Flow IO Blocking Operations & 5.2 \\ \hline
+%    \end{tabular}%
+%    }
+%    \caption{Processing times for different Java/Kotlin strategies for "Biggest Word".}
+%    \label{tab:strategies_times_biggest_word}
+%\end{table}
     
    
     \begin{figure}[H]
@@ -331,31 +331,31 @@ In the following table and graphic, we have the results in seconds for each stra
     \begin{itemize}
         \item \textbf{Baseline}: This strategy serves as a baseline for comparison. It illustrates a basic non-blocking I/O operation without the use of any high-level constructs like Reactor Flux or Observable.
         \item \textbf{RXJava}: This strategy employs the RXJava library, popular for building asynchronous and event-driven applications.
-        \item \textbf{Reactor Core Flux}: This strategy leverages the Reactor Flux model available in Java's Project Reactor library, providing an efficient approach to handling asynchronous data sequences.
-        \item \textbf{Blocking IO W MultiThread}: This strategy uses Java's Streams API and explores handling of blocking operations with the help of multi-threading.
+        \item \textbf{Flux}: This strategy leverages the Reactor Flux model available in Java's Project Reactor library, providing an efficient approach to handling asynchronous data sequences.
+        \item \textbf{MultiThread}: This strategy uses Java's Streams API and explores handling of blocking operations with the help of multi-threading.
         \item \textbf{Streams}: Similar to the previous strategy, this one uses Java's Streams API, but handles blocking operations within streams.
         \item \textbf{Flow (Kotlin)}: This strategy utilizes Kotlin's Coroutines and Flow API, which are particularly well-suited for handling multiple values that are emitted sequentially.
     \end{itemize}
 
     In the following table and graphic, we have the results in seconds for each strategy:
 
-    \begin{table}[H]
-        \centering
-        \resizebox{\textwidth}{!}{%
-        \begin{tabular}{|l|c|}
-        \hline
-        \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
-        Baseline & 1.3 \\ \hline
-        RXJava & 5.8 \\ \hline
-        Reactor Core Flux & 12.0 \\ \hline
-        Blocking IO W MultiThread & 1.2 \\ \hline
-        Streams & 1.8 \\ \hline
-        Flow (Kotlin) & 15.0\\ \hline
-        \end{tabular}%
-        }
-        \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
-        \label{tab:strategies_times_group_words}
-    \end{table}
+%\begin{table}[H]
+%        \centering
+%        \resizebox{\textwidth}{!}{%
+%        \begin{tabular}{|l|c|}
+%        \hline
+%        \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+%        Baseline & 1.3 \\ \hline
+%        RXJava & 5.8 \\ \hline
+%        Reactor Core Flux & 12.0 \\ \hline
+%        Blocking IO W MultiThread & 1.2 \\ \hline
+%        Streams & 1.8 \\ \hline
+%        Flow (Kotlin) & 15.0\\ \hline
+%        \end{tabular}%
+%        }
+%        \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
+%        \label{tab:strategies_times_group_words}
+%    \end{table}
         
     \begin{figure}[H]
         \centering
@@ -396,28 +396,28 @@ In the following table and graphic, we have the results in seconds for each stra
 Here, we investigate the following four (to add ixjs) strategies:
 
 \begin{itemize}
-    \item \textbf{Baseline JS}: This strategy serves as the basic JavaScript approach for finding the biggest word, acting as a baseline for comparison.
-    \item \textbf{Baseline Stream JS}: This strategy uses JavaScript streams, which provide a way to handle reading/writing files, network communications, or any kind of end-to-end information exchange in an efficient manner.
-    \item \textbf{RxStrategy JS}: This strategy leverages the Reactive Extensions for JavaScript (RxJS) library, which offers a set of methods for dealing with asynchronous data sequences in an effective way.
+    \item \textbf{Baseline for await..of without pipeline}: This strategy serves as the basic JavaScript approach for finding the biggest word, acting as a baseline for comparison.
+    \item \textbf{Baseline for await..of with pipeline}: This strategy uses JavaScript streams, which provide a way to handle reading/writing files, network communications, or any kind of end-to-end information exchange in an efficient manner.
+    \item \textbf{RxJS}: This strategy leverages the Reactive Extensions for JavaScript (RxJS) library, which offers a set of methods for dealing with asynchronous data sequences in an effective way.
 \end{itemize}
 
 
-In the following table and graphic, we have the results in seconds for each strategie:
+In the following graphic, we have the results in seconds for each strategie:
 
-\begin{table}[H]
-    \centering
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|c|}
-    \hline
-    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
-    Baseline JS & 8.2 \\ \hline
-    Baseline Stream JS & 23.2 \\ \hline
-    RxStrategy JS & 13.9 \\ \hline
-    \end{tabular}%
-    }
-    \caption{Processing times for different JavaScript strategies for "Biggest Word".}
-    \label{tab:strategies_times_biggest_word_js}
-\end{table}
+%\begin{table}[H]
+%    \centering
+%    \resizebox{\textwidth}{!}{%
+%    \begin{tabular}{|l|c|}
+%    \hline
+%    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+%    Baseline JS & 8.2 \\ \hline
+%    Baseline Stream JS & 23.2 \\ \hline
+%    RxStrategy JS & 13.9 \\ \hline
+%    \end{tabular}%
+%    }
+%    \caption{Processing times for different JavaScript strategies for "Biggest Word".}
+%    \label{tab:strategies_times_biggest_word_js}
+%\end{table}
 
 \begin{figure}[H]
     \raggedright
@@ -457,22 +457,22 @@ In this subsection, we evaluate the following strategies for grouping words:
     \item \textbf{RxStrategy JS}: This strategy leverages the Reactive Extensions for JavaScript (RxJS) library, which offers a set of methods for dealing with asynchronous data sequences in an effective way.
 \end{itemize}
 
-In the following table and graphic, we present the results in seconds for each strategy:
+In the following graphic, we present the results in seconds for each strategy:
 
-\begin{table}[H]
-    \centering
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|c|}
-    \hline
-    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
-    Baseline JS & 30.1 \\ \hline
-    Baseline Stream JS & 26.6 \\ \hline
-    RxStrategy JS & 17.3 \\ \hline
-    \end{tabular}%
-    }
-    \caption{Processing times for different JavaScript strategies for "Grouping Words".}
-    \label{tab:strategies_times_grouping_words_js}
-\end{table}
+%\begin{table}[H]
+%    \centering
+%    \resizebox{\textwidth}{!}{%
+%    \begin{tabular}{|l|c|}
+%    \hline
+%    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
+%    Baseline JS & 30.1 \\ \hline
+%    Baseline Stream JS & 26.6 \\ \hline
+%    RxStrategy JS & 17.3 \\ \hline
+%    \end{tabular}%
+%    }
+%    \caption{Processing times for different JavaScript strategies for "Grouping Words".}
+%    \label{tab:strategies_times_grouping_words_js}
+%\end{table}
 
 \begin{figure}[H]
     \raggedright
