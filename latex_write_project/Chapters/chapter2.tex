@@ -778,6 +778,7 @@ On the other hand, the keywords \texttt{for await...of} provide support for iter
 
 This example demonstrates how JavaScript's \texttt{async function*} construct can be used to define asynchronous enumerables. These can then be conveniently iterated over using the \texttt{for await...of} construct, just like you would with regular collections.
 
+
 \subsubsection{RxJS}
 \label{rxjs}
 
@@ -786,7 +787,13 @@ RxJS represents the JavaScript adaptation of the ReactiveX project, analogous to
 While RxJS operates under similar principles as its Java and .NET counterparts, it introduces unique approaches that cater specifically to JavaScript's dynamic and functional nature. As such, the core philosophy remains consistent across these libraries: simplifying the management of asynchronous data streams, with specific implementations nuanced to suit the distinct characteristics of their respective languages.
 
 
-%% section how_to_write_using_latex (end)
+\subsubsection{IxJS - Interactive Extensions for JavaScript}
+\label{ixjs}
+
+IxJS, also known as Interactive Extensions for JavaScript, is an integral part of the ReactiveX project and aims primary to enable the manipulation of data sequences, similarly to RxJS.
+
+Similarly with another technologies already studied in this work, IxJS focuses on providing powerful abstractions for managing both synchronous and asynchronous sequences of data, while also aiming to be approachable and understandable. It has a robust suite of operators that you can use to write expressive, declarative code. 
+Developers can also create custom operators very easily, extending the core functionality of IxJS to suit specific needs.
 
 
 \subsection{Technologies comparison}
@@ -795,15 +802,16 @@ While RxJS operates under similar principles as its Java and .NET counterparts, 
 As we saw, each technology have a set of properties that help to characterize the solution.
 To help the characterization of each technology documented, we have a relation between the characteristics saw in the chapter \ref{sec:async_concepts}.
 
-\begin{table}[!htbp]
+
+\begin{table}[H]
 	\begin{tabular}{|c|c|c|c|c|c|}
 	\hline
-	  & \textbf{RxJava} & \textbf{Reactor Java (FLUX)} & \textbf{Kotlin Flow} & \textbf{Javascript} & \textbf{C\# async enums} \\ \hline
-	\textbf{Pull} & x & x & x & & x \\ \hline
-	\textbf{Push} & x & x & x & x & x \\ \hline
+	 & \textbf{Rx(JAVA/.NET)} & \textbf{FLUX} & \textbf{FLOW} & \textbf{C\# async enums} & \textbf{IxJS} \\ \hline
+	\textbf{Pull} &  & x & x & x & x\\ \hline
+	\textbf{Push} & x & x &  &  & \\ \hline
 	\textbf{Cancelable} & x & x & x & x & x \\ \hline
-	\textbf{Error Handling} & x & x & x & x & x \\ \hline
+	\textbf{Error Handling} & x & x & x & x & x\\ \hline
 	\textbf{Backpressure} & x & x & x & & \\ \hline
-	\textbf{Intrinsic words} & & & x & x & x \\ \hline
+	\textbf{Intrinsic words} & & & x & x & x\\ \hline
 	\end{tabular}
 \end{table}

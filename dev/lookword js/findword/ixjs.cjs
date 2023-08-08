@@ -24,7 +24,8 @@ function findBiggestWordInFile(filePath) {
   return AsyncIterable.from(fsPromises.readFile(filePath, 'utf-8')).pipe(
     skip(14),
     takeWhile((line) => !line.includes('*** END OF ')),
-    filter((line) => line.length > 0),
+    filter((line) => 
+    line.length > 0),
     flatMap((line) => line.split(wordSeparator)),
     
   ).maxBy((word) => word.length);
@@ -42,7 +43,7 @@ async function findBiggestWordInDirectory(directoryPath) {
 }
 
 async function benchmark() {
-  const folderPath = 'C:/Users/e351582/OneDrive - EDP/Desktop/PESSOAL/TESE/2021-asyncio-pipelines/books/gutenberg';
+  const folderPath = 'F:/escola/MEIC/TESE/2021-asyncio-pipelines/books/gutenberg/test';
   try {
     console.time('Benchmark');
     const longestWord = await findBiggestWordInDirectory(folderPath);

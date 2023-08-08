@@ -4,41 +4,72 @@
 %  
 %  Created by Matilde Pós-de-Mina Pato on 2012/10/09.
 %
-\chapter{Context and Progress status}
+\chapter{Introduction}
 \label{cha:introduction}
 
 
-This report has the objective of informing the reader, about the current status of the development of the dissertation named \textit{From asynchronous IO to reactive stream pipelines}, that is being written by the student \textit{Diogo Paulo de Oliveira Rodrigues}.
+As state-of-the-art runtime environments continue to evolve, new asynchronous idioms emerge across different technologies. Examples of these include Dotnet Async Enumerables \cite{DOTNET_ASYNC_ENUM}, JS asynchronous generators \cite{JS_ASYNC_GENERATOR}, Kotlin Flow \cite{KOTLIN_FLOW}, among others.
 
-Firstly, to understand the current state of development, it is important to make clear what will be the objective and structure of the document that is being written.
+Simultaneously, some asynchronous idioms provide a collection pipeline API \cite{FOWLER} that allows developers to build queries over sequences of elements. This pipeline refers to a series of operations applied to a sequence of elements where each operation in the pipeline takes the output of the previous operation as input. A sequence pipeline with asynchronous data processing may be also denoted as reactive stream pipeline.
 
-This dissertation aims, in the first place, to make an overview on what tools were historically available to deal with non-blocking IO operations and asynchronous programming in general, and then, indentifying what are the state-of-the-art solutions available today to deal with this problem that are usually supported through asynchronous data pipeline architectures.
-After presenting state-of-the-art concepts and technologies, some of these technologies will be then compared in terms of performance through the development of practical benchmark test cases, written in several programming languages widely used today.
+The research work that I describe in this dissertation aims to analyze what are the intrinsic overheads behind a reactive stream pipeline processing. While there are advantages regarding their conciseness, expressiveness, and readability, will these pipelines incur any overhead?
 
-Taking in account what was explaining above, the dissertation will aim to have the following main structure: 
+To answer this question we will analyze the behavior of different reactive stream pipelines technologies dealing non-blocking IO.
+
+While non-blocking IO pipe lining enabling technologies, allows programmers to exploit concurrency without explicitly managing threads, it introduces new challenges and potential performance bottlenecks. The seamless integration of non-blocking IO with reactive stream pipelines presents a complex interplay of factors that may impact performance and resource utilization. 
+
+This dissertation aims, to retrieve performance metrics in several technologies and discuss how these technologies behave in different use cases.
+
+\section{Motivation}
+\label{sec:motivation}
+
+Reactive stream pipelines, it's a concept behind several powerful tools that allows the orchestration of a series of operations on a live feed of sequence of elements in continuous non-blocking IO operations. The ability to perform asynchronous data processing through these pipelines provides developers with a concise, expressive, and readable way to handle complex tasks.
+
+However, with these benefits come potential challenges. The integration of non-blocking IO with reactive stream pipelines introduces a complex interplay of factors that may significantly impact performance and resource utilization. While the industry is rapidly adopting these idioms for their expressiveness and ease of use, there is a growing need to understand the underlying overhead and bottlenecks. Misunderstanding or overlooking these aspects can lead to inefficient code, wasted resources, and ultimately a poor user experience.
+
+Moreover, the variety of technologies offering reactive stream pipeline processing adds another layer of complexity. Different approaches may behave differently in various use cases, leading to uncertainty when selecting the right technology for a specific project. Understanding how these technologies perform in different scenarios is vital for informed decision-making and effective utilization.
+
+The motivation for this research is thus driven by the need to bridge the gap between the theoretical advantages of reactive stream pipelines and the practical considerations of performance and efficiency. It aims to provide a clear picture of how and when to use each technology and strategy, along with an understanding of their respective benefits and drawbacks in comparison to one another.
+
+
+\section{Goals}
+\label{sec:goals}
+This research is guided by the following central objectives:
 
 \begin{enumerate}
-	\item Introduction and motivation
-	\item Concepts and State-of-the-art
-	\item Test case development and Benchmark results 
-	\item Conclusions
+\item \textbf{Technology Comparison}: Evaluate and contrast various asynchronous idioms and technologies, focusing on how different paradigms (e.g., pull vs. push) concepts and how they perform under various conditions.
+
+\item \textbf{Baseline Behavior Analysis}: Analyze the behavior of a baseline approach without any auxiliary pipeline. Understanding the trade-offs of such an approach, including verbosity, complexity, and maintainability, against performance benefits.
+
+\item \textbf{Reactive Stream Approach Evaluation}: Investigate the practical implementation of reactive stream pipelines in different technologies, assessing how they handle non-blocking IO, concurrency, and potential performance bottlenecks.
+
+\item \textbf{Non-Blocking IO with Multithreading Analysis}: Explore the use of raw multithreading with non-blocking IO, aiming to understand how this approach compares in terms of performance, complexity, and scalability with other paradigms.
+
 \end{enumerate}
 
-Since this report is preliminary, this structure can be slightly changed in the course of the development.
+Finally, we expect to have some concrete results that are predictable, for example, we expect that a baseline without any auxiliary pipeline would perform better than any other alternative, despite its verbosity, complexity, and difficult maintainability.
 
-To fulfill the objectives in a desirable timeline, were created several tasks scheduled to be done in a pre-determined time interval. This task can be viewed in the  
-next Gant diagram, where it is possible to see the completion status of each task as they were in 15 of March:
+On the other side, we would like to understand with approach provides pipeline API and incurring lower overhead and if the language or virtual machine used have any significant impact on the performance. For example, using the same pipeline technology but across different execution environments, what is the performance gaps exists. 
 
+Lastly, the overarching goal of this research is to create a comprehensive and nuanced understanding of the main strategies and technologies available in JAVA, Kotlin, C\#, and JavaScript that enable reactive stream processing using non-blocking IO. This includes a meticulous analysis of various reactive stream pipeline technologies, comparing them against each other, as well as evaluating them in contrast to baseline approaches and other strategies (with or without parallelism). 
 
-\begin{figure}[ht]
-	\includegraphics[width=1.20\textwidth]{plan_table}
-	  \caption{Planning Gant diagram}
-  \label{fig:pla}
-\end{figure}
+We aim to observe how performance behaves in these different scenarios to uncover the distinct advantages and disadvantages of each approach. This in-depth examination is intended to culminate in practical conclusions that can guide informed decision-making in future projects.
 
-As we can see in the Gant diagram, 80\% of the chapter 2 is completed, however, are remaining some adjustments in some examples and to be more clear in the explanation of others, these adjustments and a complete review will be completed until the final of March.
+\section{Outline}
+\label{sec:outline}
 
-On the other side, the development of the testing solutions to benchmark the different asynchronous pipeline technologies are under course. The finish date to this task is expected to be 20 March, where is expected to begin the writing of the chapter 3 of the thesis.
+This dissertation is organized into distinct chapters that systematically guide the reader through the research, concepts, methodologies, and findings:
 
-On the next chapter of this report, is written the chapter 2 of the thesis "\textit{State of the Art}" as it was on the day of 15 of March 2022.
+\begin{itemize}
+\item \textbf{Chapter 1: Introduction} - This initial chapter provides an overview of the research context, the motivation behind the study, the primary goals, and the approach taken.
+
+\item \textbf{Chapter 2:State-of-the-Art} - Here, we explore the foundational concepts related to reactive stream pipelines and provide a comprehensive review of the existing technologies and strategies in JAVA (including Kotlin), C\#, and Javascript. The chapter aims to establish the current landscape and set the stage for our research.
+
+%\item \textbf{Chapter 3: Methodology} - In this chapter, the research design, including the selection of technologies, experimental setup, and methodologies used to gather and analyze data, will be detailed. The rationale behind these choices will also be explained.
+
+\item \textbf{Chapter 3: Benchmarking of Non-blocking IO Processing Algorithms} - This chapter presents the results obtained from the implementations and provides a thorough analysis and discussion of the findings. It includes comparisons between various reactive technologies and other strategies, and how they perform against baseline approaches.
+
+\item \textbf{Chapter 4: Conclusion} - The final chapter will summarize the main insights derived from the study, highlight the contributions made, discuss the limitations, and propose directions for future research.
+
+\end{itemize}
 

@@ -42,17 +42,18 @@ function countWordsInFile(filePath, minLength, maxLength) {
     });
   }
 
-function countWordsInDirectory(directoryPath, minLength, maxLength) {
+async function countWordsInDirectory(directoryPath, minLength, maxLength) {
   const vale =  AsyncIterable.from(getFilesFromDirectoryGenerator(directoryPath))
     .pipe(
-      flatMap(filePath => countWordsInFile(filePath, minLength, maxLength)))
+      flatMap(async filePath => await countWordsInFile(filePath, minLength, maxLength)))
       
       return reduce(vale, {
         seed: {}, // Start with an empty object as the accumulator
         callback: async (acc, val, i, signal) => {
           for (let word in val) {
               acc[word] = (acc[word] || 0) + val[word];
-            
+              
+              
           }
           return acc;
         }
@@ -60,7 +61,7 @@ function countWordsInDirectory(directoryPath, minLength, maxLength) {
 }
 
 async function benchmark() {
-  const folderPath = 'C:/Users/e351582/OneDrive - EDP/Desktop/PESSOAL/TESE/2021-asyncio-pipelines/books/gutenberg';
+  const folderPath = 'F:/escola/MEIC/TESE/2021-asyncio-pipelines/books/gutenberg/test';
   try {
     console.log('Starting pipeline benchmark:');
     console.time('Pipeline Benchmark');

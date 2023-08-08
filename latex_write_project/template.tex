@@ -80,10 +80,11 @@
 }{%
 % File glossary.tex is not found, ignore
 }
-
 % To register TODO notes in the text
 \usepackage[textsize=footnotesize]{todonotes}
 \setlength{\marginparwidth}{1.5cm}
+
+
 
 %
 % Define the nomenclature command that prints the symbol/abbreviation and generates a list entry at the same time.
@@ -93,7 +94,7 @@
 % Standard configuration for user included packages
 %================================================
 \usepackage{sty/code}
-
+\usepackage{adjustbox}
 % Where to look for figures
 \graphicspath{{Logo/}{Chapters/img/}} 
 % Where to find code scripts files
@@ -182,7 +183,7 @@
 %uniquelist=false
 %]{biblatex}
 %
-\addbibresource{bibliography}
+\addbibresource{bibliography.bib}
 %% ------------------------------------------------------------
 %% Text appendixes
 %% ------------------------------------------------------------
