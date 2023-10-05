@@ -10,7 +10,7 @@
 
 As state-of-the-art runtime environments continue to evolve, new asynchronous idioms emerge across different technologies. Examples of these include Dotnet Async Enumerables \cite{DOTNET_ASYNC_ENUM}, JS asynchronous generators \cite{JS_ASYNC_GENERATOR}, Kotlin Flow \cite{KOTLIN_FLOW}, among others.
 
-Simultaneously, some asynchronous idioms provide a collection pipeline API \cite{FOWLER} that allows developers to build queries over sequences of elements. This pipeline refers to a series of operations applied to a sequence of elements where each operation in the pipeline takes the output of the previous operation as input. A sequence pipeline with asynchronous data processing may be also denoted as reactive stream pipeline.
+Simultaneously, some asynchronous idioms provide a collection pipeline API \cite{FOWLER} that allows developers to build queries over sequences of data elements. This pipeline refers to a series of operations applied to a sequence of elements where each operation in the pipeline takes the output of the previous operation as input. A sequence pipeline with asynchronous data processing may be also denoted as reactive stream pipeline.
 
 The research work that I describe in this dissertation aims to analyze what are the intrinsic overheads behind a reactive stream pipeline processing. While there are advantages regarding their conciseness, expressiveness, and readability, will these pipelines incur any overhead?
 
@@ -23,13 +23,13 @@ This dissertation aims, to retrieve performance metrics in several technologies 
 \section{Motivation}
 \label{sec:motivation}
 
-Reactive stream pipelines, it's a concept behind several powerful tools that allows the orchestration of a series of operations on a live feed of sequence of elements in continuous non-blocking IO operations. The ability to perform asynchronous data processing through these pipelines provides developers with a concise, expressive, and readable way to handle complex tasks.
+Reactive stream pipelines, it's a  concept behind several powerful tools that allows the orchestration of a series of operations on a live feed of sequence of elements in continuous non-blocking IO operations. The ability to perform asynchronous data processing through these pipelines provides developers with a concise, expressive, and readable way to handle complex tasks.
 
 However, with these benefits come potential challenges. The integration of non-blocking IO with reactive stream pipelines introduces a complex interplay of factors that may significantly impact performance and resource utilization. While the industry is rapidly adopting these idioms for their expressiveness and ease of use, there is a growing need to understand the underlying overhead and bottlenecks. Misunderstanding or overlooking these aspects can lead to inefficient code, wasted resources, and ultimately a poor user experience.
 
 Moreover, the variety of technologies offering reactive stream pipeline processing adds another layer of complexity. Different approaches may behave differently in various use cases, leading to uncertainty when selecting the right technology for a specific project. Understanding how these technologies perform in different scenarios is vital for informed decision-making and effective utilization.
 
-The motivation for this research is thus driven by the need to bridge the gap between the theoretical advantages of reactive stream pipelines and the practical considerations of performance and efficiency. It aims to provide a clear picture of how and when to use each technology and strategy, along with an understanding of their respective benefits and drawbacks in comparison to one another.
+This work aims to provide a clear picture of how and when to use each technology and strategy, along with an understanding of their respective benefits and drawbacks in comparison to one another.
 
 
 \section{Goals}
@@ -39,19 +39,19 @@ This research is guided by the following central objectives:
 \begin{enumerate}
 \item \textbf{Technology Comparison}: Evaluate and contrast various asynchronous idioms and technologies, focusing on how different paradigms (e.g., pull vs. push) concepts and how they perform under various conditions.
 
-\item \textbf{Baseline Behavior Analysis}: Analyze the behavior of a baseline approach without any auxiliary pipeline. Understanding the trade-offs of such an approach, including verbosity, complexity, and maintainability, against performance benefits.
+\item \textbf{Baseline Behavior Analysis}: Analyze the behavior of a baseline approach, for example, a piece of code that makes no use of any pipeline of operations, the logic is made through direct implementation of algorithms using non-abstract programming. Understanding the trade-offs of such an approach, including verbosity, complexity, and maintainability, against performance benefits.
 
 \item \textbf{Reactive Stream Approach Evaluation}: Investigate the practical implementation of reactive stream pipelines in different technologies, assessing how they handle non-blocking IO, concurrency, and potential performance bottlenecks.
 
-\item \textbf{Non-Blocking IO with Multithreading Analysis}: Explore the use of raw multithreading with non-blocking IO, aiming to understand how this approach compares in terms of performance, complexity, and scalability with other paradigms.
+\item \textbf{Non-Blocking IO with Multithreading}: Explore the use of multithreading with non-blocking IO, aiming to understand how this approach compares in terms of performance, complexity, and scalability with other paradigms.
 
 \end{enumerate}
 
-Finally, we expect to have some concrete results that are predictable, for example, we expect that a baseline without any auxiliary pipeline would perform better than any other alternative, despite its verbosity, complexity, and difficult maintainability.
+Finally, we expect to have some concrete results that are predictable, for example, we expect that a baseline approach without the use of any pipelining library would perform better than any other alternative, despite its verbosity, complexity, and difficult maintainability.
 
 On the other side, we would like to understand with approach provides pipeline API and incurring lower overhead and if the language or virtual machine used have any significant impact on the performance. For example, using the same pipeline technology but across different execution environments, what is the performance gaps exists. 
 
-Lastly, the overarching goal of this research is to create a comprehensive and nuanced understanding of the main strategies and technologies available in JAVA, Kotlin, C\#, and JavaScript that enable reactive stream processing using non-blocking IO. This includes a meticulous analysis of various reactive stream pipeline technologies, comparing them against each other, as well as evaluating them in contrast to baseline approaches and other strategies (with or without parallelism). 
+Lastly, this work aims to have results in different languages to analyze if the same approach can have its performance affected depending on the programming language used, in this case, we aim to have working solutions in JAVA, Kotlin, C\#, and JavaScript. 
 
 We aim to observe how performance behaves in these different scenarios to uncover the distinct advantages and disadvantages of each approach. This in-depth examination is intended to culminate in practical conclusions that can guide informed decision-making in future projects.
 
