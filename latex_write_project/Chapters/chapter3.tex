@@ -1,11 +1,16 @@
 
 
-\chapter{Benchmarking of Non-blocking IO Processing Algorithms}
-\label{cha:a_short_latex_tutorial_with_examples}
+\lstset{basicstyle=\small\ttfamily, breaklines=true, frame=single}
+\chapter{Benchmarking Use Case Algorithms and Benchmark Setup}
+\label{cha:benchmarking_use_case_algorithms}
 
-In this chapter, we delve into the benchmark results of two key algorithms applied using various strategies and implementations. These algorithms can be understood as abstract representations of real-world tasks that involve processing large amounts of data asynchronously. The two main algorithms under consideration are:
+In this chapter, we embark on an in-depth exploration of the benchmarking process for two significant algorithms. These algorithms have been carefully selected to represent complex, real-world tasks that require efficient asynchronous data processing. Our focus will be on understanding how different strategies and implementations influence the performance and effectiveness of these algorithms.
 
-The main tasks can be broadly divided into two operations:
+\section{Overview of Algorithms}
+\label{sec:algorithm_overview}
+
+The benchmarking study revolves around two principal algorithms, each presenting unique challenges in asynchronous data processing:
+
 
 \begin{enumerate}
 \item Finding the largest word in a set of files
@@ -23,7 +28,9 @@ To give a better idea of the operations, we present the pseudocode for each oper
 
 For the "group words" operation:
 
-\begin{verbatim}
+
+
+\begin{lstlisting}[language={}, caption={Pseudocode for GroupWords function}, label={lst:groupwords}]
 FUNCTION GroupWords(folder, minLength, maxLength)
     Create an empty map 'wordMap'
     FOR each file in 'folder' DO
@@ -41,13 +48,9 @@ FUNCTION GroupWords(folder, minLength, maxLength)
     END FOR
     RETURN 'wordMap'
 END FUNCTION
+\end{lstlisting}
 
-\end{verbatim}
-
-For finding the largest word:
-
-
-\begin{verbatim}
+\begin{lstlisting}[language={}, caption={Pseudocode for FindLargestWord function}, label={lst:findlargestword}]
 FUNCTION FindLargestWord(folder)
     Set 'largestWord' as an empty string
     FOR each file in 'folder' DO
@@ -65,7 +68,8 @@ FUNCTION FindLargestWord(folder)
     END FOR
     RETURN 'largestWord'
 END FUNCTION
-\end{verbatim}
+\end{lstlisting}
+
 
 During the implementations, a conscious effort was made to keep the operation pipelines as similar as possible across the different technologies for each algorithm. This endeavor aimed to create a fair and representative evaluation of the behaviors of each technology. By maintaining consistency in pipeline operations, we can more accurately attribute performance differences to the underlying technology, rather than variations in the implemented code. This approach brings us closer to a true comparison of how each technology handles the challenges of asynchronous I/O data retrieval and processing.
 
@@ -75,370 +79,76 @@ The implementations differ in the specific programming languages, libraries, and
 
 After presenting and discussing each implementation and its results, we will be able to directly compare them. This will enable us to draw meaningful conclusions about the performance of the strategies and technologies when applied to the same task under the same conditions. Specifically, we are interested in how the performance of a given strategy or technology can vary across different programming frameworks when tasked with finding the largest word and executing the group word operation.
 
-%\section{Strategies}
-%\label{subsec:strategies}
-%
-%In this work were used various strategies implemented across different languages and technologies, some of those we already discussed in charpter \ref{cha:users_manual}. While some of these strategies can be used universally across all platforms, others are platform-specific due to the constraints of the environment.
-%Bellow, you will find a brief enumeration of the strategies used,
-%
-%\subsection{Baseline}
-%\label{subsubsec:baseline}
-%The Baseline strategy is a straightforward implementation without any pipelining or other overhead. It serves as a reference for comparison. This method may use traditional synchronous I/O operations and sequential processing.
-%
-%These strategies will be applied to our chosen algorithms and implemented in the .NET, Java, and Kotlin environments. It's important to note that the aim is not to find the 'best' strategy but to demonstrate the relative strengths and weaknesses of each approach, how they can affect performance, and how they fit into different programming paradigms.
-%
-%\subsection{Asynchronous Baseline}
-%\label{subsubsec:baseline}
-%The "Asynchronous Baseline" strategy refers to a standard implementation of the baseline algorithm but using non-blocking IO operations. E.g. using async/await in C\# IO operation but without the pipeline operations.
-%
-%\subsection{Reactive Extensions (Rx)}
-%\label{subsubsec:rx}
-%Reactive Extensions (Rx) as discussed in charpter two. This model promotes a focus on data streams and the propagation of change. In the ambit of this work, were made implementations in several three programming environments, namely: .NET (Rx.NET), Java (RxJava), and JavaScript (RxJS).
-%
-%\subsection{Reactor (Flux)}
-%\label{subsubsec:reactor_flux}
-%As explained in charpter two, Reactor is a fourth-generation reactive library, based on the Reactive Streams specification, for building non-blocking applications on the JVM based on Java 8 and later. The Flux class, a Reactive Streams Publisher with reactive operators, emits 0 to N elements, and then completes (successfully or with an error). 
-%This strategy will be benchmark using JAVA.
-%
-%\subsection{Streams}
-%\label{subsubsec:blocking_reader_streams}
-%This strategy uses Java's streams interface to read the data in a blocking manner. Due to the blocking nature of the I/O operations, this approach may lead to slower processing times as it has to wait for each I/O operation to complete.
-%
-%\subsection{Multi-threading}
-%\label{subsubsec:multithread}
-%This strategy leverages multi-threading to process data concurrently. By distributing the work across multiple threads, it often results in improved performance, especially for CPU-bound tasks.
-%
-%\subsection{Kotlin Flow}
-%\label{subsubsec:kotlin_flow}
-%Kotlin Flow, will be employed in our Java environment testing.
-%
-%\subsection{LINQ}
-%\label{subsubsec:linq}
-%For our .NET environment, among other technologies, we will utilize LINQ (Language Integrated Query), a Microsoft .NET Framework component adding native data querying capabilities to .NET languages.
-%
-%\subsection{IxJS}
-%\label{subsubsec:ixjs}
-%As explained in charpter two, in JS one of the technologies used will be IxJS, or Interactive Extensions for JavaScript.
 
+\section{Pipeline Implementations}
+\label{sec:pipeline_implementations}
 
-\clearpage
+To illustrate the advantages of pipeline implementations in modern programming, this section contrasts the pipeline versions of our key algorithms in C\# and Java against their pseudocode representations. The pseudocode, which is closer to a baseline implementation, serves as a point of reference to appreciate the enhanced readability and conciseness offered by pipelines. By comparing these implementations, we can better understand how pipelines abstract complexity and streamline data processing tasks.
 
-\section{.NET Benchmarking}
-\label{sec:dotnet_implementation}
+\section{Understanding General Pipeline Operations}
+\label{sec:understanding_pipeline_operations}
 
-In this subsection, we focus on the benchmark using different strategies in .NET programming environment.
+In the realm of functional programming and modern software development, several key operations are fundamental to processing collections of data. These operations, while conceptually similar across different languages, may have different names or implementations. Below is a general explanation of each operation, along with their equivalents in C\# and Java.
+
+\subsection{Map}
+\textbf{Description:} The `map` operation applies a function to each element in a collection, transforming them into a new form. It's a cornerstone of functional programming, enabling easy data transformation.
+\textbf{In C\#}: Named as `.Select`.
+\textbf{In Java}: Referred to as `.map`.
+
+\subsection{Filter}
+\textbf{Description:} The `filter` operation evaluates each element against a predicate (a true/false function) and includes only those elements that satisfy the predicate.
+\textbf{In C\#}: Implemented as `.Where`.
+\textbf{In Java}: Known as `.filter`.
+
+\subsection{Reduce}
+\textbf{Description:} The `reduce` operation combines all elements in a collection to produce a single aggregated result, such as a sum or maximum value.
+\textbf{In C\#}: Known as `.Aggregate`.
+\textbf{In Java}: Referred to as `.reduce`.
+
+\subsection{Skip and TakeWhile}
+\textbf{Description:} `Skip` omits a specified number of elements from the start of the collection, while `TakeWhile` continues taking elements until a condition is no longer met.
+\textbf{In C\# and Java}: Both operations have the same names, `.Skip` and `.TakeWhile`.
+
+\subsection{ForEach}
+\textbf{Description:} `ForEach` applies a given action to each element in the collection. It's typically used for invoking side effects.
+\textbf{In C\#}: Available as `.ForEach` in the `List<T>` class or via looping constructs.
+\textbf{In Java}: Available as `.forEach` in the Stream API or via looping constructs.
 
 
 
-\subsection{Find biggest word algorithm results}
-\label{subsubsec:biggest_word_results_cs}
+\section{Pipeline Examples}
+The following examples in C\# and Java demonstrate the use of pipelines for finding the largest word in a set of files. These examples highlight how pipelines streamline complex data processing by chaining a series of operations.
 
-For the find biggest word algorithm, used i .NET implementations are the following strategies:
+\lstset{basicstyle=\footnotesize\ttfamily} % Adjusts the font size for code examples
 
-\begin{itemize}
-    \item \textbf{Baseline}: This strategy serves as the basic approach for finding the biggest word and acts as a baseline for comparison.
-    \item \textbf{Async Baseline }: This strategy uses a single asynchronous task to find the biggest word.
-    \item \textbf{Parallel }: An approach that makes the use of parallelization.
-    \item \textbf{Linq using blocking IO}: This strategy uses Language Integrated Query (LINQ) in a synchronous manner.
-    \item \textbf{Asynchronous Enumerables on Non-blocking IO}: This approach uses asynchronous programming with enumerable collections.
-    \item \textbf{RxNet blocking  IO}: The Reactive Extensions (Rx) library is used to handle data sequences asynchronously and event-based.
-    \item \textbf{RxNet }: This strategy uses the Reactive Extensions (Rx) library with asynchronous file reading operations.
-\end{itemize}
+\subsection{C\# Pipeline Example}
+\begin{lstlisting}[language={[Sharp]C}, caption={C\# Pipeline for Parsing Distinct Words into a Dictionary}]
+private Task<string> parseFileDistinctWordsIntoDictionary(string filename)
+{
+    return FileUtils.getLinesAsyncEnum(filename)
+        .Where(line => line.Length != 0)   // Filter out empty lines
+        .Skip(14)                          // Skip Gutenberg project header
+        .TakeWhile(line => !line.Contains("*** END OF ")) // Process until a certain string
+        .Select(line => Regex.Replace(line, "[^a-zA-Z0-9 -]+", "", RegexOptions.Compiled)
+                              .Split(' ')
+                              .Max(arr => arr)) // Find the longest word
+        .AggregateAsync(string.Empty, (biggest, current) => current.Length > biggest.Length ? current : biggest) // Aggregate to find the longest word
+        .AsTask();
+}
+\end{lstlisting}
 
+\subsection{Java Pipeline Example}
+\begin{lstlisting}[language=Java, caption={Java Pipeline for Finding the Largest Word in Files}]
+Files.list(Paths.get("path/to/directory"))
+    .filter(Files::isRegularFile)   // Process only regular files
+    .map(file -> EXEC.submit(() -> biggestWord(file))) // Submit a task for each file
+    .collect(toList())             // Collect futures into a list
+    .stream()
+    .map(future -> waitForFuture(future).get()) // Process each future
+    .reduce((biggest, curr) -> curr.length() > biggest.length() ? curr : biggest) // Reduce to find the largest word
+    .get();
+\end{lstlisting}
 
-In the following graphic, we have the results in seconds for each strategie:
+\lstset{basicstyle=\normalsize\ttfamily} % Resets the font size for subsequent listings
 
-%\begin{table}[H]
-%    \centering
-%    \resizebox{\textwidth}{!}{%
-%    \begin{tabular}{|l|c|}
-%    \hline
-%    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
-%    Sync Baseline & 15.8 \\ \hline
-%    Multithread  & 1.6 \\ \hline
-%    Async Baseline & 2.8 \\ \hline
-%    Linq Sync & 22.2 \\ \hline
-%    Async Enumerable & 30 \\ \hline
-%    Rx & 23 \\ \hline
-%    Rx Async File Read & 15 \\ \hline
-%    \end{tabular}%
-%    }
-%    \caption{Processing times for different strategies for "Find the biggest word".}
-%    \label{tab:biggest_word_results_cs_1}
-%\end{table}
-    
-\begin{figure}[H]
-    \raggedright
-    \begin{tikzpicture}
-    \begin{axis}[
-    ybar=2*\pgflinewidth,
-    width=1.0\textwidth,
-    height=0.4\textwidth,
-    bar width=20pt,
-    enlargelimits=0.09,
-    legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-    ylabel={Processing Time Average (s)},
-    symbolic x coords={synchronous Baseline, Parallel, Baseline NIO, Linq synchronous, Non blocking IO using Enumerable, RxJava Blocking, RxJava NIO},
-    xtick=data,
-    xticklabel style={rotate=45,anchor=east},
-    nodes near coords,
-    nodes near coords align={vertical},
-    ]
-    \addplot coordinates {(synchronous Baseline, 15.8) (Parallel, 1.6) (Baseline NIO, 2.8) (Linq synchronous, 22.2) (Non blocking IO using Enumerable, 30) (RxJava Blocking, 23) (RxJava NIO, 15)};
-    \end{axis}
-    \end{tikzpicture}
-    \caption{Processing times for different strategies for "Find the biggest word".}
-    \label{fig:biggest_word_results_cs_2}
-\end{figure}
-
-As we can see from these results, it is evident that the algorithm for "Finding the largest word" in a large file dataset performs worse with blocking IO solutions compared to non-blocking approaches. Furthermore, when considering the various solutions, it becomes apparent that the performance deteriorates as the API complexity increases. An exception to this trend is that, despite leveraging non-blocking IO, AsyncEnumerable exhibits the poorest overall performance.
-
-\clearpage
-
-
-\subsection{Group Word Results}
-\label{subsubsec:group_word_processing_times_cs}
-
-In this subsection, we concentrate on the task of grouping words from a file using different strategies. The strategies that we evaluate here include:
-
-\begin{itemize}
-    \item \textbf{Baseline}: This strategy serves as the basic approach for word grouping and acts as a baseline for comparison.
-    \item \textbf{Linq}: Like in the find word algorithm, this strategy uses Language Integrated Query (LINQ) in a synchronous manner.
-    \item \textbf{AsyncEnumerable}: This strategy uses .NET async enumerables to process the asynchronous data .
-    \item \textbf{RxNet}: Here, the Reactive Extensions (Rx) library is used to handle data sequences asynchronously and event-based.
-\end{itemize}
-
-
-%\begin{table}[H]
-%    \centering
-%    \resizebox{\textwidth}{!}{%
-%    \begin{tabular}{|l|c|}
-%    \hline
-%    \textbf{Strategy} & \textbf{Processing Time Average (s)} \\ \hline
-%    Baseline Blocking IO & 26 \\ \hline
-%    Linq & 22 \\ \hline
-%    Async Enumerable & 30 \\ \hline
-%    Rx Net & 22 \\ \hline
-%    \end{tabular}%
-%    }
-%    \caption{Processing times for different strategies for "Count Words".}
-%    \label{tab:group_word_processing_times_cs}
-%\end{table}
-
-\begin{figure}[H]
-    \raggedright
-    \begin{tikzpicture}
-    \begin{axis}[
-        ybar=2*\pgflinewidth,
-        width=1.0\textwidth,
-        height=0.4\textwidth,
-        bar width=20pt,
-        enlargelimits=0.09,
-        legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-        ylabel={Processing Time Average (s)},
-        symbolic x coords={Baseline, Linq, Async Enumerable, Rx net},
-        xtick=data,
-        xticklabel style={rotate=45,anchor=east},
-        nodes near coords,
-        nodes near coords align={vertical},
-        ]
-    \addplot coordinates {(Baseline, 26.0) (Linq, 22.2) (Async Enumerable, 30) (Rx net, 22.0)};
-    \end{axis}
-    \end{tikzpicture}
-    \caption{Processing times for different strategies for "Count Words".}
-    \label{fig:group_word_processing_times_cs}
-\end{figure}
-
-In the case of memory-intensive algorithms like "Group words," which heavily rely on dictionaries, for example, pipeline libraries outperform baseline approaches. However, whether one uses blocking or non-blocking IO operations becomes irrelevant in such scenarios, as memory-intensive operations overshadow any potential gains from using non-blocking IO operations.
-
-\clearpage
-
-\section{Java/Kotlin Benchmarking}
-\label{sec:java_implementation}
-
-In this section, we explore and assess diverse strategies applied in Java and Kotlin to process files, and we scrutinize their performances solving the "Find Word" an "Group Word algorithms"
-
-
-\subsection{Biggest Word Results}
-\label{subsubsec:biggest_word_results}
-
-The strategies used in JAVA are:
-
-\begin{itemize}
-    \item \textbf{Baseline}: This strategy illustrates a basic non-blocking I/O operation, serving as a comparison baseline.
-    \item \textbf{Flux}: These strategies leverage the Reactor Flux model from Java's Project Reactor library. The former follows a standard non-concurrent processing model, while the latter introduces parallelization for improved performance.
-    \item \textbf{RXJava}: This strategy employ the RXJava library. They replace the Reactor Flux with Observables, with the distinction being made between non-concurrent and concurrent processing.
-    \item \textbf{Streams and parallelization}: Implementation of three strategies that use Java's Streams API and explore handling of blocking operations under three different conditions: standard usage, raw multithreading using threadpools and using parallel method in the streams API.
-    
-\end{itemize}
-
-
-In the following graphic, we have the results in seconds for each strategy:
-
-    \begin{figure}[H]
-        \raggedright
-        \begin{tikzpicture}
-        \begin{axis}[
-            ybar=2*\pgflinewidth,
-            width=1.0\textwidth,
-            height=0.4\textwidth,
-            bar width=20pt,
-            legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-            ylabel={Processing Time Average (s)},
-            symbolic x coords={NIO Reactor Flux, NIO Reactor Flux with Concurrency, NIO Observable RXJava, NIO Observable with Concurrency, Blocking Reader in Streams, Blocking Reader MultiThread, Blocking Reader Streams with Concurrency, NIO Baseline, Concurrent Processing with Kotlin Flow, Sequential Processing with Kotlin Flow, Kotlin Flow IO Blocking Operations},
-            xtick=data,
-            xticklabel style={rotate=45,anchor=east},
-            nodes near coords,
-            nodes near coords align={vertical},
-            ymin=0, ymax=7,
-            ]
-        \addplot coordinates {(NIO Reactor Flux, 1.1) (NIO Reactor Flux with Concurrency, 1.0) (NIO Observable RXJava, 0.9) (NIO Observable with Concurrency, 0.8) (Blocking Reader in Streams, 3.9) (Blocking Reader MultiThread, 0.7) (Blocking Reader Streams with Concurrency, 3.0) (NIO Baseline, 0.9) (Concurrent Processing with Kotlin Flow, 2.4) (Sequential Processing with Kotlin Flow, 5.1) (Kotlin Flow IO Blocking Operations, 5.2)};
-        \end{axis}
-        \end{tikzpicture}
-        \caption{Processing times for different Java/Kotlin strategies for "Biggest Word".}
-        \label{fig:biggest_word_processing_times}
-    \end{figure}
-    
-
-    \clearpage
-
-    \subsection{Group Word Results}
-    \label{subsubsec:group_word_results}
-    
-   The strategies discussed here include:
-
-    \begin{itemize}
-        \item \textbf{Baseline}: This strategy serves as a baseline for comparison. It illustrates a basic non-blocking I/O operation without the use of any high-level constructs like Reactor Flux or Observable.
-        \item \textbf{RXJava}: This strategy employs the RXJava library, popular for building asynchronous and event-driven applications.
-        \item \textbf{Flux}: This strategy leverages the Reactor Flux model available in Java's Project Reactor library, providing an efficient approach to handling asynchronous data sequences.
-        \item \textbf{Parallelization}: This strategy uses Java's Streams API and explores handling of blocking operations with the help of threadpools.
-        \item \textbf{Streams}: Similar to the previous strategy, this one uses Java's Streams API, but handles blocking operations within streams.
-        \item \textbf{Flow (Kotlin)}: This strategy utilizes Kotlin's Coroutines and Flow API, which are particularly well-suited for handling multiple values that are emitted sequentially.
-    \end{itemize}
-
-    In the following table and graphic, we have the results in seconds for each strategy:
-
-    \begin{figure}[H]
-        \centering
-        \begin{tikzpicture}
-        \begin{axis}[
-            ybar=2*\pgflinewidth,
-            width=0.8\textwidth,
-            height=0.6\textwidth,
-            bar width=20pt,
-            legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-            ylabel={Processing Time Average (s)},
-            symbolic x coords={Baseline, RXJava, Reactor Core Flux, Blocking IO W MultiThread, Streams, Flow (Kotlin)},
-            xtick=data,
-            xticklabel style={rotate=45,anchor=east},
-            nodes near coords,
-            nodes near coords align={vertical},
-            ]
-            \addplot coordinates { (Baseline, 1.3) (RXJava, 5.8) (Reactor Core Flux, 12.0) (Blocking IO W MultiThread, 1.2) (Streams, 1.8) (Flow (Kotlin), 15.0)};
-        \end{axis}
-        \end{tikzpicture}
-        \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
-        \label{fig:processing_times}
-    \end{figure}
-    
-
-    \clearpage
-... 
-% Here you conclude the entire chapter by summarizing your findings and interpretations.
-
-
-\section{JavaScript Benchmarking}
-\label{sec:js_implementation}
-
-
-\subsection{Finding the Biggest Word}
-\label{subsec:biggest_word_js}
-
-Here, we investigate the following three strategies:
-
-\begin{itemize}
-    \item \textbf{Baseline for await..of without pipeline}: This strategy serves as the basic JavaScript approach for finding the biggest word, acting as a baseline for comparison.
-    \item \textbf{Baseline for await..of with pipeline}: This strategy uses JavaScript streams, which provide a way to handle reading/writing files, network communications, or any kind of end-to-end information exchange in an efficient manner.
-    \item \textbf{RxJS}: This strategy leverages the Reactive Extensions for JavaScript (RxJS) library, which offers a set of methods for dealing with asynchronous data sequences in an effective way.
-\end{itemize}
-
-
-In the following graphic, we have the results in seconds for each strategy:
-
-
-\begin{figure}[H]
-    \raggedright
-    \begin{tikzpicture}
-    \begin{axis}[
-        ybar=2*\pgflinewidth,
-        width=1.0\textwidth,
-        height=0.4\textwidth,
-        bar width=20pt,
-        legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-        ylabel={Processing Time Average (s)},
-        symbolic x coords={Baseline JS, Baseline Stream JS, RxStrategy JS},
-        xtick=data,
-        xticklabel style={rotate=45,anchor=east},
-        nodes near coords,
-        nodes near coords align={vertical},
-        ymin=0, ymax=30,
-        ]
-    \addplot coordinates {(Baseline JS, 8.2) (Baseline Stream JS, 23.2) (RxStrategy JS, 13.9)};
-    \end{axis}
-    \end{tikzpicture}
-    \caption{Processing times for different JavaScript strategies for "Biggest Word" Graphic}
-    \label{fig:biggest_word_processing_times_js}
-\end{figure}
-
-As we can see in this javascript implementation, the performance for find biggest word algorithm of the baseline behaves as expected, having the best performance among its alternatives. On the other side, the algorithm implemented using RXJS library behaves slightly better than the alternative that makes use of JS streams API.
-
-
-\clearpage
-
-
-
-\subsection{Grouping Words}
-\label{subsec:grouping_words_js}
-
-In this subsection, we evaluate the following strategies for grouping words:
-
-\begin{itemize}
-    \item \textbf{Baseline JS}: This strategy serves as the basic JavaScript approach for grouping words, acting as a baseline for comparison.
-    \item \textbf{Baseline Stream JS}: This strategy uses JavaScript streams, which provide a way to handle reading/writing files, network communications, or any kind of end-to-end information exchange in an efficient manner.
-    \item \textbf{RxStrategy JS}: This strategy leverages the Reactive Extensions for JavaScript (RxJS) library, which offers a set of methods for dealing with asynchronous data sequences in an effective way.
-\end{itemize}
-
-In the following graphic, we present the results in seconds for each strategy:
-
-
-\begin{figure}[H]
-    \raggedright
-    \begin{tikzpicture}
-    \begin{axis}[
-        ybar=2*\pgflinewidth,
-        width=1.0\textwidth,
-        height=0.4\textwidth,
-        bar width=20pt,
-        legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-        ylabel={Processing Time Average (s)},
-        symbolic x coords={Baseline JS, Baseline Stream JS, RxStrategy JS},
-        xtick=data,
-        xticklabel style={rotate=45,anchor=east},
-        nodes near coords,
-        nodes near coords align={vertical},
-        ymin=0, ymax=40,
-        ]
-    \addplot coordinates {(Baseline, 30.1) (Stream JS, 26.6) (RxJS, 17.3)};
-    \end{axis}
-    \end{tikzpicture}
-    \caption{Processing times for different JavaScript strategies for "Grouping Words" Graphic}
-    \label{fig:grouping_words_processing_times_js}
-\end{figure}
-
-In this case, the performance of the algorithms change radically from what we saw in the "Find the biggest word" algorithm. In this case, the baseline haves the worst performance among the three strategies, while the RxStrategy haves the best. 
-One explanation for these results is that the pipeline instructions of the pipeline instructions are optimized while the baseline is not. 
-
-\clearpage
-
-
-\end{document}
+These C\# and Java implementations showcase the power and elegance of pipeline processing in handling tasks that would otherwise require more verbose and complex code.
