@@ -127,14 +127,18 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- Build an executable JAR -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <excludes>
-                        <testFailureIgnore>true</testFailureIgnore>
-                        <exclude>**/*.txt</exclude>
-                    </excludes>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>AppTest</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -253,6 +257,12 @@
             <groupId>com.github.akarnokd</groupId>
             <artifactId>rxjava3-interop</artifactId>
             <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

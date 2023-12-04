@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Main-Class: AppTest
+Class-Path: rxjava3-extensions-2.0.0-alpha03.jar kotlinx-coroutines-core
+ -1.6.0.jar kotlin-stdlib-jdk7-1.6.21.jar opentest4j-1.3.0.jar junit-jup
+ iter-engine-5.10.1.jar reactive-streams-1.0.3.jar kotlin-stdlib-common-
+ 1.7.0.jar junit-jupiter-api-5.10.1.jar junit-platform-engine-1.10.1.jar
+  annotations-13.0.jar reactor-core-3.3.5.RELEASE.jar runtime-jvm-2.0.0-
+ alpha03.jar jayield-1.3.0.jar RxIo-1.2.2.jar rxjava-3.0.3.jar apiguardi
+ an-api-1.1.2.jar jopt-simple-4.6.jar kotlin-stdlib-1.6.21.jar commons-m
+ ath3-3.2.jar rxjava-1.0.1.jar jmh-core-1.24.jar jayield-1.5.1.jar rxjav
+ a-math-1.0.0.jar rxjava3-interop-3.0.1.jar kotlinx-coroutines-core-jvm-
+ 1.6.0.jar junit-jupiter-params-5.10.1.jar junit-jupiter-5.10.1.jar juni
+ t-platform-commons-1.10.1.jar kotlin-stdlib-jdk8-1.6.21.jar
+

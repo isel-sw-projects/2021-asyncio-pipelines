@@ -1,9 +1,7 @@
-package lookwords
-
 import kotlinx.coroutines.runBlocking
 import lookwords.FindBiggestWordStrategies.IFindBiggestWordWithFlow
 import lookwords.GroupWordsStrategies.GroupWordsWithFlow
-import org.junit.Test
+
 import java.time.Instant
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -11,7 +9,7 @@ import java.util.logging.Logger
 class KotlinAppTest {
     private val LOGGER = Logger.getLogger(AppTest::class.java.packageName)
     private val FOLDER = "gutenberg"
-    @Test
+
     fun testMain()
     {
         runBlocking {

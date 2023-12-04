@@ -162,14 +162,14 @@ The map operation applies a function to each element in a collection, transformi
 
 The consistent use of these operations across different languages underscores a universal shift towards more declarative and expressive programming styles, where the focus is on what needs to be done rather than how to do it. This approach not only enhances code readability and maintainability but also allows for more concise and functional solutions to common programming tasks.
 
-\section{Pipeline Examples}
+\subsection{Pipeline Examples}
 Bellow, we can see the pipeline versions of our key algorithms in C\# and Java against their pseudocode representations already shown. The pseudocode, which is closer to a baseline implementation, serves as a point of reference to appreciate the enhanced readability and conciseness offered by pipelines. By comparing these implementations, we can better understand how pipelines abstract complexity and streamline data processing tasks.
 
 \clearpage
 
 \lstset{basicstyle=\footnotesize\ttfamily} % Adjusts the font size for code examples
 
-\subsection{C\# Pipeline Example}
+\subsection*{C\# Pipeline Example}
 
 \begin{lstlisting}[language={[Sharp]C}, caption={C\# Pipeline for Parsing Distinct Words into a Dictionary}]
 private Task<string> parseFileDistinctWordsIntoDictionary(string filename)
@@ -186,7 +186,7 @@ private Task<string> parseFileDistinctWordsIntoDictionary(string filename)
 }
 \end{lstlisting}
 
-\subsection{Java Pipeline Example}
+\subsection*{Java Pipeline Example}
 \begin{lstlisting}[language=Java, caption={Java Pipeline for Finding the Largest Word in Files}]
 Files.list(Paths.get("path/to/directory"))
     .filter(Files::isRegularFile)   // Process only regular files
