@@ -3,38 +3,29 @@ package lookwords.group;
 import lookwords.FileUtils;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.lang.ClassLoader.getSystemResource;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
-import static lookwords.FileUtils.lines;
-import static lookwords.FileUtils.pathFrom;
-import static lookwords.group.GroupWordsBlockingReaderInStreams.LOGGER;
 
 public class GroupWordsBlockingReaderInMultiThread implements GroupWords{
     /**
      * We use a lazy approach trying to avoid intermediate data structures.
      *
      */
-    public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
+    public final Map<String, Integer> words(Path folder, int minLength, int maxLength) {
         final int THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
         final ExecutorService EXEC = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
         ConcurrentHashMap<String, Integer> words = new ConcurrentHashMap<>();
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(folder)) {
             List<Callable<Void>> tasks = paths
                     .filter(Files::isRegularFile)
                     .map(file -> (Callable<Void>) () -> {
@@ -68,13 +59,7 @@ public class GroupWordsBlockingReaderInMultiThread implements GroupWords{
 
 
     public static Path pathFrom(String file) {
-        try {
-            URL url = getSystemResource(file);
-            return Paths.get(url.toURI());
-        } catch (URISyntaxException e) {
-
-        }
-        return null;
+        return Paths.get(file);
     }
 
 

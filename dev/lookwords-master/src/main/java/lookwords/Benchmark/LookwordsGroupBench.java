@@ -10,6 +10,7 @@ import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -27,8 +28,8 @@ public class LookwordsGroupBench {
     private int min = 5;
     @Param({"10"})
     private int max = 10;
-    @Param({"gutenberg"})
-    private String folder = "guty"; // guty for unit tests purposes
+
+    private Path folder = Path.of("guty"); // guty for unit tests purposes
 
     private static final Logger LOGGER = Logger.getLogger(LookwordsGroupBench.class.getPackageName());
 
@@ -41,7 +42,7 @@ public class LookwordsGroupBench {
     public LookwordsGroupBench(int min, int max, String folder) {
         this.min = min;
         this.max = max;
-        this.folder = folder;
+        this.folder = Path.of(folder);
     }
 
     private Map.Entry<String, Integer> mostCommonWord(Map<String, Integer> words) {

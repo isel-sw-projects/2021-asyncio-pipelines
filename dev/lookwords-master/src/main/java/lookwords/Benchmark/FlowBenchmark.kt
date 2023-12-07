@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.*
 import lookwords.FindBiggestWordStrategies.FindBiggestWordBlockingReaderInMultiThread
 import lookwords.FindBiggestWordStrategies.FindBiggestWordRxIoInFlux
 import org.openjdk.jmh.annotations.*
+import java.nio.file.Path
 import java.util.concurrent.TimeUnit
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -17,7 +18,7 @@ class FlowBenchmark {
     class FlowBenchMark {
 
         @Param("gutenberg")
-        private var folder = "guty" // guty for unit tests purposes
+        private var folder:Path = Path.of("guty") // guty for unit tests purposes
 
 
         private val LOGGER = Logger.getLogger(lookwords.Benchmark.FindBiggestWordBench::class.java.packageName)
@@ -42,7 +43,7 @@ class FlowBenchmark {
         }
 
         fun FindBiggestWordBench(folder: String) {
-            this.folder = folder
+            this.folder = Path.of(folder)
         }
 
         //  @Benchmark

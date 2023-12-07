@@ -15,8 +15,8 @@ import static lookwords.FileUtils.*;
  */
 public class FindBiggestWordConcurrentBlockingReaderInStreams implements FindBiggestWordConcurrent {
 
-    public final String findBiggestWord(String folder)  {
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+    public final String findBiggestWord(Path folder)  {
+        try (Stream<Path> paths = Files.walk(folder)) {
             String word = paths
                 .filter(Files::isRegularFile)
                 .flatMap(file  -> findBiggestWordInFile(file))

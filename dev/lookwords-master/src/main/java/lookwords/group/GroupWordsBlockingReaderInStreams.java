@@ -40,9 +40,9 @@ public class GroupWordsBlockingReaderInStreams implements GroupWords {
 
 
 
-    public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
+    public final Map<String, Integer> words(Path folder, int minLength, int maxLength) {
         ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(folder)) {
             Stream<Stream<String>> words = paths
                     .filter(Files::isRegularFile)
                     .map(file -> {
@@ -72,12 +72,7 @@ public class GroupWordsBlockingReaderInStreams implements GroupWords {
 
 
 public static Path pathFrom(String file) {
-        try {
-            URL url = getSystemResource(file);
-            return Paths.get(url.toURI());
-        } catch (URISyntaxException e) {
-            throw sneakyThrow(e);
-        }
+        return Paths.get(file);
     }
     /**
      * Reinier Zwitserloot who, as far as I know, had the first mention of this

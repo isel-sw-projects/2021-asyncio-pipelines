@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 
 import static io.reactivex.rxjava3.core.Observable.fromArray;
 import static java.util.stream.Collectors.toList;
-import static lookwords.FileUtils.pathFrom;
 
 /**
  * Using the org.javasync.rxio library and its AsyncFiles utility class
@@ -23,8 +22,8 @@ import static lookwords.FileUtils.pathFrom;
  */
 public class FindBiggestWordConcurrentRxIoInObservable implements FindBiggestWordConcurrent {
 
-    public String findBiggestWord(String folder) {
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+    public String findBiggestWord(Path folder) {
+        try (Stream<Path> paths = Files.walk(folder)) {
 
             return paths
                     .filter(Files::isRegularFile)

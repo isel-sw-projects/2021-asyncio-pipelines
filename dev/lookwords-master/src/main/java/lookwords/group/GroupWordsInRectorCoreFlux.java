@@ -17,15 +17,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static lookwords.FileUtils.pathFrom;
-import static reactor.core.publisher.Flux.fromArray;
 
 public  class GroupWordsInRectorCoreFlux implements GroupWords {
 
     @Override
-    public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
+    public final Map<String, Integer> words(Path folder, int minLength, int maxLength) {
         final ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(folder)) {
             List<Flux<String>> tasks = paths
                     .filter(Files::isRegularFile)
                     .map(path -> lines(path, minLength, maxLength))

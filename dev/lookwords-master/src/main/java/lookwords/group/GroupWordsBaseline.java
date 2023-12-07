@@ -12,15 +12,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static lookwords.FileUtils.pathFrom;
 
 public class GroupWordsBaseline implements GroupWords{
     static int count = 0;
     @Override
-    public Map<String, Integer> words(String folder, int minLength, int maxLength) {
+    public Map<String, Integer> words(Path folder, int minLength, int maxLength) {
 
         ConcurrentHashMap<String, Integer> words = new ConcurrentHashMap<>();
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(folder)) {
             List<Path> pathsList = paths.filter(Files::isRegularFile).collect(toList());
 
             List<CompletableFuture<Void>> allFuturesList = new ArrayList<>();
@@ -49,8 +48,7 @@ public class GroupWordsBaseline implements GroupWords{
 
         Boolean[] ignoreLine = {false};
 
-        return CompletableFuture.runAsync(() -> {
-            CompletableFuture readAllLines = AsyncFile.readAllLines(file, (line, c) -> {
+        return AsyncFile.readAllLines(file, (line, c) -> {
 
                 if (line.contains("*** END OF ")) {
                     ignoreLine[0] = true;
@@ -68,7 +66,5 @@ public class GroupWordsBaseline implements GroupWords{
                 }
             });
 
-            readAllLines.join();
-        });
     }
 }

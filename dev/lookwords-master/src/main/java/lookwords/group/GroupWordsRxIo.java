@@ -15,12 +15,11 @@ import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static lookwords.FileUtils.pathFrom;
 
 public class GroupWordsRxIo implements GroupWords {
 
-    public final Map<String, Integer> words(String folder, int minLength, int maxLength) {
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+    public final Map<String, Integer> words(Path folder, int minLength, int maxLength) {
+        try (Stream<Path> paths = Files.walk(folder)) {
             ConcurrentHashMap<String, Integer> words = new ConcurrentHashMap<>();
             paths
                 .filter(Files::isRegularFile)

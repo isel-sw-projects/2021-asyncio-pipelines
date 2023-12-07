@@ -14,13 +14,12 @@ import java.util.concurrent.*;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static lookwords.FileUtils.pathFrom;
 
 public class FindWordBaseLine implements FindBiggestWordConcurrent {
 
-    public String findBiggestWord(String folder) {
+    public String findBiggestWord(Path folder) {
         String biggestWord = "";
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(folder)) {
             List<Path> pathsList = paths.filter(Files::isRegularFile).collect(toList());
 
             LinkedList<CompletableFuture<String>> allFuturesList = new LinkedList<>();

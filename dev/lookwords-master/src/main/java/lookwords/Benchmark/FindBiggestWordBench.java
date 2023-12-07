@@ -6,6 +6,7 @@ import lookwords.FindBiggestWordStrategies.FindBiggestWordRxIoInFlux;
 import lookwords.FindBiggestWordStrategies.FindBiggestWordRxIoInObservable;
 import org.openjdk.jmh.annotations.*;
 
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,8 +18,8 @@ import static java.util.Collections.max;
 @State(Scope.Benchmark)
 public class FindBiggestWordBench {
 
-    @Param({"gutenberg"})
-    private String folder = "guty"; // guty for unit tests purposes
+
+    private Path folder = Path.of("guty"); // guty for unit tests purposes
 
     private static final Logger LOGGER = Logger.getLogger(FindBiggestWordBench.class.getPackageName());
 
@@ -29,7 +30,7 @@ public class FindBiggestWordBench {
     }
 
     public FindBiggestWordBench(String folder) {
-        this.folder = folder;
+        this.folder = Path.of(folder);
     }
 
     private String biggestWord(String word) {

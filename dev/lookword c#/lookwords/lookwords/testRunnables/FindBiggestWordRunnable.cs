@@ -14,15 +14,28 @@ namespace lookwords.testRunnables
             Console.WriteLine("Tests to BenchmarckIOFindBiggestWordsStrategies initiated: ");
             var test = new BenchmarkFindBiggestwordTest();
             test.RunGetBiggestWordBaselineTest();
-            test.RunBiggestWordBaselineTaskMultithreadBlockingRead(); //each task per file, block read
-            test.RunGetBiggestWordAsyncBaseline(); // asyncc read use awai async
-           // test.RunGetBiggestWordAsyncBaselineTest();
             test.RunGetBiggestWordBaselineTest();
+            test.RunGetBiggestWordBaselineTest();
+            test.RunBiggestWordBaselineTaskMultithreadBlockingRead();
+            test.RunBiggestWordBaselineTaskMultithreadBlockingRead();
+            test.RunBiggestWordBaselineTaskMultithreadBlockingRead();//each task per file, block read
+            test.RunGetBiggestWordAsyncBaseline();
+            test.RunGetBiggestWordAsyncBaseline();
+            test.RunGetBiggestWordAsyncBaseline(); // asyncc read use awai async
+                                                   // test.RunGetBiggestWordAsyncBaselineTest();
+           
             // test.RunGetBiggestWordBaselineTestNoContinueWith();
             test.RunGetBiggestWordLinqSyncTest();
+            test.RunGetBiggestWordLinqSyncTest();
+            test.RunGetBiggestWordLinqSyncTest();
             test.RunGetBiggestWordAsyncEnumerableTest();
-            test.RunGetBiggestWordRxTest();
+            test.RunGetBiggestWordAsyncEnumerableTest();
+            test.RunGetBiggestWordAsyncEnumerableTest();
+            //test.RunGetBiggestWordRxTest();
             test.RunGetBiggestWordRxAsyncFileReadTest();
+            test.RunGetBiggestWordRxAsyncFileReadTest();
+            test.RunGetBiggestWordRxAsyncFileReadTest();
+
 
         }
     }

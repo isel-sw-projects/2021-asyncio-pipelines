@@ -56,7 +56,7 @@ async function countWordsInDirectory(directoryPath, minLength=5, maxLength=10) {
 }
 
 async function benchmark() {
-  const folderPath = 'F:/escola/MEIC/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg';
+   const folderPath = process.env.TESE_BOOKS_FOLDER_PATH || 'default/path/if/not/set';
   try {
       console.log('Starting pipeline benchmark:');
       console.time('Pipeline Benchmark');

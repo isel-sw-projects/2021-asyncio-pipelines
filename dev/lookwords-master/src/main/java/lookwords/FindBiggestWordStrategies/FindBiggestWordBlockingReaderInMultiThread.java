@@ -20,10 +20,10 @@ import static lookwords.FileUtils.*;
 
 public class FindBiggestWordBlockingReaderInMultiThread implements FindBiggestWordConcurrent {
 
-     public final String findBiggestWord(String folder) {
+     public final String findBiggestWord(Path folder) {
          final int THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
          final ExecutorService EXEC = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-         try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+         try (Stream<Path> paths = Files.walk(folder)) {
 
               return paths
                  .filter(Files::isRegularFile)

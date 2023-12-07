@@ -65,7 +65,7 @@ async function findBiggestWordInDirectory(directoryPath) {
 }
 
 (async () => {
-  const folderPath = 'C:/Users/e351582/OneDrive - EDP/Desktop/PESSOAL/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg';
+   const folderPath = process.env.TESE_BOOKS_FOLDER_PATH || 'default/path/if/not/set';
   try {
     console.log('Starting benchmark baseline with line reader:');
     console.time('Benchmark');

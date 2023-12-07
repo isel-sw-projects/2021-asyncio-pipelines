@@ -12,13 +12,12 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static lookwords.FileUtils.pathFrom;
 import static reactor.core.publisher.Flux.fromArray;
 
 public class FindBiggestWordConcurrentRxIoInFlux implements FindBiggestWordConcurrent {
 
-    public String findBiggestWord(String folder)  {
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+    public String findBiggestWord(Path folder)  {
+        try (Stream<Path> paths = Files.walk(folder)) {
 
             return paths
                     .filter(Files::isRegularFile)

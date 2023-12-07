@@ -13,7 +13,7 @@ class FindWordFlow {
     suspend fun findBiggestWord(folder:String, word:String) : Boolean { // flow builder
 
         try {
-            Files.walk(FileUtils.pathFrom(folder)).use { paths ->
+            Files.walk(FileUtils.FOLDER.resolve(folder)).use { paths ->
                 var pths: List<Path>  = paths
                     .filter { path: Path? -> Files.isRegularFile(path) }
                     .collect(Collectors.toList());

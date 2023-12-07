@@ -1,5 +1,6 @@
 package lookwords.FindWord;
 
+import lookwords.FileUtils;
 import org.javaync.io.AsyncFiles;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -12,13 +13,12 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static lookwords.FileUtils.pathFrom;
 import static reactor.core.publisher.Flux.fromArray;
 
 public class FindWordRxIoInFlux {
 
     public Boolean findBiggestWord(String folder, String word) {
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(FileUtils.FOLDER.resolve(folder))) {
 
             return paths
                     .filter(Files::isRegularFile)

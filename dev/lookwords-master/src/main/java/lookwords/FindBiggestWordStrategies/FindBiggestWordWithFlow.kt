@@ -1,21 +1,19 @@
 package lookwords.FindBiggestWordStrategies
 
 import kotlinx.coroutines.flow.*
-import lookwords.FileUtils
 import org.javaync.io.AsyncFiles
 import java.io.IOException
 import java.io.UncheckedIOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
-import kotlin.reflect.KFunction1
 
 class FindBiggestWordWithFlow : IFindBiggestWordWithFlow  {
 
-      override suspend fun findBiggestWord(folder:String) : String { // flow builder
+      override suspend fun findBiggestWord(folder:Path) : String { // flow builder
 
         try {
-            Files.walk(FileUtils.pathFrom(folder)).use { paths ->
+            Files.walk(folder).use { paths ->
                 var pths: List<Path>  = paths
                     .filter { path: Path? -> Files.isRegularFile(path) }
                     .collect(Collectors.toList());

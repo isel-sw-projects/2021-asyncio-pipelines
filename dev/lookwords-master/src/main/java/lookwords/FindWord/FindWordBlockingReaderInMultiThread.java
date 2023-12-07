@@ -1,5 +1,7 @@
 package lookwords.FindWord;
 
+import lookwords.FileUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -20,7 +22,7 @@ public class FindWordBlockingReaderInMultiThread {
     public final Boolean findBiggestWord(String folder, String word) {
         final int THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
         final ExecutorService EXEC = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(FOLDER.resolve(folder))) {
 
             return paths
                     .filter(Files::isRegularFile)

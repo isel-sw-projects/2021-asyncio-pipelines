@@ -2,6 +2,7 @@ package lookwords.FindWord;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import lookwords.FileUtils;
 import org.javaync.io.AsyncFiles;
 import org.reactivestreams.Publisher;
 
@@ -13,8 +14,6 @@ import java.util.stream.Stream;
 
 import static io.reactivex.rxjava3.core.Observable.fromArray;
 import static java.util.stream.Collectors.toList;
-import static lookwords.FileUtils.pathFrom;
-
 /**
  * Using the org.javasync.rxio library and its AsyncFiles utility class
  * built on top of java AsynchronousFileChannel to read a file.
@@ -23,7 +22,7 @@ import static lookwords.FileUtils.pathFrom;
 public class FindWordRxIoInObservable {
 
     public boolean findBiggestWord(String folder,String word) {
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(FileUtils.FOLDER.resolve(folder))) {
 
             return paths
                     .filter(Files::isRegularFile)

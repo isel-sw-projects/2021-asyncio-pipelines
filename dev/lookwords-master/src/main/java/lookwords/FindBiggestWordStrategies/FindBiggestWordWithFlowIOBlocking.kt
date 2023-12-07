@@ -10,10 +10,10 @@ import java.nio.file.Path
 import java.util.stream.Collectors
 
 class FindBiggestWordWithFlowIOBlocking : IFindBiggestWordWithFlow {
-    override suspend fun findBiggestWord(folder:String) : String { // flow builder
+    override suspend fun findBiggestWord(folder:Path) : String { // flow builder
 
         try {
-            Files.walk(FileUtils.pathFrom(folder)).use { paths ->
+            Files.walk(folder).use { paths ->
                 var pths: List<Path>  = paths
                     .filter { path: Path? -> Files.isRegularFile(path) }
                     .collect(Collectors.toList());

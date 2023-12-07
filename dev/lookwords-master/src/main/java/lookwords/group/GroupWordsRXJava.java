@@ -15,13 +15,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static lookwords.FileUtils.pathFrom;
 
 public class GroupWordsRXJava implements GroupWords{
 
-    public final ConcurrentHashMap<String, Integer> words(String folder, int minLength, int maxLength) {
+    public final ConcurrentHashMap<String, Integer> words(Path folder, int minLength, int maxLength) {
         ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(folder)) {
             List<Observable<String>> tasks = paths
                     .filter(Files::isRegularFile)
                     .map(path -> lines(path, minLength, maxLength))

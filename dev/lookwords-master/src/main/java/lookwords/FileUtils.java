@@ -20,10 +20,23 @@ import static java.util.Arrays.stream;
 
 public class FileUtils {
 
-    private FileUtils() {
-    }
+
 
     public static final Logger LOGGER = Logger.getLogger(FileUtils.class.getPackageName());
+
+
+    public static Path FOLDER = null;
+
+    static {
+        Path currentDir = Paths.get("").toAbsolutePath();
+        while (!currentDir.equals(Paths.get("")) && !Files.exists(currentDir.resolve(".git"))) {
+            currentDir = currentDir.getParent();
+        }
+
+        FOLDER= currentDir;
+
+        FOLDER = currentDir.resolve("books\\gutenberg");
+    }
 
     /**
      * Following a lazy approach and trying to avoid intermediate data structures.
@@ -42,14 +55,7 @@ public class FileUtils {
     }
 
 
-    public static Path pathFrom(String file) {
-        try {
-            URL url = getSystemResource(file);
-            return Paths.get(url.toURI());
-        } catch (URISyntaxException e) {
-            throw sneakyThrow(e);
-        }
-    }
+
     /**
      * Reinier Zwitserloot who, as far as I know, had the first mention of this
      * technique in 2009 on the java posse mailing list.

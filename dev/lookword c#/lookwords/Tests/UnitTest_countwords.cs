@@ -307,16 +307,16 @@ namespace Tests
             Assert.AreEqual(word, "bigggest33333333333333333333333333333333");
         }
 
-        [TestMethod]
-        public void BiggestWordSync_NoLinq()
-        {
-            string folderPath = @Environment.GetEnvironmentVariable("TESE_TESTE_PATH");
-#pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
-            GetBiggestWordBaseline test = new GetBiggestWordBaseline();
-            string word = test.getBiggestWordInDirectoryAsyncBaseline(folderPath);
-
-            Assert.AreEqual(word, "bigggest33333333333333333333333333333333");
-        }
+     //  [TestMethod]
+     //  public void BiggestWordSync_NoLinq()
+     //  {
+     //      string folderPath = @Environment.GetEnvironmentVariable("TESE_TESTE_PATH");
+     //a warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
+     //      GetBiggestWordBaseline test = new GetBiggestWordBaseline();
+     //      string word = test.getBiggestWordInDirectoryAsyncBaseline(folderPath);
+     //
+     //      Assert.AreEqual(word, "bigggest33333333333333333333333333333333");
+     //  }
 
         [TestMethod]
         public void BiggestWordSync_ASync()

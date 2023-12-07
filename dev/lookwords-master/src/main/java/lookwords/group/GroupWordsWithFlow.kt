@@ -18,7 +18,7 @@ import kotlinx.coroutines.coroutineScope as coroutineScope
 class GroupWordsWithFlow  {
 
     //for tests
-    fun wordsBlocking(folder: String, minLength: Int, maxLength: Int): Map<String, Int> {
+    fun wordsBlocking(folder: Path, minLength: Int, maxLength: Int): Map<String, Int> {
         return runBlocking {
             words(folder, minLength, maxLength)
         }
@@ -26,10 +26,10 @@ class GroupWordsWithFlow  {
 
 
 
-    suspend fun words(folder: String, minLength: Int, maxLength: Int): Map<String, Int> {
+    suspend fun words(folder: Path, minLength: Int, maxLength: Int): Map<String, Int> {
         val words = ConcurrentHashMap<String, Int>()
         try {
-            Files.walk(FileUtils.pathFrom(folder)).use { paths ->
+            Files.walk(folder).use { paths ->
                 val files: List<Path> = paths
                     .filter { path: Path? -> Files.isRegularFile(path) }
                     .toList()

@@ -13,10 +13,10 @@ import java.util.stream.Collectors
 
 class FindBiggestWordConcurrentWithFlow : IFindBiggestWordWithFlow {
 
-      override suspend fun findBiggestWord(folder:String) : String = coroutineScope{ // flow builder
+      override suspend fun findBiggestWord(folder:Path) : String = coroutineScope{ // flow builder
 
         try {
-            Files.walk(FileUtils.pathFrom(folder)).use { paths ->
+            Files.walk(folder).use { paths ->
                 var pths: List<Path>  = paths
                     .filter { path: Path? -> Files.isRegularFile(path) }
                     .collect(Collectors.toList());

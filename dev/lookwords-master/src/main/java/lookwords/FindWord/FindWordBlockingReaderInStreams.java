@@ -1,5 +1,7 @@
 package lookwords.FindWord;
 
+import lookwords.FileUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -16,7 +18,7 @@ import static lookwords.FileUtils.*;
 public class FindWordBlockingReaderInStreams {
 
     public final boolean findBiggestWord(String folder,String word) {
-        try (Stream<Path> paths = Files.walk(pathFrom(folder))) {
+        try (Stream<Path> paths = Files.walk(FileUtils.FOLDER.resolve(folder))) {
             return paths
                 .filter(Files::isRegularFile)
                 .map(file -> findWordInFile(file, word))

@@ -6,6 +6,7 @@ import lookwords.FindBiggestWithParallel.FindBiggestWordConcurrentRxIoInObservab
 import lookwords.FindBiggestWordStrategies.FindBiggestWordBlockingReaderInMultiThread;
 import org.openjdk.jmh.annotations.*;
 
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,8 +16,7 @@ import java.util.logging.Logger;
 @State(Scope.Benchmark)
 public class FindBiggestWordParallelBench {
 
-    @Param({"gutenberg"})
-    private String folder = "guty"; // guty for unit tests purposes
+    private Path folder = Path.of("guty"); // guty for unit tests purposes
 
     private static final Logger LOGGER = Logger.getLogger(FindBiggestWordParallelBench.class.getPackageName());
 
@@ -27,7 +27,7 @@ public class FindBiggestWordParallelBench {
     }
 
     public FindBiggestWordParallelBench(String folder) {
-        this.folder = folder;
+        this.folder = Path.of(folder);
     }
 
     private String biggestWord(String word) {
