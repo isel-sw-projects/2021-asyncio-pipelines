@@ -22,7 +22,7 @@
 
 1. Navigate to the Java project directory:
 
-`cd c:\path_to_repo\2021-asyncio-pipelines\dev\lookwords-master`
+`cd 2021-asyncio-pipelines\dev\lookwords-master`
 
 2. Build the project using Maven:
 
