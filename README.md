@@ -14,6 +14,8 @@
       Java version: 18.0.1, vendor: Oracle Corporation,
 
       - Node -v v16.14.0
+ 
+      - Have Nuget available on terminal
    
 ### Cloning the Repository
 
@@ -52,7 +54,9 @@
 
 2. Build the project using MSBuild:
 
-  `msbuild lookwords.sln /p:Configuration=Release /p:Platform="Any CPU"`
+ -  `nuget restore lookwords.sln`
+  
+ - `msbuild lookwords.sln /p:Configuration=Release /p:Platform="Any CPU"`
 
 3. Run the application:
 
