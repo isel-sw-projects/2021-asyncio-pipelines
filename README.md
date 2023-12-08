@@ -71,6 +71,8 @@
 
   `cd ...\2021-asyncio-pipelines\dev\lookword js`
 
+2. `npm install`
+
 3. Run the application:
 
   `node program.js`
