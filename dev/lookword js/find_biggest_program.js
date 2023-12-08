@@ -1,5 +1,5 @@
 import baseline_benchmark from './findword/baseline_js.js';
-import baseline_stream_benchmark from './findword/baseline_stream.js';
+import baseline_stream_benchmark from './findword/baseline_array_pipeline.js';
 import rxStrategy_benchmark from './findword/rxStrategy.js';
 
 // Array to store the benchmark functions and their names
