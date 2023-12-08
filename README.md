@@ -82,6 +82,6 @@
 
   or
 
-  - `node countwords_program
+  - `node countwords_program`
 
 
