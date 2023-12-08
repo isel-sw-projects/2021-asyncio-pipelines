@@ -71,11 +71,16 @@
 
   `cd ...\2021-asyncio-pipelines\dev\lookword js`
 
-2. `npm install`
+2. Install modules
+  
+   `npm install`
 
-3. Run the application:
+5. Run the application:
 
-  `node program.js`
-   
+  - `node find_biggest_program`
+
+  or
+
+  - `node countwords_program
 
 
