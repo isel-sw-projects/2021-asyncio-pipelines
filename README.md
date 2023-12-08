@@ -1,40 +1,64 @@
-HOW TO EXECUTE
+## How to Execute
+
+### Prerequisites
+
+- Create an environment variable:
+  - Name: `TESE_BOOKS_FOLDER_PATH`
+  - Value: `c:\path_to_repo\2021-asyncio-pipelines\books`
+
+### Cloning the Repository
+
+1. Open your terminal.
+2. Navigate to the desired directory:
+
+   `cd c:\path_to_repo\`
+
+ 4. Clone the repository:
+
+   `git clone https://github.com/isel-sw-projects/2021-asyncio-pipelines.git`
 
 
-create environment variable name: TESE_BOOKS_FOLDER_PATH with value "c:\\path_to_repo\2021-asyncio-pipelines\books"
+### Java
 
-cd c:\path_to_repo\
+1. Navigate to the Java project directory:
 
-reopen terminal 
+`cd c:\path_to_repo\2021-asyncio-pipelines\dev\lookwords-master`
 
-git clone https://github.com/isel-sw-projects/2021-asyncio-pipelines.git
+2. Build the project using Maven:
 
-JAVA
+  `mvn clean install -f pom.xml -Dmaven.test.skip=true`
 
-cd c:\path_to_repo\2021-asyncio-pipelines\dev\lookwords-master
+3. Run the application:
 
-mvn clean install -f pom.xml -Dmaven.test.skip=true
-
-cd target 
-
-java -jar lookwords-1.0-SNAPSHOT.jar AppTest
+ `cd target`
+  `java -jar lookwords-1.0-SNAPSHOT.jar AppTest`
 
 
-C#
+### C#
 
-cd c:\path_to_repo\ 2021-asyncio-pipelines\dev\lookword c#\lookwords
+1. Navigate to the C# project directory:
 
-msbuild lookwords.sln /p:Configuration=Release /p:Platform="Any CPU"
+ `cd c:\path_to_repo\2021-asyncio-pipelines\dev\lookword c#\lookwords`
 
-cd lookwords\bin\Release\
+2. Build the project using MSBuild:
 
-lookwords.exe
+  `msbuild lookwords.sln /p:Configuration=Release /p:Platform="Any CPU"`
+
+3. Run the application:
+
+   `cd lookwords\bin\Release`
+   `lookwords.exe`
 
 
-JS
+### JavaScript
 
-cd c:\path_to_repo\ 2021-asyncio-pipelines\dev\lookword c#\
+1. Navigate to the JavaScript project directory:
 
-node program
+  `cd ...\2021-asyncio-pipelines\dev\lookword js`
+
+3. Run the application:
+
+  `node program.js`
+   
 
 
