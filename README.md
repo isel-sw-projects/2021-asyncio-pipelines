@@ -48,6 +48,7 @@
 3. Run the application:
 
    `cd lookwords\bin\Release`
+   
    `lookwords.exe`
 
 
