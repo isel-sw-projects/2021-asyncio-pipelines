@@ -7,13 +7,13 @@
   - Value: `c:\path_to_repo\2021-asyncio-pipelines\books`
  
 -  Haver recent versions of tools:
-      - msbuild -version Microsoft (R) Build Engine version 17.1.0+ae57d105c for .NET Framework (create enviroment variable if needed to point to a visual studio MSBUILD bin folder)
+     - msbuild -version Microsoft (R) Build Engine version 17.1.0+ae57d105c for .NET Framework (create enviroment variable if needed to point to a visual studio MSBUILD bin folder)
 
      - Apache Maven 3.8.1 (05c21c65bdfed0f71a2f2ada8b84da59348c4c5d)
       Maven home: C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.3.2\plugins\maven\lib\maven3\bin\..
       Java version: 18.0.1, vendor: Oracle Corporation, runtime: C:\Users\Matrix\.jdks\openjdk-18.0.1
 
-      -node -v v16.14.0
+      - Node -v v16.14.0
    
 ### Cloning the Repository
 
