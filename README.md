@@ -31,7 +31,8 @@
 3. Run the application:
 
  `cd target`
-  `java -jar lookwords-1.0-SNAPSHOT.jar AppTest`
+ 
+ `java -jar lookwords-1.0-SNAPSHOT.jar AppTest`
 
 
 ### C#
