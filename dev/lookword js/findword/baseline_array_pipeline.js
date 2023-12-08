@@ -53,9 +53,10 @@ async function countWordsInDirectory(directoryPath) {
 }
 
 async function benchmark() {
+  const folderPath = process.env.TESE_BOOKS_FOLDER_PATH || 'default/path/if/not/set';
   try {
     console.time('Benchmark');
-    const longestWord = await countWordsInDirectory('F:/escola/MEIC/TESE/2021-asyncio-pipelines/dev/lookword c#/lookwords/berg/gutenberg');  // replace with your directory path
+    const longestWord = await countWordsInDirectory(folderPath);  // replace with your directory path
     console.timeEnd('Benchmark');
     console.log(`The longest word is: ${longestWord}`);
   } catch (err) {
