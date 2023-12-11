@@ -30,15 +30,26 @@ class KotlinAppTest {
         LOGGER.log(Level.INFO, "############ {0}", task.javaClass)
         var res: String? = null
         var minTime = Long.MAX_VALUE
-        for (i in 0 until 4) {
+
+       var sumTime = 0L
+       var count = 0
+
+        for (i in 0 until 5) {
             val startTime = Instant.now()
             res = task.findBiggestWord(FileUtils.FOLDER)
             val dur = between(startTime)
             println("Biggest word is: $res")
             LOGGER.log(Level.INFO, "time: {0} ms", dur)
             if (dur < minTime) minTime = dur
+            if (i > 0) { // Skip first iteration for averaging
+                sumTime += dur
+                count++
+            }
         }
-        LOGGER.log(Level.INFO, "=====> BEST: {0} ms", minTime)
+
+        val averageTime = if (count > 0) sumTime / count else 0 // Compute average
+        LOGGER.log(Level.INFO, "=====> AVERAGE: {0} ms", averageTime)
+        LOGGER.log(Level.INFO, "=====> BEST: {0} ms\n", minTime)
         return res
     }
 
@@ -48,7 +59,7 @@ class KotlinAppTest {
         var sumTime = 0L
         var count = 0
 
-        for (i in 0 until 4) { // Change to 4 iterations
+        for (i in 0 until 5) { // Change to 4 iterations
             val startTime = Instant.now()
             res = task.words(FileUtils.FOLDER, 5, 10)
             System.out.println(res.maxByOrNull { it.value }?.value)
@@ -62,7 +73,7 @@ class KotlinAppTest {
         }
 
         val averageTime = if (count > 0) sumTime / count else 0 // Compute average
-        LOGGER.log(Level.INFO, "=====> AVERAGE: {0} ms", averageTime)
+        LOGGER.log(Level.INFO, "=====> AVERAGE: {0} ms\n", averageTime)
         return res
     }
 

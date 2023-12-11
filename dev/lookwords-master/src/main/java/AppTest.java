@@ -24,7 +24,7 @@ import static java.util.Comparator.comparingInt;
 import static lookwords.FileUtils.FOLDER;
 
 public class AppTest {
-    static final int ITERATIONS = 4;
+    static final int ITERATIONS = 5;
     static final int MIN = 5;
     static final int MAX = 10;
     private static final Logger LOGGER = Logger.getLogger(AppTest.class.getPackageName());
@@ -174,7 +174,7 @@ public class AppTest {
         long sumTime = 0;
         int count = 0;
 
-        for (int i = 0; i < 4; i++) { // Change to 4 iterations
+        for (int i = 0; i < ITERATIONS; i++) { // Change to 4 iterations
             Instant startTime = Instant.now();
             res = task.words(FOLDER, MIN, MAX);
             long dur = between(startTime);
@@ -196,6 +196,12 @@ public class AppTest {
         LOGGER.log(Level.INFO, "\n############ {0}", task.getClass());
         String res = null;
         long minTime = Long.MAX_VALUE;
+
+        // Add variables to store sum and count for averaging
+        long sumTime = 0;
+        int count = 0;
+
+
         for (int i = 0; i < ITERATIONS; i++) {
             Instant startTime = Instant.now();
             res = task.findBiggestWord(FOLDER);
@@ -203,8 +209,18 @@ public class AppTest {
             LOGGER.log(Level.INFO, "time: {0} ms", dur);
             if (dur < minTime) minTime = dur;
 
+
+
+            if (i > 0) { // Skip first iteration for averaging
+                sumTime += dur;
+                count++;
+            }
         }
-        LOGGER.log(Level.INFO, "=====> BEST: {0} ms", minTime);
+
+        long averageTime = count > 0 ? sumTime / count : 0; // Compute average
+
+        LOGGER.log(Level.INFO, "\n=====> AVERAGE: {0} ms", averageTime);
+        LOGGER.log(Level.INFO, "=====> BEST: {0} ms\n", minTime);
         return res;
     }
 

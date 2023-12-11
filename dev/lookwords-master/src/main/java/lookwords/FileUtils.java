@@ -25,17 +25,11 @@ public class FileUtils {
     public static final Logger LOGGER = Logger.getLogger(FileUtils.class.getPackageName());
 
 
-    public static Path FOLDER = null;
+    public static Path FOLDER;
 
     static {
-        Path currentDir = Paths.get("").toAbsolutePath();
-        while (!currentDir.equals(Paths.get("")) && !Files.exists(currentDir.resolve(".git"))) {
-            currentDir = currentDir.getParent();
-        }
-
-        FOLDER= currentDir;
-
-        FOLDER = currentDir.resolve("books\\gutenberg");
+        String absolutePath = System.getenv().get("TESE_BOOKS_FOLDER_PATH");
+        FOLDER = Path.of(absolutePath);
     }
 
     /**
