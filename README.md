@@ -13,9 +13,10 @@
       Maven home: C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.3.2\plugins\maven\lib\maven3\bin\..
       Java version: 18.0.1, vendor: Oracle Corporation,
 
-      - Node -v v16.14.0
+      - Node -v v16.14.0 and npm 8.2.1
  
       - Have Nuget available on terminal
+        
    
 ### Cloning the Repository
 
@@ -71,11 +72,16 @@
 
   `cd ...\2021-asyncio-pipelines\dev\lookword js`
 
-2. `npm install`
+2. Install modules
+  
+   `npm install`
 
-3. Run the application:
+5. Run the application:
 
-  `node program.js`
-   
+  - `node find_biggest_program`
+
+  or
+
+  - `node countwords_program`
 
 
