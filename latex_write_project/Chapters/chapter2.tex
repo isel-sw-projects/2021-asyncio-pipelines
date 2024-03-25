@@ -7,7 +7,7 @@
 \chapter{State of the Art}
 \label{cha:users_manual}
 
-This section, aims to show the background and the current state of the art on the subject related with asynchronous pipelining operations involving asynchronous data flows.  
+This section, aims to show the background and the current state of the art on the subject related with asynchronous pipeline operations involving asynchronous data flows.  
 On the section \ref{sec:related_work}, will be made an overview on previously developed work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on how asynchronous operation pipe lining are implemented in different programming realities, e.g. on Kotlin, JAVA and C\#. 
 
 
@@ -21,9 +21,9 @@ On the section \ref{sec:related_work}, will be made an overview on previously de
 % The servers design, were made without many concerns about availability under demand pressure or computer resource optimization. 
 % Consequently, operations that required intensive IO interactions or data request from an external sources, were mostly blocking, non-flexible in terms of responsiveness and interoperability. 
 
-From the end of 80’s to the beginning of the 2000’s, with the acceleration of Moore's Law in hardware and network bandwidth development; the creation of the web as we know today through the wide spread of use of the HTTP protocol, and the support from new operative systems to multithreading support; the necessity of high responsiveness servers started to grow. This increase in demand of new ways to handle data through parallelism involving asynchronous flow processing, caused the necessity of design new programming models. 
+From the end of 80’s to the beginning of the 2000’s, with the acceleration of Moore's Law in hardware and network bandwidth development; the creation of the internet as we know today through the wide spread of use of the HTTP protocol, the necessity of high responsiveness and efficient systems started to grow. This increase in demand of new ways to handle data efficiently and the wide spread of multicore processors created the necessity of the implementation of new software frameworks models that can handle data efficiently taking in account the multithread systems and the asynchronous characteristics of data receiving throw network. 
 
-Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers wrote a paper \citep{proactor}, where they identify the characteristics that high available server must have, and how the use of asynchronous IO pipe lining design patterns can help to achieve these characteristics, as described bellow:
+Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers wrote a paper \citep{proactor}, where they identify the characteristics that high available systems must have, and how the use of asynchronous IO pipe design patterns can help to achieve these characteristics, as described bellow:
 \begin{itemize}
 	\item Concurrency - The server must process multiple client requests simultaneously.\\
 	\item Efficiency - The software design must be built aiming the use the least hardware resources as possible. \\

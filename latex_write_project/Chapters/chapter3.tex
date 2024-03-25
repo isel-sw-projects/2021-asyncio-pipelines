@@ -6,11 +6,13 @@
 
 In order to have metrics to enable the comparison between some of the different technologies we discussed so far, we decided to make software implementations in three programming languages of two key algorithms. 
 
-Each selected to simulate two distinct data processing scenarios. These are the "Count each word occurrence" or "Group words" and "Find the biggest word", both of which offer valuable insights into different aspects of data processing.
+Each selected to simulate two distinct data processing scenarios. These are the "Count each word occurrence" and "Find the biggest word", both of which offer valuable insights into different aspects of data processing.
 
-The "Group Word" operation it's a memory-intensive task. This operation involves analyzing a dataset to identify and count each word occurrences that fall within a specified size range. It uses data structures, such as dictionaries, for in runtime data storage. These nuances make the "Group Word" operation a curious test case for evaluating the capabilities of asynchronous processing in combination with a runtime memory demanding scenario.
+As a crucial part of this research, the selection of an appropriate and robust data source was imperative. For the empirical analysis and demonstration of the programming paradigms discussed, the "Gutenberg" library was chosen as the primary data source. This library, renowned for its comprehensive dataset, encompasses several thousands of books spanning a multitude of genres and periods. The richness and diversity of the Gutenberg dataset provided an unparalleled opportunity to rigorously test and evaluate the effectiveness of reactive programming techniques in processing and analyzing large volumes of textual data. The expansive nature of the Gutenberg library not only facilitated a broad assessment across various data-intensive scenarios but also underscored the scalability and adaptability of the programming approaches under study. 
 
-In contrast, the task of finding the largest word, though less complex, is significant for its simplicity. This operation involves scanning a dataset to find the single longest word, a process that, while straightforward, is critical for understanding the performance of asynchronous processing in more basic computational tasks. It serves as a benchmark for evaluating the efficiency of simpler algorithms and their implementation across different programming languages and environments.
+On the algorithms, in the case of "Group Word" operation, the idea was to have a memory-intensive task. This operation involves analyzing a dataset to identify and count each word occurrences that fall within a specified size range. Since the algorithm uses data structures, such as dictionaries, for in runtime data storage. These nuances make the "Group Word" operation a curious test case for evaluating the capabilities of asynchronous processing in combination within a memory demanding scenario.
+
+In contrast, the task of finding the largest word, though less memory intensive task, is significant for its simplicity. This operation involves scanning a dataset to find the single longest word, a process that, while straightforward, is critical for understanding the performance of asynchronous processing in more basic computational tasks. It serves as a benchmark for evaluating the efficiency of simpler algorithms and their implementation across different programming languages and environments.
 
 For this work, were chosen these two algorithm as simplistic samples for a simplistic benchmark scenario, but, for future work, can be added a more vast algorithmic variety.
 
@@ -73,7 +75,7 @@ The idea behind this, was to explore readability vs performance in the use of th
 \section{Pipelines}
 \label{sec:pipeline_implementations}
 
-During the implementation of the benchmarking algorithms, was made a conscious effort to keep the operation pipelines as similar as possible across the different technologies for each algorithm. This endeavor aimed to create a fair and representative evaluation of the behaviors of each technology. By maintaining consistency in pipeline operations, we can more accurately attribute performance differences to the underlying technology, rather than variations in the implemented code. This approach brings us closer to a true comparison of how each technology handles the challenges of asynchronous I/O data retrieval and processing.
+During the implementation of the benchmarking algorithms, was made a conscious effort to keep the operation pipelines as similar as possible across the different technologies for each algorithm and its syntax closest as possible to what is shown in the algorithms pseudocode. This endeavor aimed to create a fair and representative evaluation of the behaviors of each technology. By maintaining consistency in pipeline operations, we can more accurately attribute performance differences to the underlying technology, rather than variations in the implemented code. This approach brings us closer to a true comparison of how each technology handles the challenges of asynchronous I/O data retrieval and processing.
 
 In certain instances, particularly with Java, there was a need to incorporate external libraries for non-blocking asynchronous file retrieval. Because, while some environments have native functions that already enable non-blocking IO operations to retrieve data from files, other, like in JAVA, was needed to use external libraries.
 
@@ -81,7 +83,7 @@ In certain instances, particularly with Java, there was a need to incorporate ex
 \subsection{Understanding General Pipeline Operations}
 \label{sec:understanding_pipeline_operations}
 
-In the realm of functional programming and modern software development, several key operations are fundamental to process data collections and data flows. These operations, while conceptually similar across different languages, may have different idioms. Below there are explained several key operations that are usually used as operation in several fluent API´s to construct operation pipelines.
+In the realm of functional programming and modern software development, several key operations are fundamental to process data collections and data flows. These operations, while conceptually similar across different languages, may have different idioms. Below there are explained several key operations that are usually used as operation in several fluent API's to construct operation pipelines.
 
 \subsection*{Sort}
 The sort operation arranges elements of a collection in a specific order, typically ascending or descending. It's crucial for organizing data in a meaningful way.
