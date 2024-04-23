@@ -73,7 +73,7 @@ In this subsection, we concentrate on the task of grouping words from a file usi
 
 
 \begin{figure}[H]
-    \raggedright
+    \centering
     \begin{tikzpicture}
     \begin{axis}[
         ybar=2*\pgflinewidth,
@@ -85,14 +85,14 @@ In this subsection, we concentrate on the task of grouping words from a file usi
         ylabel={Processing Time Average (s)},
         symbolic x coords={Baseline, Linq, AsyncEnumerables, RxNet},
         xtick=data,
-        xticklabel style={rotate=45,anchor=east},
+        xticklabel style={rotate=45, anchor=east},
         nodes near coords,
         nodes near coords align={vertical},
         ]
     \addplot coordinates {(Baseline, 26.0) (Linq, 22.2) (AsyncEnumerables, 30) (RxNet, 22.0)};
     \end{axis}
     \end{tikzpicture}
-    \caption{Processing times for different strategies for "Count Words".}
+    \caption{Processing times for different strategies for "Group Words".}
     \label{fig:group_word_processing_times_cs}
 \end{figure}
 
@@ -127,29 +127,29 @@ The strategies used in JAVA are:
 
 In the following graphic, we have the results in seconds for each strategy:
 
-    \begin{figure}[H]
-        \raggedright
-        \begin{tikzpicture}
-        \begin{axis}[
-            ybar=2*\pgflinewidth,
-            width=1.0\textwidth,
-            height=0.4\textwidth,
-            bar width=20pt,
-            legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-            ylabel={Processing Time Average (s)},
-            symbolic x coords={Reactor Core Flux, NIO Reactor Flux with Concurrency, RXJava, Parallelization, Baseline, Kotlin Flow},
-            xtick=data,
-            xticklabel style={rotate=45,anchor=east},
-            nodes near coords,
-            nodes near coords align={vertical},
-            ymin=0, ymax=7,
-            ]
-        \addplot coordinates {(Baseline, 0.9) (Reactor Core Flux, 1.1) (NIO Reactor Flux with Concurrency, 1.0) (RXJava, 0.9) (Parallelization, 0.7) (Kotlin Flow, 2.4) };
-        \end{axis}
-        \end{tikzpicture}
-        \caption{Processing times for different Java/Kotlin strategies for "Biggest Word".}
-        \label{fig:biggest_word_processing_times}
-    \end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+    \begin{axis}[
+        ybar=2*\pgflinewidth,
+        width=1.0\textwidth,
+        height=0.4\textwidth,
+        bar width=20pt,
+        legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
+        ylabel={Processing Time Average (s)},
+        symbolic x coords={Baseline, Reactor Core Flux, NIO Reactor Flux with Concurrency, RXJava, Parallelization, Kotlin Flow},
+        xtick=data,
+        xticklabel style={rotate=45, anchor=east},
+        nodes near coords,
+        nodes near coords align={vertical},
+        ymin=0, ymax=7,
+        ]
+    \addplot coordinates {(Baseline, 0.9) (Reactor Core Flux, 1.1) (NIO Reactor Flux with Concurrency, 1.0) (RXJava, 0.9) (Parallelization, 0.7) (Kotlin Flow, 2.4)};
+    \end{axis}
+    \end{tikzpicture}
+    \caption{Processing times for different Java/Kotlin strategies for "Biggest Word".}
+    \label{fig:biggest_word_processing_times_java}
+\end{figure}
     
 
     For the "Biggest Word" results, the strategies exhibit varied performance levels. The Baseline strategy, illustrating basic non-blocking I/O operations, provides a solid foundation for comparison and demonstrates a competent processing time. Flux strategies, both Reactor Core Flux and its concurrent variant, leverage the Project Reactor library to enhance processing, showing slight variations in efficiency. The RXJava strategy, utilizing the RXJava library, aligns closely with the baseline in terms of performance. A notable distinction is seen in the strategies employing parallelization, particularly those using Java's Streams API, which show the most efficient processing times. This underscores the advantage of parallel processing in optimizing performance.
@@ -183,15 +183,15 @@ In the following graphic, we have the results in seconds for each strategy:
             ylabel={Processing Time Average (s)},
             symbolic x coords={Baseline, RXJava, Reactor Core Flux, Parallel, Streams, Flow (Kotlin)},
             xtick=data,
-            xticklabel style={rotate=45,anchor=east},
+            xticklabel style={rotate=45, anchor=east},
             nodes near coords,
             nodes near coords align={vertical},
             ]
-            \addplot coordinates { (Baseline, 1.3) (RXJava, 5.8) (Reactor Core Flux, 12.0) (Parallel, 1.2) (Streams, 1.8) (Flow (Kotlin), 15.0)};
+            \addplot coordinates {(Baseline, 1.3) (RXJava, 5.8) (Reactor Core Flux, 12.0) (Parallel, 1.2) (Streams, 1.8) (Flow (Kotlin), 15.0)};
         \end{axis}
         \end{tikzpicture}
         \caption{Processing times for different Java/Kotlin strategies for "Group Words".}
-        \label{fig:processing_times}
+        \label{fig:group_word_processing_times_java}
     \end{figure}
     
 
@@ -223,7 +223,7 @@ In the following graphic, we have the results in seconds for each strategy:
 
 
 \begin{figure}[H]
-    \raggedright
+    \centering
     \begin{tikzpicture}
     \begin{axis}[
         ybar=2*\pgflinewidth,
@@ -234,7 +234,7 @@ In the following graphic, we have the results in seconds for each strategy:
         ylabel={Processing Time Average (s)},
         symbolic x coords={Baseline, Stream JS, RxJS},
         xtick=data,
-        xticklabel style={rotate=45,anchor=east},
+        xticklabel style={rotate=45, anchor=east},
         nodes near coords,
         nodes near coords align={vertical},
         ymin=0, ymax=30,
@@ -242,9 +242,10 @@ In the following graphic, we have the results in seconds for each strategy:
     \addplot coordinates {(Baseline, 8.2) (Stream JS, 23.2) (RxJS, 13.9)};
     \end{axis}
     \end{tikzpicture}
-    \caption{Processing times for different JavaScript strategies for "Biggest Word" Graphic}
+    \caption{Processing times for different JavaScript strategies for "Biggest Word"}
     \label{fig:biggest_word_processing_times_js}
 \end{figure}
+
 
 As we can see in this javascript implementation, the performance for find biggest word algorithm of the baseline behaves as expected, having the best performance among its alternatives. On the other side, the algorithm implemented using RXJS library behaves slightly better than the alternative that makes use of JS streams API.
 
@@ -266,15 +267,14 @@ In this subsection, we evaluate the following strategies for grouping words:
 
 In the following graphic, we present the results in seconds for each strategy:
 
-
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
     \begin{axis}[
         ybar=2*\pgflinewidth,
-        width=0.95\textwidth,
+        width=1.0\textwidth,
         height=0.4\textwidth,
-        bar width=15pt, % Reduced bar width
+        bar width=15pt,
         legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
         ylabel={Processing Time Average (s)},
         symbolic x coords={Baseline, Stream JS, RxJS},
@@ -282,12 +282,12 @@ In the following graphic, we present the results in seconds for each strategy:
         xticklabel style={rotate=45, anchor=east},
         nodes near coords,
         nodes near coords align={vertical},
-        ymin=0, ymax=30,
+        ymin=0, ymax=40,
         ]
-    \addplot coordinates {(Baseline, 30.1) (Stream JS, 26.6) (RxJS, 17.3)};
+    \addplot coordinates {(Baseline, 30.6) (Stream JS, 26.6) (RxJS, 17.3)};
     \end{axis}
     \end{tikzpicture}
-    \caption{Processing times for different JavaScript strategies for "Grouping Words" Graphic}
+    \caption{Processing times for different JavaScript strategies for "Grouping Words"}
     \label{fig:grouping_words_processing_times_js}
 \end{figure}
 

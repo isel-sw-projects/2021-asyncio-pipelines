@@ -1,28 +1,33 @@
 \chapter{Conclusions and Future Directions}
 
-After the results obtained in the previous charpter, we can conclude that:
+\section{Main Conclusions}
+The analysis of reactive streams programming and pipelining technologies throughout this thesis highlights their substantial benefits in terms of user-friendliness and maintenance simplicity. Nonetheless, these technologies also present certain drawbacks which must be carefully considered in the context of specific application requirements and desired outcomes.
+
+For systems demanding high performance and robustness, a baseline-like approach, which allows for custom optimization, might be ideal. Conversely, for rapid development with satisfactory performance and easier maintenance, tools like RxJava and .NET's AsyncEnumerable provide valuable solutions. The choice largely depends on the project's long-term objectives and operational context. For example, high-frequency trading systems require the raw speed and low latency that finely tuned baseline systems provide. In scenarios where time-to-market is crucial, the productivity benefits of higher-level frameworks may outweigh their performance costs.
+
+Another significant finding is the scalability offered by reactive programming technologies, which is essential for applications expected to handle growing data volumes or increased throughput over time.
+
+For each language we took, some conclusions:
 
 \subsection{.NET Environment Analysis}
-In the .NET ecosystem, the examination of various strategies revealed nuanced performance distinctions. The parallel approach consistently outperformed its competitors, highlighting the power of parallel computing in efficiently processing tasks.
+In the .NET ecosystem, strategies utilizing parallel computing clearly outperformed others, emphasizing the importance of leveraging modern CPU architectures to enhance processing capabilities.
 
 \subsection{Java/Kotlin Environment Insights}
-Similarly, in the Java/Kotlin sphere, strategies leveraging parallelization emerged as clear winners. This underscores the importance of leveraging concurrent processing capabilities, especially in scenarios dealing with extensive datasets or complex computations.
+In Java and Kotlin environments, parallelization strategies proved most effective, highlighting the necessity of concurrent processing for handling complex or large data sets efficiently.
 
 \subsection{JavaScript Strategy Performance}
-In JavaScript, the RxJS library showcased significant efficiency, especially in the "Grouping Words" task. This exemplifies the strength of RxJS in managing data streams efficiently, a critical consideration for web-based applications.
+The RxJS library demonstrated its efficacy in JavaScript, particularly for tasks like "Grouping Words," showcasing its capability to manage data streams efficiently—a crucial aspect for web applications.
 
 \subsection{Overarching Conclusions}
-Across all environments, a consistent theme emerges is that the baseline approach, which doesn't use extensive pipeline frameworks, tends to perform better in these particular algorithms. 
+While baseline approaches generally performed better in specific algorithms, the practicality of using advanced frameworks like RxJava or .NET's AsyncEnumerable in enterprise environments cannot be overlooked. They facilitate rapid development and easier maintenance, which are often prioritized over minor performance gains in many professional settings.
 
-However, there is a key detail that we must take in account, is that in many projects, which have several data sources and the complexity of building a solution from scratch is not an option, using these kind of frameworks helps a lot in deliver a solution fast with good code readability that enables easy code maintenance, durability and acceptable performance, which in enterprise projects are many times preferable over a solution from scratch with slight better performance.
-
-On other side, other thing that jumps in view is that independently of the algorithm, the platform, language and tools used are always dependent of the 
+Moreover, the selection of the appropriate technology or framework is invariably influenced by the specific demands of the project, underscoring the need for a tailored approach in software development.
 
 \section{Future Work and Final Thoughts}
-In summarizing this thesis, it is evident that asynchronous IO technologies are not just a technical innovation but a catalyst for a broader transformation in the field of software engineering. These technologies have the potential to redefine how software is conceptualized, developed, and maintained. The journey undertaken in this thesis has shed light on the multifaceted nature of these technologies, revealing their complexities, challenges, and immense potential.
 
-As the digital landscape continues to evolve, the importance of abstraction through the use of these tools that make easier to work around complex concepts, like huge data handling in real time. Its very important in the development, maintenance and debugging, making possible to have more robust and less fail prone systems.
+This thesis underscores that asynchronous I/O technologies serve not only as technical tools but also as catalysts for broader transformations in software engineering. They hold the potential to redefine the paradigms of software development and maintenance.
 
-In the years to come, as we delve deeper into the age of digital transformation, the role of asynchronous IO technologies in shaping the future of software engineering will become increasingly prominent. This thesis is but the beginning of an ongoing narrative in the realm of computing, one that promises to be as dynamic and evolving as the technologies it examines.
+As we advance into an increasingly digital era, the strategic use of these technologies—especially in managing complex data flows in real time already is critical. They are poised to enhance system robustness and reduce failure rates significantly and today its a critical concept that any IT engineer must take in account.
+
 
 \end{document}
