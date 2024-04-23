@@ -229,48 +229,57 @@ flow.blockingSubscribe(System.out::println);
 
 
 	\begin{center}
-		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-		\begin{minipage}[t][][b]{.46\textwidth}
+		\begin{minipage}[t]{.49\textwidth}
 		\begin{lstlisting}[
-			escapeinside={(*}{*)},
-				caption={Cold flow example},
-				label={lst-top5-java-cold}
+			basicstyle=\fontsize{8pt}{10pt}\selectfont\ttfamily, % Applying small font size
+        numbers=left, % Adding line numbers on the left
+        numberstyle=\tiny, % Making the line numbers tiny
+        numbersep=10pt, % Reducing space between the code and line numbers
+        frame=none, % No frame around the code
+        escapeinside={(*}{*)},
+        columns=fullflexible,
+        showstringspaces=false,
+        caption={Cold flow example},
+        label={lst-top5-java-cold}
 		]
-ConnectableFlowable<Long> hot = Flowable
-	.intervalRange(0, 100, 0, 100, TimeUnit.MILLISECONDS)
-	.publish();
-flux.connect(); 
-Thread.sleep(1000);
-flux.blockingSubscribe(System.out::println
-
-//output:
-//2
-//3
-//4
-//
+	ConnectableFlowable<Long> hot = Flowable
+		.intervalRange(0, 100, 0, 100, TimeUnit.MILLISECONDS)
+		.publish();
+	hot.connect(); 
+	Thread.sleep(1000);
+	hot.blockingSubscribe(System.out::println);
+	// output:
+	// 2
+	// 3
+	// 4
 		\end{lstlisting}
 		\end{minipage}
 		\hfill
-		\begin{minipage}{.48\textwidth}
-		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+		\begin{minipage}[t]{.49\textwidth}
 		\begin{lstlisting}[
-			escapeinside={(*}{*)},
-			columns=fullflexible,
-			showstringspaces=false,
-				caption={Hot flow example},
-				label={lst-top5-java-cold}
+			basicstyle=\fontsize{8pt}{10pt}\selectfont\ttfamily, % Applying small font size
+        numbers=left, % Adding line numbers on the left
+        numberstyle=\tiny, % Making the line numbers tiny
+        numbersep=10pt, % Reducing space between the code and line numbers
+        frame=none, % No frame around the code
+        escapeinside={(*}{*)},
+        columns=fullflexible,
+        showstringspaces=false,
+        caption={Cold flow example},
+        label={lst-top5-java-cold}
 		]
-Flowable<Long> cold = Flowable.interval(100, TimeUnit.MILLISECONDS);
-Thread.sleep(1000);
-cold.blockingSubscribe(System.out::println); 
-//Output:
-//1
-//2
-//3
+	Flowable<Long> cold = Flowable
+		.interval(100, TimeUnit.MILLISECONDS);
+	Thread.sleep(1000);
+	cold.blockingSubscribe(System.out::println);
+	// Output:
+	// 1
+	// 2
+	// 3
 		\end{lstlisting}
 		\end{minipage}
 	\end{center}
-
+	
 
 	As we can see, in the \texttt{Hot} data flow example, the items are emitted from the moment the producer is created, independently of existing any subscriber or observer attached to that publisher. Notice that when a consumer is subscribed to the publisher, 1 seconds after the emition started, the numbers from 0 to 10 were not printed.
 	
