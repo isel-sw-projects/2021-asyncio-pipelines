@@ -17,10 +17,11 @@ For the find the biggest word algorithm, used i .NET implementations are the fol
 
 \begin{itemize}
     \item \textbf{Baseline}: This strategy serves as the basic approach for finding the biggest word and acts as a baseline for comparison.
-    \item \textbf{Asynchronous Baseline }: This strategy uses a single asynchronous task to find the biggest word.
-    \item \textbf{Parallel }: An approach that makes the use of parallelization.
-    \item \textbf{AsyncEnumerable}: This approach uses asynchronous programming with enumerable collections.
-    \item \textbf{RxNet }: This strategy uses the Reactive Extensions (Rx) library with asynchronous file reading operations.
+    \item \textbf{Baseline NIO}: This strategy uses a single asynchronous task to find the biggest word.
+    \item \textbf{Parallel}: An approach that makes the use of parallelization.
+    \item \textbf{AsyncEnumerables}: This approach uses asynchronous programming with enumerable collections.
+    \item \textbf{RxNet}: This strategy uses the Reactive Extensions (Rx) library with asynchronous file reading operations.
+    \item \textbf{Linq}: This strategy uses Language Integrated Query (LINQ) for finding the biggest word.
 \end{itemize}
 
 
@@ -34,7 +35,8 @@ In the following graphic, we have the results in seconds for each strategy:
         width=1.0\textwidth,
         height=0.4\textwidth,
         bar width=20pt,
-        enlargelimits=0.09,
+        enlarge x limits={0.09}, % Adjust the value as needed
+        enlarge y limits=false, % Ensure only x-limits are enlarged
         legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
         ylabel={Processing Time Average (s)},
         symbolic x coords={Baseline, Baseline NIO, Parallel, AsyncEnumerables, RXNet, Linq},
@@ -78,7 +80,7 @@ In this subsection, we concentrate on the task of grouping words from a file usi
     \begin{axis}[
         ybar=2*\pgflinewidth,
         width=1.0\textwidth,
-        height=0.4\textwidth,
+        height=0.7\textwidth,
         bar width=20pt,
         enlargelimits=0.09,
         legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
@@ -152,9 +154,15 @@ In the following graphic, we have the results in seconds for each strategy:
 \end{figure}
     
 
-    For the "Biggest Word" results, the strategies exhibit varied performance levels. The Baseline strategy, illustrating basic non-blocking I/O operations, provides a solid foundation for comparison and demonstrates a competent processing time. Flux strategies, both Reactor Core Flux and its concurrent variant, leverage the Project Reactor library to enhance processing, showing slight variations in efficiency. The RXJava strategy, utilizing the RXJava library, aligns closely with the baseline in terms of performance. A notable distinction is seen in the strategies employing parallelization, particularly those using Java's Streams API, which show the most efficient processing times. This underscores the advantage of parallel processing in optimizing performance.
+The Baseline strategy, representing basic non-blocking I/O operations, provides a competent processing time of 0.9 seconds. This serves as a solid foundation for comparison with other methods. Reactor Core Flux, utilizing the Project Reactor library for reactive programming, shows a processing time of 1.1 seconds, indicating slight overhead due to managing reactive streams. Enhancing Reactor Core Flux with concurrency reduces the processing time to 1.0 second, demonstrating improved efficiency.
 
-    \clearpage
+RxJava matches the baseline performance at 0.9 seconds, indicating that its reactive nature does not introduce significant overhead. The most notable efficiency is achieved by the Parallelization strategy, which uses Java's Streams API with parallel processing, resulting in the fastest processing time of 0.7 seconds. This highlights the advantages of parallel processing in optimizing computational tasks by distributing work across multiple threads.
+
+On the other hand, Kotlin Flow, which employs Kotlin's Flow API for managing asynchronous streams, shows the highest processing time at 2.4 seconds. Despite its strong asynchronous capabilities, the overhead suggesting potential areas for optimization.
+
+These results highlight that parallel processing strategies, particularly those using Java's Streams API, achieve the most efficient performance. This detailed comparison underscores the importance of selecting the appropriate strategy based on the specific performance and scalability requirements of the application.
+   
+\clearpage
 
     \subsection{Group Word Results}
     \label{subsubsec:group_word_results}
@@ -171,6 +179,7 @@ In the following graphic, we have the results in seconds for each strategy:
 
     In the following table and graphic, we have the results in seconds for each strategy:
 
+
     \begin{figure}[H]
         \centering
         \begin{tikzpicture}
@@ -179,6 +188,8 @@ In the following graphic, we have the results in seconds for each strategy:
             width=0.8\textwidth,
             height=0.6\textwidth,
             bar width=20pt,
+            enlarge x limits={0.09}, % Adjust the value as needed
+            enlarge y limits={0.09}, % Ensure only x-limits are enlarged
             legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
             ylabel={Processing Time Average (s)},
             symbolic x coords={Baseline, RXJava, Reactor Core Flux, Parallel, Streams, Flow (Kotlin)},
