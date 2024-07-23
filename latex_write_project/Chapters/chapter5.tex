@@ -2,15 +2,18 @@
 
 \section{Main Conclusions}
 
-The analysis of reactive streams programming and pipelining technologies throughout this thesis highlights their substantial benefits in terms of user-friendliness and maintenance simplicity. Nonetheless, these technologies also present certain drawbacks which must be carefully considered in the context of specific application requirements and desired outcomes.
+The analysis of reactive streams programming and pipelining technologies throughout this thesis highlights their substantial benefits in terms of user-friendliness and maintenance simplicity. Nonetheless, these technologies also present certain drawbacks that must be carefully considered in the context of specific application requirements and desired outcomes.
 
 For systems demanding high performance and robustness, a baseline-like approach, which allows for custom optimization, might be ideal. Conversely, for rapid development with satisfactory performance and easier maintenance, tools like RxJava and .NET's AsyncEnumerable provide valuable solutions. The choice largely depends on the project's long-term objectives and operational context. For example, high-frequency trading systems require the raw speed and low latency that finely tuned baseline systems provide. In scenarios where time-to-market is crucial, the productivity benefits of higher-level frameworks may outweigh their performance costs.
 
-Another significant finding is the scalability offered by reactive programming technologies, which is essential for applications expected to handle growing data volumes or increased throughput over time.
-
 While baseline approaches generally performed better in specific algorithms, the practicality of using advanced frameworks like RxJava or .NET's AsyncEnumerable in enterprise environments cannot be overlooked. They facilitate rapid development and easier maintenance, which are often prioritized over minor performance gains in many professional settings.
 
-Moreover, the selection of the appropriate technology or framework is invariably influenced by the specific demands of the project, underscoring the need for a tailored approach in software development.
+However, a notable observation from the results is that the programming language, frameworks, and virtual environments running the algorithms have a significant impact on performance. For instance, Java outperformed .NET and JavaScript solutions across baseline, reactive streams frameworks, and parallelization strategies, despite the algorithms and implementations being nearly identical.
+
+Another surprise is that several parallelization implementations using blocking I/O showed very competitive performances, albeit with higher resource usage. This indicates that parallelization can be an effective strategy, even with blocking I/O, under certain conditions.
+
+In conclusion, the choice of technology stack and environment can greatly influence the performance and development efficiency of a project. Therefore, careful consideration of these factors is essential for achieving the desired balance between performance, maintainability, and development speed.
+
 
 \section{Future Work and Final Thoughts}
 
@@ -23,5 +26,6 @@ Looking ahead, there are several promising directions for future research:
 \end{itemize}
 
 In our final thoughts, this work has clearly demonstrated that different approaches significantly impact the effectiveness of solutions. In today's digital environment, dominated by live data streaming, the method of handling data asynchronously is more crucial than ever. It has been shown that adhering to robust programming practices and selecting the appropriate tools and strategies, based on best practices, are critical.
+\clearpage
 
-\end{document}
+

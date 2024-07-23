@@ -33,14 +33,13 @@ Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns 
 
 To achieve some of these properties, the authors propose the \textit{Proactor Pattern} \citep{proactor}. In their opinion, traditional concurrency models, until that date, failed to fully achieve the enumerated properties.
 
-On the other side, before presenting the \textit{Proactor Pattern}, are identified two major existing non-blocking models, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
+On the other side, before presenting the \textit{Proactor Pattern}, two major existing non-blocking models are identified, namely: \textit{multithreading} and \textit{reactive event dispatching}. 
 
-On multithreading, the paper refers that one of the most direct solution of this approach, is the handling of multiple requests by creating a new thread every request. Each request will then be fully processed and the recently created thread is then be disposed after the work is done. 
+On multithreading, the paper refers that one of the most direct solution of this approach, is the handling of multiple requests by creating a new thread every request. Each request will then be fully processed and the recently created thread can then be disposed after the work is done. 
 
-This solution has several serious issues. Firstly, creating a new thread per request is highly costly in terms of computational resources,
-because are involved context switches between user and kernel modes; secondly, must be taken in account synchronization to maintain data integrity.
-Then, the authors warn about the fact that the IO retrieved data is mainly memory-mappped, which rises the question: What happens when the data obtained through IO becomes greater than the system memory can hold? The system stalls until more memory becomes available!? One possible solution is asynchronous pipelines that will be discussed ahead in this dissertation.
-On last, if the server receives a high demand of requests, the server easily blocks in the process of creating and disposing threads. 
+This solution has several serious issues. Firstly, creating a new thread for each request is highly costly in terms of computational resources because it involves constant context switches between user and kernel modes, which are very resource-intensive; secondly, must be taken in account synchronization to maintain data integrity.
+Then, the authors warn about the fact that the IO retrieved data is mainly memory-mappped, which rises the question: What happens when the data obtained through IO becomes greater than the system memory can hold? The system stalls until more memory becomes available? One possible solution is asynchronous pipelines that will be discussed ahead in this dissertation.
+Lastly, if the server receives a high demand of requests, the server easily blocks in the process of creating and disposing threads. 
 
 To avoid this issue, the authors, recommended the use of dynamic thread pools to process requests, where each request will be linked to a pre-existing thread, avoiding all the overhead of creating and disposing a thread per request;
 however, issues related with memory-mapping and overhead due to the switching of data between different threads maintains. 
@@ -71,29 +70,21 @@ The traditional models fail to comply these objectives because are mostly eager 
 Taken this in account, projects like project Reactor, Asynchronous Enumerable provided by Microsoft or papers like \cite{LAZYVSEAGER}, try to deal with these issues, by providing API's that merge the concepts of Fluent API's, functional programming and code syntax that tries to resemble synchronous code, being the complexity inherent with asynchronous models implementations hidden from the programmer since the asynchronous events are treated like, for example, a \texttt{Stream} in JAVA would be treated.
 
 \clearpage
-
-
-
 % ====================
 % = Folder Structure =
 % ====================
 \section{Asynchronous flow key concepts and design alternatives} % (fold)
 \label{sec:async_concepts}
 
-
-
+\vspace{-10pt}
 With the development of several approaches related to asynchronous IO processing, and with the growing necessity to build a name set of properties that simplify the description of asynchronous systems, a dictionary
 of properties, concepts and design alternatives started to grow by itself. In the following, are discussed several of the concepts related with asynchronous data flow, namely:
-
+\vspace{-10pt}
 \subsection{Synchronous versus Asynchronous}
-	Before explaining more terms related with asynchronous data flow, it's important to clarify what is synchronous and asynchronous in programming. 
-	
-	Asynchronous in programming, is a call to a function or routine that returns immediately, not blocking the caller until the operation is finished. The operation processing, will be completely independent from the caller execution process and can even be done in another machine. This way, the caller is freed to do more work, even to start \texttt{N} more operations in parallel. 
-	
-	Meanwhile, a call to a synchronous function or routine, blocks the caller until the operation finishes. In this case, the caller has to wait for the completion of the synchronous operation before going forward, which limits the program efficiency if parallelism is applicable.
-	To better visualize what was explained, we have the following examples: 
-	
-
+Before explaining more terms related with asynchronous data flow, it's important to clarify what is synchronous and asynchronous in programming. 
+Asynchronous in programming, is a call to a function or routine that returns immediately, not blocking the caller until the operation is finished. The operation processing, will be completely independent from the caller execution process and can even be done in another machine. This way, the caller is freed to do more work, even to start \texttt{N} more operations in parallel. 
+Meanwhile, a call to a synchronous function or routine, blocks the caller until the operation finishes. In this case, the caller has to wait for the completion of the synchronous operation before going forward, which limits the program efficiency if parallelism is applicable.
+To better visualize what was explained, we have the following examples: 
 \begin{center}
 	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
 	\begin{minipage}{.48\textwidth}
@@ -155,13 +146,10 @@ Console.WriteLine("prints something")
 	\end{minipage}
 \end{center}
 
-	
 	As we can see, in the synchronous call example, the operation return only happens after the whole subsequent remote operation is finished, consequently, the caller operation is dependent from several variables to go forward e.g. : HTTP messaging latency, remote server operation speed or bandwidth issues. 
 	This causes that the processing of the next code statements to happen only after the synchronous IO call.
-
 	Meanwhile, in the asynchronous operation call, the return happens immediately after the call, however, the processing inherent with that operation will start just when the subsystem that handles the asynchronous function is ready to process that work. For example, when the OS is ready to process the received responses from a remote server that handled the operation.
 	In this case, the statement right after the asynchronous call is processed before the asynchronous operation. Allowing the IO asynchronous operation to processed outside the program scope and avoiding any block of the main program.
-
 
 	\subsection{Push vs Pull}
 	Another concept important to understand how asynchronous data flow is handled in programming, is the \textit{Pull} and \textit{Push} processing patterns.
@@ -211,18 +199,14 @@ flow.blockingSubscribe(System.out::println);
 
 
 	As we can see, in the pull pattern, the items are "pulled" from a data source through an iteration mechanism. 
-	
 	In contrast with that, in the \textit{Push} pattern, items are pushed to a consumer through a supplier.
-
 
 	\subsection{Hot versus Cold}
 	
 	Another property that must be taken in account when handling with \textit{Reactive Streams} or asynchronous data processing in general, is the nature of the data flow. 
 	There are two main adjectives to name a data flow, \texttt{Hot} or \texttt{Cold}. 
-
 	A \texttt{Cold} data flow, is a flow of information that is produced just when the stream pipeline in subscribed by an observer. In this case, the producer only starts sending/producing data when someone is interested in the data from that source. 
 	For example, when program uses a IO mechanism to lazily retrieve a sequence of words from a database, the IO mechanism will only start sending information just when a consumer subscribes that data flow. Usually, the data is sent to the consumer in unicast.
-	
 	On the other hand, in a \texttt{Hot} data flow, the data is produced independently of existing any observer to that information. This mechanism usually work in broadcast and the data is continuously produced and sent to possible observers.
 	In this case, when an observer subscribes to a publisher, exists the possibility of data items being already lost to that publisher while in the \texttt{Cold} flow, the consumer usually receives all items that were produced by the source.
 	In the following examples, a number is produced each 100 milliseconds:
@@ -365,48 +349,42 @@ static async IAsyncEnumerable<int> FetchItems(int delay)
 	In the next example, it is possible to observe a decrease of code complexity and increment of readability where is used the "syntax sugar" provided by the 'yield' return. 
 	
 	The example using promises is purposefully made with a "Pyramid of Doom" code to accentuate a difficulty of reading asynchronous if is made without any concern with readability.
-	
-	\begin{center}
-		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-		\begin{minipage}[t][][b]{.46\textwidth}
-		\begin{lstlisting}[
-			escapeinside={(*}{*)},
-				caption={Javascript Example with promises},
-				label={lst-top5-js-example}
-		]
-function ourImportantFunction(callback) {
-	task1(function(val1) {
-		task2(val1, function(val2) {
-			task3(val2, callback);
+	\noindent
+	\hspace*{-0.08\textwidth}
+	\begin{minipage}[t]{.46\textwidth}
+	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+	\begin{lstlisting}[escapeinside={(*}{*)},
+		caption={JavaScript Example with promises},
+		label={lst-top5-js-example}]
+	function ourImportantFunction(callback) {
+		task1(function(val1) {
+			task2(val1, function(val2) {
+				task3(val2, callback);
+			});
 		});
-	});
-}
-		\end{lstlisting}
-		\end{minipage}
-		\hfill
-		\begin{minipage}{.48\textwidth}
-		\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
-		\begin{lstlisting}[
-			escapeinside={(*}{*)},
-			columns=fullflexible,
-			showstringspaces=false,
-				caption={Javascript syntax sugar},
-				label={lst-top5-js-ss}
-		]
-function ourImportantFunction() {
+	}
+	\end{lstlisting}
+	\end{minipage}%
+	\hspace{0.06\textwidth} % Adjust this space as needed
+	\begin{minipage}[t]{.48\textwidth}
+	\lstset{basicstyle=\scriptsize\ttfamily,frame=bottomline}
+	\begin{lstlisting}[escapeinside={(*}{*)},
+		columns=fullflexible,
+		showstringspaces=false,
+		caption={JavaScript syntax sugar},
+		label={lst-top5-js-ss}]
+	function ourImportantFunction() {
+		
+		var val1 = yield task1();
+		
+		var val2 = yield task2(val1);
+		
+		var val3 = yield task3(val2);
 	
-	var val1 = yield task1();
-	
-	var val2 = yield task2(val1);
-	
-	var val3 = yield task3(val2);
-
-	return val3;
-}
-
-		\end{lstlisting}
-		\end{minipage}
-	\end{center}
+		return val3;
+	}
+	\end{lstlisting}
+	\end{minipage}
 
 As we can see, with the use of \texttt{yield} keyword, the code that uses a result of several asynchronous operation, instead of being used in a "Matrioska Dool" type of code, with a code made with a chain of callback results; 
 the simple use of a intrisic keyword like \texttt{yield} simplifies the code a lot. Making the code previously hard to read in a easier code to understand and maintain.  
@@ -415,12 +393,12 @@ the simple use of a intrisic keyword like \texttt{yield} simplifies the code a l
 
 	\subsection{Back-pressure} 
 
-	When the \textit{pull} method is used to retrieve items from a source, the producer retrieves only the items it can process in the given time. 
+	When the \textit{pull} method is used to retrieve items from a source, the consumer retrieves only the items it can process in the given time. 
 	
 	However, when the \textit{push} approach is used as data retrieval method from asynchronous flows, the producers have the initiative to push items to its consumers. 
-	This can originate situations, where the producer emits items faster than the producers can handle, which can create problems like: unwanted loss of data, lack of responsiveness from consumers, etc... 
+	This can originate situations, where the producer emits items faster than the consumers can handle, which can create issues like: unwanted loss of data, lack of responsiveness from consumers, etc... 
 	
-	To resolve these issues, were created strategies and design patterns that are commonly referred as \textit{Backpressure}.
+	To solve these issues, were created strategies and design patterns that are commonly referred as \textit{Backpressure}.
 	There are four main approaches which the majority of \texttt{Backpressure} strategies are designed from and can be resumed as: 
 	
 	\begin{enumerate}
@@ -490,7 +468,7 @@ The \textit{Observer} can be regarded as an asynchronous counterpart to the Java
     \item \texttt{onComplete()}: This method is called when the data source closes or the subscription finishes.
 \end{enumerate}
 
-Given the possible relationship between synchronous and asynchronous programming, Table \ref{tab:comparison} was developed to better visualize the correlation.
+Taking in account the difference between a synchronous and a live feed asynchronous stream, is still possible to make a correlation between the data types in a synchronous and asynchronous libraries, for example, in JAVA Streams and RXJava Reactive Streams. In the folllowing table \ref{tab:my_table}, we can see a correlation between the Synchronous JAVA Stream data types and reactive stream library RxJava data types:
 
 
 \begin{table}[h]
@@ -504,10 +482,11 @@ Given the possible relationship between synchronous and asynchronous programming
 	RxJava & \texttt{Single<T> getData()} & \texttt{Observable<T> getData()} \\ 
 	\hline
 	\end{tabular}
-	\caption{Your caption}
-	\label{tab:my_label}
+	\caption{Type comparation JAVA Streams to RXJava}
+	\label{tab:my_table}
 \end{table}
 
+As we can see, in Java, we have an \texttt{Object} and an \texttt{Iterable} set of existing objects in a collection, while in the asynchronous counterpart, we have an \texttt{Observable} source of objects that may or may not provide new data items and as single item we dont have an \texttt{Object} but a \texttt{Single}, that represents a data Item that the \texttt{Observable} source may provide.
 
 \subsubsection{Reactor Library}
 \label{sec:reactor_architecture}
