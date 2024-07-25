@@ -85,3 +85,8 @@
   - `node countwords_program`
 
 
+### FINAL NOTE
+
+All the work in this repository was conducted as part of the dissertation titled "A Comprehensive Survey on Asynchronous APIs in Concurrent I/O Scenarios" by Diogo Rodrigues, as the final work to obtain the Master's degree in Computer and Informatics Engineering at Instituto Superior de Engenharia de Lisboa (ISEL), under the supervision of PhD Professor Fernando Carvalho. The thesis was publicly presented on July 23, 2024 by Diogo Rodrigues
+
+
