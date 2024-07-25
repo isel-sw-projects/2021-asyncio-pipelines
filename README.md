@@ -87,6 +87,6 @@
 
 ### FINAL NOTE
 
-All the work in this repository was conducted as part of the work made for the dissertation results of the thesis titled "A Comprehensive Survey on Asynchronous APIs in Concurrent I/O Scenarios" by Diogo Rodrigues, as final work to obtain the Master's degree in Computer and Informatics Engineering at Instituto Superior de Engenharia de Lisboa (ISEL). The thesis was publicly presented on July 23, 2024.
+All the work in this repository was conducted as part of the work made for the dissertation titled "A Comprehensive Survey on Asynchronous APIs in Concurrent I/O Scenarios" by Diogo Rodrigues, as final work to obtain the Master's degree in Computer and Informatics Engineering at Instituto Superior de Engenharia de Lisboa (ISEL). The thesis was publicly presented on July 23, 2024.
 
 
