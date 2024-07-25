@@ -5,17 +5,20 @@
 \label{cha:benchmarking_use_case_algorithms}
 
 In order to have metrics to enable the comparison between some of the different technologies we discussed so far, we decided to make software implementations in three programming languages of two key algorithms. 
-
 Each selected to simulate two distinct data processing scenarios. These are the "Count each word occurrence" and "Find the biggest word", both of which offer valuable insights into different aspects of data processing.
+As a crucial part of this research, the selection of an appropriate and robust data source was imperative. For the empirical analysis and demonstration of the programming paradigms discussed, the Project Gutenberg library \cite{gutenberg} was chosen as the primary data source. This library, renowned for its comprehensive dataset, encompasses several thousands of books spanning a multitude of genres and periods. For the tests conducted in the ambit of this work, a subset of the Gutenberg total library consisting of 1414 files was used, and a total of 3 repetitions of each strategy were made. The result was the average completion time of the last 2 attempts. To guarantee the fidelity of results, the tests were conducted multiple times to ensure the accuracy of the numbers obtained. The machine used for these tests had the following characteristics:
 
-As a crucial part of this research, the selection of an appropriate and robust data source was imperative. For the empirical analysis and demonstration of the programming paradigms discussed, the "Gutenberg" \cite{gutenberg} library was chosen as the primary data source. This library, renowned for its comprehensive dataset, encompasses several thousands of books spanning a multitude of genres and periods. The richness and diversity of the Gutenberg dataset provided an unparalleled opportunity to rigorously test and evaluate the effectiveness of reactive programming techniques in processing and analyzing large volumes of textual data. The expansive nature of the Gutenberg library not only facilitated a broad assessment across various data-intensive scenarios but also underscored the scalability and adaptability of the programming approaches under study. 
+\begin{itemize}
+    \item 12th Gen Intel(R) Core(TM) i5-12400 2.50 GHz
+    \item 16.0 GB (15.7 GB usable) RAM
+    \item 64-bit operating system, x64-based processor
+    \item GTX 1060 6GB graphics card
+\end{itemize}
 
+The expansive nature of the Gutenberg library not only facilitated a broad assessment across various data-intensive scenarios but also underscored the scalability and adaptability of the programming approaches under study. 
 On the algorithms, in the case of "Group Word" operation, the idea was to have a memory-intensive task. This operation involves analyzing a dataset to identify and count each word occurrences that fall within a specified size range. Since the algorithm uses data structures, such as dictionaries, for in runtime data storage. These nuances make the "Group Word" operation a curious test case for evaluating the capabilities of asynchronous processing in combination within a memory demanding scenario.
-
 In contrast, the task of finding the largest word, though less memory intensive task, is significant for its simplicity. This operation involves scanning a dataset to find the single longest word, a process that, while straightforward, is critical for understanding the performance of asynchronous processing in more basic computational tasks. It serves as a benchmark for evaluating the efficiency of simpler algorithms and their implementation across different programming languages and environments.
-
 For this work, were chosen these two algorithm as simplistic samples for a simplistic benchmark scenario, but, for future work, can be added a more vast algorithmic variety.
-
 Bellow, we can find the pseudocode of these algorithms, that may help to understand how they function:
 
 
