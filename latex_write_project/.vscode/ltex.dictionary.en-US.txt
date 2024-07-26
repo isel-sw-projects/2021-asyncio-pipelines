@@ -1,4 +1,0 @@
-technologic
-enumerables
-Enumerables
-multithread
