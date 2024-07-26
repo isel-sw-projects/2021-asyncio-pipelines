@@ -102,7 +102,7 @@ In this section, we explore and assess diverse strategies applied in Java and Ko
 \subsection{Biggest Word Results}
 \label{subsubsec:biggest_word_results}
 
-The strategies used in JAVA are:
+The strategies used in Java are:
 \begin{itemize}
     \item \textbf{Baseline}: This strategy illustrates a basic non-blocking I/O operation, serving as a comparison baseline.
     \item \textbf{Flux}: These strategies leverage the Reactor Flux model from Java's Project Reactor library. The former follows a standard non-concurrent processing model, while the latter introduces parallelization for improved performance.
@@ -140,7 +140,7 @@ The Baseline, representing basic non-blocking I/O operations, provides a compete
 RxJava matches the baseline performance, indicating that does not introduce significant overhead. The most notable efficiency is achieved by the Parallelization strategy, which uses Java's Streams API with parallel processing using multithreading mechanisms, resulting in the fastest processing time. This highlights the advantages of parallel processing in optimizing computational tasks by distributing work across multiple threads.
 On the other hand, Kotlin Flow, which employs Kotlin's Flow API for managing data asynchronously, shows the highest processing time, the overhead suggests potential areas for optimization.
 These results highlight that parallel processing strategies although using blocking IO as a source, achieve the most efficient performance however, using non-blocking IO with reactive stream technologies like RXJava have a very good performance and its code is a loot simpler and easy to maintain than other solutions. This enforces that the chose between solutions are much dependent of the specific needs of the project.
-However, we can see a huge difference from what we observed previously in .NET, where the baseline, parallelization, and Rx approaches showed significant differences in performance between each other, while in Java, the differences were minimal and their performances were orders of magnitude better than what we saw in .NET. The only performance that was similar in both JAVA and .NET was the performance related to parallelization using blocking IO, but even then, JAVA outperformed in 2 times the performance time of the .NET Implementation.
+However, we can see a huge difference from what we observed previously in .NET, where the baseline, parallelization, and Rx approaches showed significant differences in performance between each other, while in Java, the differences were minimal and their performances were orders of magnitude better than what we saw in .NET. The only performance that was similar in both Java and .NET was the performance related to parallelization using blocking IO, but even then, Java outperformed in 2 times the performance time of the .NET Implementation.
 This reinforces the idea that choosing the right environment can have a much greater impact on project decisions than initially thought.
 
     \subsection{Group Word Results}
@@ -183,7 +183,7 @@ This reinforces the idea that choosing the right environment can have a much gre
     \end{figure}
     
     The Baseline strategy, as before, sets a standard for comparison, showing moderate efficiency. RXJava, known for its asynchronous and event-driven capabilities, demonstrates a longer processing time in this context, indicating potential overheads in handling complex data sequences in this particular environment. Reactor Core Flux, while efficient in handling asynchronous sequences, shows a significant processing time, possibly due to the complexity of the Group Word algorithm. Strategies involving parallel processing, whether through direct use of threadpools or the Streams API, exhibit improved efficiency, highlighting the benefits of parallelism in handling computationally and memory intensive tasks. Notably, Kotlin's Flow API, shows a longer processing time, which could reflect the overheads associated with its internal resource management in complex data processing scenarios.
-    Overall to JAVA, these results illustrate the trade-offs between different programming paradigms and libraries in Java and Kotlin. 
+    Overall to Java, these results illustrate the trade-offs between different programming paradigms and libraries in Java and Kotlin. 
     As we saw in "Find biggest word", we make again the observation of huge disparities between languages. In this case, although the "group words" algorithm having a similar implementation in both Java and .NET, the outcomes are significantly different between these two environments. For example, the baseline performance in .NET is in line with other approaches there, while in Java, the performance is significantly better compared to other approaches and also hugely outperforms the baseline in .NET.
     This reinforces the conclusion that underlying factors such as the programming language, virtual environment and runtime optimizations can have a substantial impact on the performance of systems, even when the algorithms are identical.
 

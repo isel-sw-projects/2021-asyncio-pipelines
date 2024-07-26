@@ -8,7 +8,7 @@
 \label{cha:users_manual}
 
 This section, aims to show the background and the current state of the art on the subject related with asynchronous pipeline operations involving asynchronous data flows.  
-On the section \ref{sec:related_work}, will be made an overview on previously developed work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on how asynchronous operation pipe lining are implemented in different programming realities, e.g. on Kotlin, JAVA and C\#. 
+On the section \ref{sec:related_work}, will be made an overview on previously developed work made on this subject, then, on section \ref{sec:async_concepts}, will be made a characterization of the key concepts related to it. By last, on section \ref{sec:state_of_the_art}, are presented and explained several technologies representative of the state of the Art on how asynchronous operation pipe lining are implemented in different programming realities, e.g. on Kotlin, Java and C\#. 
 
 
 % ================
@@ -23,7 +23,7 @@ On the section \ref{sec:related_work}, will be made an overview on previously de
 
 From the end of 80’s to the beginning of the 2000’s, with the acceleration of Moore's Law in hardware and network bandwidth development; the creation of the internet as we know today through the wide spread of use of the HTTP protocol, the necessity of high responsiveness and efficient systems started to grow. This increase in demand of new ways to handle data efficiently and the wide spread of multicore processors created the necessity of the implementation of new software frameworks models that can handle data efficiently taking in account the multithread systems and the asynchronous characteristics of data receiving throw network. 
 
-Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns were compiled to deal with object-oriented problems; a group of researchers wrote a paper \citep{proactor}, where they identify the characteristics that high available systems must have, and how the use of asynchronous IO pipe design patterns can help to achieve these characteristics, as described bellow:
+Taking the wave initiated by the Gang of Four in \citep{gof}, where 23 patterns were compiled to deal with object-oriented problems, a group of researchers wrote a paper \citep{proactor}, where they identify the characteristics that high available systems must have, and how the use of asynchronous IO pipe design patterns can help to achieve these characteristics, as described bellow:
 \begin{itemize}
 	\item Concurrency - The server must process multiple client requests simultaneously.\\
 	\item Efficiency - The software design must be built aiming the use the least hardware resources as possible. \\
@@ -53,7 +53,7 @@ Then, if a request processing blocks, the processing of another requests may be 
 To keep the positive points but mitigating the identified issues of previous approaches, is suggested the \textit{Proactor Pattern}. 
 This pattern is very similar to the \textit{Reactive Synchronous Event Dispatching}, however, after the requests processed by a single threaded \textit{Completion dispatcher}, 
 the IO work is then dispatched asynchronously to the underlying OS IO subsystems, where multiple requests can be processed simultaneously. 
-For the result to be retrieved, is previously registered a callback in the \textit{Completion Dispatcher} and the OS has the responsibility to queue the finished result in a well known place. 
+For the result to be retrieved, it is previously registered a callback in the \textit{Completion Dispatcher} and the OS has the responsibility to queue the finished result in a well known place. 
 
 Finally, the \textit{Completion Dispatcher} has the responsibility to dequeue the result placed by the OS and call the correct previously registered callback. 
 With this, this model creates a platform that provides: decoupling between application and processing mechanisms,
@@ -67,7 +67,7 @@ Then, with the asynchronous systems based on events with the introduction of cal
 
 However, are some limitations in these asynchronous models. For example, if the data to be processed is bigger than the memory available at a given moment or if the data to be calculated is from a source that produces data at a constant rate that must be processed in real time, these models work badly.  
 The traditional models fail to comply these objectives because are mostly eager by design or not comply with the notion of a continuous source of information that requires to be processed in real time.
-Taken this in account, projects like project Reactor, Asynchronous Enumerable provided by Microsoft or papers like \cite{LAZYVSEAGER}, try to deal with these issues, by providing API's that merge the concepts of Fluent API's, functional programming and code syntax that tries to resemble synchronous code, being the complexity inherent with asynchronous models implementations hidden from the programmer since the asynchronous events are treated like, for example, a \texttt{Stream} in JAVA would be treated.
+Taken this in account, projects like project Reactor, Asynchronous Enumerable provided by Microsoft or papers like \cite{LAZYVSEAGER}, try to deal with these issues, by providing API's that merge the concepts of Fluent API's, functional programming and code syntax that tries to resemble synchronous code, being the complexity inherent with asynchronous models implementations hidden from the programmer since the asynchronous events are treated like, for example, a \texttt{Stream} in Java would be treated.
 
 \clearpage
 % ====================
@@ -224,7 +224,7 @@ flow.blockingSubscribe(System.out::println);
         columns=fullflexible,
         showstringspaces=false,
         caption={Cold flow example},
-        label={lst-top5-java-cold}
+        label={lst-top5-Java-cold}
 		]
 	ConnectableFlowable<Long> hot = Flowable
 		.intervalRange(0, 100, 0, 100, TimeUnit.MILLISECONDS)
@@ -250,7 +250,7 @@ flow.blockingSubscribe(System.out::println);
         columns=fullflexible,
         showstringspaces=false,
         caption={Cold flow example},
-        label={lst-top5-java-cold}
+        label={lst-top5-Java-cold}
 		]
 	Flowable<Long> cold = Flowable
 		.interval(100, TimeUnit.MILLISECONDS);
@@ -419,7 +419,7 @@ the simple use of a intrisic keyword like \texttt{yield} simplifies the code a l
 
 In this section, we will delve into various state-of-the-art frameworks designed for asynchronous IO pipeline processing across multiple programming languages.
 
-Initially, we explore the options available in the Java landscape in Section \ref{sec:java}. Here, we begin with an explanation of the multi-language project \textit{ReactiveX.io} and its Java implementation, \textit{RxJava}. Subsequently, we will discuss the Reactor Project, followed by an examination of non-blocking processing in the JVM, specifically through Kotlin's native \texttt{Flow} implementation.
+Initially, we explore the options available in the Java landscape in Section \ref{sec:Java}. Here, we begin with an explanation of the multi-language project \textit{ReactiveX.io} and its Java implementation, \textit{RxJava}. Subsequently, we will discuss the Reactor Project, followed by an examination of non-blocking processing in the JVM, specifically through Kotlin's native \texttt{Flow} implementation.
 
 Following Java, we shift our focus to Microsoft's .NET C\# in Section \ref{sec:csharp}. A brief mention of ReactiveX's c\# implementation precedes a deep dive into how C\# natively addresses this challenge, particularly through the implementation of \texttt{AsyncEnumerables}.
 
@@ -428,7 +428,7 @@ Next, we explore JavaScript's native solution to this problem, highlighting the 
 Finally, in Section \ref{sec:tech_compare}, we provide a comprehensive overview and draw conclusions about the various technologies discussed, comparing how each approach can be utilized for different problems and objectives. We also make theoretical predictions about the potential performance of each technology under several known circumstances.
 
 \subsection{Java}
-\label{sec:java}
+\label{sec:Java}
 
 In the context of Java, we will explore several libraries and frameworks aimed at simplifying asynchronous data flow handling. 
 
@@ -468,7 +468,7 @@ The \textit{Observer} can be regarded as an asynchronous counterpart to the Java
     \item \texttt{onComplete()}: This method is called when the data source closes or the subscription finishes.
 \end{enumerate}
 
-Taking in account the difference between a synchronous and a live feed asynchronous stream, is still possible to make a correlation between the data types in a synchronous and asynchronous libraries, for example, in JAVA Streams and RXJava Reactive Streams. In the folllowing table \ref{tab:my_table}, we can see a correlation between the Synchronous JAVA Stream data types and reactive stream library RxJava data types:
+Taking in account the difference between a synchronous and a live feed asynchronous stream, is still possible to make a correlation between the data types in a synchronous and asynchronous libraries, for example, in Java Streams and RXJava Reactive Streams. In the folllowing table \ref{tab:my_table}, we can see a correlation between the Synchronous Java Stream data types and reactive stream library RxJava data types:
 
 
 \begin{table}[h]
@@ -482,7 +482,7 @@ Taking in account the difference between a synchronous and a live feed asynchron
 	RxJava & \texttt{Single<T> getData()} & \texttt{Observable<T> getData()} \\ 
 	\hline
 	\end{tabular}
-	\caption{Type comparation JAVA Streams to RXJava}
+	\caption{Type comparation Java Streams to RXJava}
 	\label{tab:my_table}
 \end{table}
 
@@ -535,7 +535,7 @@ A \texttt{Flow<T>} data source implementation is done through a builder, like we
 	\begin{lstlisting}[
 		escapeinside={(*}{*)},
 			caption={Flow builder},
-			language={java},
+			language={Java},
 			label={lst-top5-kotlin}
 	]
 fun simple(): Flow<Int> = flow { // flow builder
@@ -581,7 +581,7 @@ On the next example, we can see several calls to the \texttt{Flow.collect()} tha
 	\begin{lstlisting}[
 		escapeinside={(*}{*)},
 			caption={Kotlin collect multicall example},
-			language={java},
+			language={Java},
 			label={lst-top5-kotlin-cold}
 	]
 fun simple(): Flow<Int> = flow { 
@@ -628,7 +628,7 @@ On the next example, we can see an example of an asynchronous data pipeline oper
 	\begin{lstlisting}[
 		escapeinside={(*}{*)},
 			caption={Kotlin collect multicall example},
-			language={java},
+			language={Java},
 			label={lst-top5-kotlin-cold}
 	]
 suspend fun performRequest(request: Int): String {
@@ -796,7 +796,7 @@ To help the characterization of each technology documented, we have a relation b
 \begin{table}[H]
 	\begin{tabular}{|c|c|c|c|c|c|}
 	\hline
-	 & \textbf{Rx(JAVA/.NET)} & \textbf{FLUX} & \textbf{FLOW} & \textbf{C\# async enums} & \textbf{IxJS} \\ \hline
+	 & \textbf{Rx(Java/.NET)} & \textbf{FLUX} & \textbf{FLOW} & \textbf{C\# async enums} & \textbf{IxJS} \\ \hline
 	\textbf{Pull} &  & x & x & x & x\\ \hline
 	\textbf{Push} & x & x &  &  & \\ \hline
 	\textbf{Cancelable} & x & x & x & x & x \\ \hline
